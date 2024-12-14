@@ -1,7 +1,10 @@
-﻿namespace Services.Domain.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Services.Domain.Models
 {
-    public class User 
+    public class User : IdentityUser
     {
-		public string FullName { get; set; }
-	}
+        public string FullName { get; set; }
+        public string Address { get; set; }
+    }
 }

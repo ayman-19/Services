@@ -1,4 +1,9 @@
-﻿namespace Services.Domain.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Services.Domain.Models
 {
-    public class Role { }
+    public class Role : IdentityRole
+    {
+        public IList<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
+    }
 }

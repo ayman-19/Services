@@ -1,6 +1,4 @@
 ﻿namespace Services.Domain.Repositories
 {
-    public interface IRoleRepository
-    {
-    }
+    public interface IRoleRepository { }
 }
