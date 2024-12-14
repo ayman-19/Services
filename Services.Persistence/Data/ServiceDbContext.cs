@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Services.Persistence.Data
 {
-    public class ServiceDbContext : IdentityDbContext
+    public class ServiceDbContext : DbContext
     {
         public ServiceDbContext(DbContextOptions<ServiceDbContext> options)
             : base(options) { }
