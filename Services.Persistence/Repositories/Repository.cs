@@ -7,7 +7,7 @@ using Services.Persistence.Data;
 
 namespace Services.Persistence.Repositories
 {
-    internal class Repository<TEntity> : IRepository<TEntity>
+    public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
         private readonly ServiceDbContext _context;
