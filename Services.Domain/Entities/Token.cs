@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.Domain.Models;
 
 namespace Services.Domain.Entities
 {
@@ -12,5 +8,6 @@ namespace Services.Domain.Entities
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
         public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }
