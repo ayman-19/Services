@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Services.Domain.Models;
 
-namespace Services.Persistence.Configuration
+namespace Services.Persistence.Context.Configuration
 {
     internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
