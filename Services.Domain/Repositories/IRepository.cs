@@ -1,9 +1,10 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Services.Domain.Repositories
 {
-    public interface ISharedRepository<TEntity>
+    public interface IRepository<TEntity>
         where TEntity : class
     {
         Task<TSelctor> GetAsync<TSelctor>(
@@ -20,13 +21,32 @@ namespace Services.Domain.Repositories
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null!,
             CancellationToken cancellationToken = default
         );
-        Task DeleteAsync(TEntity entity);
+        ValueTask<EntityEntry<TEntity>> DeleteAsync(
+            TEntity entity,
+            CancellationToken cancellationToken = default
+        );
         Task<bool> IsAnyExistAsync(
             Expression<Func<TEntity, bool>> pridecate,
             CancellationToken cancellationToken = default
         );
         Task<int> CountAsync(
             Expression<Func<TEntity, bool>> pridecate = null!,
+            CancellationToken cancellationToken = default
+        );
+        ValueTask<EntityEntry<TEntity>> CreateAsync(
+            TEntity entity,
+            CancellationToken cancellationToken = default
+        );
+        ValueTask<EntityEntry<TEntity>> UpdateAsync(
+            TEntity entity,
+            CancellationToken cancellationToken = default
+        );
+        Task<IReadOnlyCollection<TSelctor>> PaginateAsync<TSelctor>(
+            int page,
+            int pageSize,
+            Expression<Func<TEntity, bool>> predicate,
+            Expression<Func<TEntity, TSelctor>> Selctor,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null!,
             CancellationToken cancellationToken = default
         );
     }

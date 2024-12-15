@@ -1,4 +1,6 @@
-﻿namespace Services.Domain.Repositories
+﻿using Services.Domain.Models;
+
+namespace Services.Domain.Repositories
 {
-    public interface IUserRepository { }
+    public interface IUserRepository : IRepository<User> { }
 }
