@@ -27,7 +27,10 @@ namespace Services.Persistence.Context.Interceptor
                     entry.State == EntityState.Deleted
                     && entry.Entity is ITrackableDelete deleteEntity
                 )
+                {
+                    entry.State = EntityState.Modified;
                     deleteEntity.SetDeleteOn();
+                }
             }
             return ValueTask.FromResult(result);
         }
