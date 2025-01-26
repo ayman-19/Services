@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\User\Commands\Create\" />
+    <Folder Include="Features\User\Commands\Delete\" />
+    <Folder Include="Features\User\Commands\Login\" />
+    <Folder Include="Features\User\Commands\Logout\" />
+    <Folder Include="Features\User\Commands\Update\" />
+    <Folder Include="Features\User\Queries\GetAll\" />
+    <Folder Include="Features\User\Queries\GetById\" />
+  </ItemGroup>
+
 </Project>
