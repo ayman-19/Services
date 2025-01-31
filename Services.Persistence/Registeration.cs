@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
@@ -24,7 +25,9 @@ namespace Services.Persistence
 
             services
                 .AddScoped<IUnitOfWork, UnitOfWork>()
-                .AddScoped(typeof(IRepository<>), typeof(Repository<>));
+                .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+                .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<IEmailSender, EmailSender>();
 
             return services;
         }

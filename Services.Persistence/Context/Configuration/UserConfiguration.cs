@@ -13,6 +13,7 @@ namespace Services.Persistence.Context.Configuration
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Email).IsUnique(true);
             builder.Navigation(User => User.Token);
+            builder.Navigation(User => User.UserRoles);
         }
     }
 }

@@ -12,6 +12,8 @@ namespace Services.Persistence.Context.Configuration
             builder.ToTable(nameof(Table.UserRole), nameof(Schema.Identity));
             builder.HasKey(k => k.Id);
             builder.HasIndex(ind => new { ind.RoleId, ind.UserId }).IsUnique(true);
+            builder.Navigation(r => r.Role);
+            builder.Navigation(u => u.User);
         }
     }
 }

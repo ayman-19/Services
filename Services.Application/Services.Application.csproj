@@ -7,13 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\User\Commands\Create\" />
-    <Folder Include="Features\User\Commands\Delete\" />
-    <Folder Include="Features\User\Commands\Login\" />
-    <Folder Include="Features\User\Commands\Logout\" />
-    <Folder Include="Features\User\Commands\Update\" />
-    <Folder Include="Features\User\Queries\GetAll\" />
-    <Folder Include="Features\User\Queries\GetById\" />
+    <Folder Include="Features\Users\Commands\Update\" />
+    <Folder Include="Features\Users\Queries\GetAll\" />
+    <Folder Include="Features\Users\Queries\GetById\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="libphonenumber-csharp" Version="8.13.53" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Services.Domain\Services.Domain.csproj" />
+    <ProjectReference Include="..\Services.Shared\Services.Shared.csproj" />
   </ItemGroup>
 
 </Project>
