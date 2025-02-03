@@ -17,9 +17,9 @@ namespace Services.Application.Features.Users.Commands.Login
 		private readonly IUserRepository _userRepository;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IEmailSender _emailSender;
-		private readonly IPasswordHasher<string> _passwordHasher;
+		private readonly IPasswordHasher<User> _passwordHasher;
 
-		public LoginUserHandler(IJWTManager jwtManager, IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher<string> passwordHasher, IEmailSender emailSender)
+		public LoginUserHandler(IJWTManager jwtManager, IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher<User> passwordHasher, IEmailSender emailSender)
 		{
 			_jwtManager = jwtManager;
 			_userRepository = userRepository;

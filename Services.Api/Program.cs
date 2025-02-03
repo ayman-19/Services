@@ -1,4 +1,6 @@
+using Services.Application;
 using Services.Persistence;
+using Services.Shared;
 
 namespace Services.Api
 {
@@ -13,10 +15,28 @@ namespace Services.Api
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
+            ConfigurationManager configuration = builder.Configuration;
 
-            var app = builder.Build();
-            app.UseSwagger();
-            app.UseSwaggerUI();
+			builder.Services.AddHttpContextAccessor();
+			builder.Services
+                .RegisterSharedDepenedncies()
+                .RegisterApplicationDepenedncies(configuration)
+                .RegisterPersistenceDependancies(configuration);
+
+			builder.Services.AddSwaggerGen();
+			builder.Services.AddEndpointsApiExplorer();
+			builder.Services.AddControllers();
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAll",
+					policy => policy.AllowAnyOrigin()
+									.AllowAnyMethod()
+									.AllowAnyHeader());
+			});
+
+
+			var app = builder.Build();
+
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -28,7 +48,11 @@ namespace Services.Api
 
             app.MapControllers();
 
-            app.Run();
+            app.RegisterAllEndpoints();
+			app.UseCors("AllowAll");
+
+
+			app.Run();
         }
     }
 }

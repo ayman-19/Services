@@ -14,6 +14,7 @@ namespace Services.Shared
 			this IServiceCollection services
 		)
 		{
+			
 			services.AddScoped<IUserContext, UserContext>();
 			return services;
 		}

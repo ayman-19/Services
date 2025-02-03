@@ -40,5 +40,12 @@ namespace Services.Domain.Models
         public void SetDeleteOn() => DeleteOn = DateTime.UtcNow;
 
         public void SetUpdateOn() => UpdateOn = DateTime.UtcNow;
+
+        public void Update(string name, string email, string phone)
+        {
+            this.Name = name;
+            this.Email = email;
+            this.Phone = phone;
+        }
     }
 }

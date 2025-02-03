@@ -48,9 +48,9 @@ namespace Services.Application.Features.Users.Commands.Create
 				EntityEntry<User> result = await _userRepository.CreateAsync(user, cancellationToken);
 				int success = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
+				await transaction.CommitAsync(cancellationToken);
 				if(success > 0)
 				{
-					await transaction.CommitAsync(cancellationToken);
 					await _emailSender.SendEmailAsync(user.Email, ValidationMessages.User.ConfirmEmail, $"To Confirm Email Code: <h3>'{code}'</h3>");
 					return new ResponseOf<CreateUserResult>
 					{

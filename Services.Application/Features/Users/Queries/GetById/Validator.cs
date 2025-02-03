@@ -1,14 +1,21 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Application.Features.Users.Commands.Delete;
 using Services.Domain.Repositories;
 using Services.Shared.ValidationMessages;
-namespace Services.Application.Features.Users.Commands.Delete
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Services.Application.Features.Users.Queries.GetById
 {
-	public sealed class DeleteUserValidator : AbstractValidator<DeleteUserCommand>
+	public sealed class GetUserValidator : AbstractValidator<GetUserQuery>
 	{
 		private readonly IServiceProvider _serviceProvider;
 
-		public DeleteUserValidator(IServiceProvider serviceProvider)
+		public GetUserValidator(IServiceProvider serviceProvider)
 		{
 			RuleLevelCascadeMode = CascadeMode.Stop;
 			ClassLevelCascadeMode = CascadeMode.Stop;
@@ -18,7 +25,7 @@ namespace Services.Application.Features.Users.Commands.Delete
 		}
 		private void ValidateRequest(IUserRepository userRepository)
 		{
-			RuleFor(user => user.userId)
+			RuleFor(user => user.id)
 				.NotEmpty()
 				.WithMessage(ValidationMessages.User.IdIsRequired)
 				.NotNull()

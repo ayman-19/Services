@@ -27,7 +27,9 @@ namespace Services.Persistence
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped(typeof(IRepository<>), typeof(Repository<>))
                 .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<IEmailSender, EmailSender>();
+                .AddScoped<IEmailSender, EmailSender>()
+                .AddScoped<ITokenRepository, TokenRepository>()
+                .AddScoped<IJWTManager, JWTManager>();
 
             return services;
         }
