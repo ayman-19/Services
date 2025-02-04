@@ -21,6 +21,7 @@ namespace Services.Api
             builder
                 .Services.RegisterSharedDepenedncies()
                 .RegisterApplicationDepenedncies(configuration)
+                .RegisterMiddlewares()
                 .RegisterPersistenceDependancies(configuration);
 
             builder.Services.AddEndpointsApiExplorer();
