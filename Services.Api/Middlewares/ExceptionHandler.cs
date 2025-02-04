@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 
@@ -30,6 +31,7 @@ namespace Services.Api.Middlewares
         private (int statusCode, string message) GetStatusRequest(Exception ex) =>
             ex switch
             {
+                ValidationException => ((int)HttpStatusCode.BadRequest, ex.Message),
                 InvalidException => ((int)HttpStatusCode.BadRequest, ex.Message),
                 DatabaseTransactionException => ((int)HttpStatusCode.Conflict, ex.Message),
                 _ => ((int)HttpStatusCode.InternalServerError, "Internal Server Error."),

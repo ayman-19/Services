@@ -56,6 +56,13 @@ namespace Services.Persistence.Repositories
                 .Include(user => user.Token)
                 .FirstAsync(user => user.Email == email);
 
+        public async Task<User> GetByEmailWithTrackinAsync(string email) =>
+            await _context
+                .Set<User>()
+                .AsTracking()
+                .Include(user => user.Token)
+                .FirstAsync(user => user.Email == email);
+
         public async Task<User> GetByPhoneAsync(string phone) =>
             await _context.Set<User>().AsTracking().FirstAsync(user => user.Phone == phone);
     }

@@ -7,7 +7,7 @@ namespace Services.Api
     {
         public static IServiceCollection RegisterMiddlewares(this IServiceCollection services)
         {
-            services.AddScoped<IMiddleware, ExceptionHandler>();
+            services.AddScoped<ExceptionHandler>();
             return services;
         }
 

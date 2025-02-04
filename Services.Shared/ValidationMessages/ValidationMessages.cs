@@ -16,6 +16,7 @@
             public const string ConfirmPasswordIsRequired = "ConfirmPassword Is Required.";
             public const string ComparePassword = "ConfirmPassword Not Equal Password.";
             public const string EmailIsExist = "Email Is Exist.";
+            public const string EmailIsNotExist = "Email Is Not Exist.";
             public const string ValidMail = "Make Sure This is Valid.";
             public const string UserNotExist = "User Not Exist.";
             public const string ConfirmEmail = "Write this Code Correct that Confirm Email.";
@@ -24,6 +25,7 @@
             public const string IncorrectPassword = "Incorrect Password.";
             public const string LogoutError = "Invalid Token.";
             public const string VerifyCode = "Code Incorrect.";
+            public const string ResetPassword = "Reset Password Code.";
         }
 
         public static class Database

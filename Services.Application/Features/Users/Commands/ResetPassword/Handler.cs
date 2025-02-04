@@ -8,15 +8,16 @@ using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Users.Commands.Confirm
+namespace Services.Application.Features.Users.Commands.ResetPassword
 {
-    public sealed class ConfirmUserHandler : IRequestHandler<ConfirmUserCommand, Response>
+    public sealed class ResetPasswordUserHandler
+        : IRequestHandler<ResetPasswordUserCommand, Response>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public ConfirmUserHandler(
+        public ResetPasswordUserHandler(
             IUserRepository userRepository,
             IUnitOfWork unitOfWork,
             IPasswordHasher<User> passwordHasher
@@ -28,11 +29,11 @@ namespace Services.Application.Features.Users.Commands.Confirm
         }
 
         public async Task<Response> Handle(
-            ConfirmUserCommand request,
+            ResetPasswordUserCommand request,
             CancellationToken cancellationToken
         )
         {
-            using (var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken))
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
                 try
                 {
@@ -43,20 +44,19 @@ namespace Services.Application.Features.Users.Commands.Confirm
                     )
                         throw new InvalidException(ValidationMessages.User.VerifyCode);
 
-                    user.ConfirmAccount = true;
-                    //await _userRepository.UpdateAsync(user, cancellationToken);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    await transaction.CommitAsync(cancellationToken);
+                    user.HashPassword(_passwordHasher, request.password);
+                    int modify = await _unitOfWork.SaveChangesAsync();
+                    await transaction.CommitAsync();
                     return new Response
                     {
+                        Message = ValidationMessages.Success,
                         Success = true,
                         StatusCode = (int)HttpStatusCode.OK,
-                        Message = ValidationMessages.Success,
                     };
                 }
                 catch
                 {
-                    await transaction.RollbackAsync(cancellationToken);
+                    await transaction.RollbackAsync();
                     throw new DatabaseTransactionException(ValidationMessages.Database.Error);
                 }
             }

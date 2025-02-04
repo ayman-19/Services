@@ -3,13 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Repositories;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Users.Commands.Create
+namespace Services.Application.Features.Users.Commands.ResetPassword
 {
-    public class CreateUserValidator : AbstractValidator<CreateUserCommand>
+    public sealed class ResetPasswordUserValidator : AbstractValidator<ResetPasswordUserCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public CreateUserValidator(IServiceProvider serviceProvider)
+        public ResetPasswordUserValidator(IServiceProvider serviceProvider)
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
             ClassLevelCascadeMode = CascadeMode.Stop;
@@ -20,18 +20,6 @@ namespace Services.Application.Features.Users.Commands.Create
 
         private void ValidateRequest(IUserRepository userRepository)
         {
-            RuleFor(x => x.name)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.User.NameIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.User.NameIsRequired);
-
-            RuleFor(x => x.phone)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.User.PhoneIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.User.PhoneIsRequired);
-
             RuleFor(x => x.email)
                 .EmailAddress()
                 .WithMessage(ValidationMessages.User.ValidMail)
@@ -55,16 +43,6 @@ namespace Services.Application.Features.Users.Commands.Create
             RuleFor(x => x.confirmPassword)
                 .Equal(x => x.password)
                 .WithMessage(ValidationMessages.User.ComparePassword);
-
-            RuleFor(x => x)
-                .MustAsync(
-                    async (e, cancellationToken) =>
-                        !await userRepository.IsAnyExistAsync(
-                            user => user.Email.Trim().Equals(e.email),
-                            cancellationToken
-                        )
-                )
-                .WithMessage(ValidationMessages.User.EmailIsExist);
         }
     }
 }

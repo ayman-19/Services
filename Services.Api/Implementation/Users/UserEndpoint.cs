@@ -4,8 +4,10 @@ using Services.Api.Abstraction;
 using Services.Application.Features.Users.Commands.Confirm;
 using Services.Application.Features.Users.Commands.Create;
 using Services.Application.Features.Users.Commands.Delete;
+using Services.Application.Features.Users.Commands.ForgetPassword;
 using Services.Application.Features.Users.Commands.Login;
 using Services.Application.Features.Users.Commands.Logout;
+using Services.Application.Features.Users.Commands.ResetPassword;
 using Services.Application.Features.Users.Commands.Update;
 using Services.Application.Features.Users.Queries.GetById;
 
@@ -76,6 +78,23 @@ namespace Services.Api.Implementation.Users
                 "/GetAsync/{id}",
                 async (Guid id, ISender _sender, CancellationToken cancellationToken) =>
                     Results.Ok(await _sender.Send(new GetUserQuery(id), cancellationToken))
+            );
+
+            group.MapGet(
+                "/ForgetPasswordAsync/{email}",
+                async (string email, ISender _sender, CancellationToken cancellationToken) =>
+                    Results.Ok(
+                        await _sender.Send(new ForgetPasswordUserCommand(email), cancellationToken)
+                    )
+            );
+
+            group.MapPut(
+                "/ResetPasswordAsync",
+                async (
+                    [FromBody] ResetPasswordUserCommand command,
+                    ISender _sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await _sender.Send(command, cancellationToken))
             );
         }
     }

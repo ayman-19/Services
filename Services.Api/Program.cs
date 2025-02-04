@@ -1,3 +1,4 @@
+using Services.Api.Middlewares;
 using Services.Application;
 using Services.Persistence;
 using Services.Shared;
@@ -35,20 +36,19 @@ namespace Services.Api
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
 
             app.RegisterAllEndpoints();
+            app.UseMiddleware<ExceptionHandler>();
             app.UseCors("AllowAll");
 
             app.Run();
