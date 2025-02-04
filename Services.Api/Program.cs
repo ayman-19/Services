@@ -17,29 +17,28 @@ namespace Services.Api
             builder.Services.AddSwaggerGen();
             ConfigurationManager configuration = builder.Configuration;
 
-			builder.Services.AddHttpContextAccessor();
-			builder.Services
-                .RegisterSharedDepenedncies()
+            builder.Services.AddHttpContextAccessor();
+            builder
+                .Services.RegisterSharedDepenedncies()
                 .RegisterApplicationDepenedncies(configuration)
                 .RegisterPersistenceDependancies(configuration);
 
-			builder.Services.AddSwaggerGen();
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddControllers();
-			builder.Services.AddCors(options =>
-			{
-				options.AddPolicy("AllowAll",
-					policy => policy.AllowAnyOrigin()
-									.AllowAnyMethod()
-									.AllowAnyHeader());
-			});
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "AllowAll",
+                    policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                );
+            });
 
-
-			var app = builder.Build();
+            var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
@@ -49,10 +48,9 @@ namespace Services.Api
             app.MapControllers();
 
             app.RegisterAllEndpoints();
-			app.UseCors("AllowAll");
+            app.UseCors("AllowAll");
 
-
-			app.Run();
+            app.Run();
         }
     }
 }

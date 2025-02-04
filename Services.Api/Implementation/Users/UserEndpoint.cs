@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Services.Api.Abstraction;
+using Services.Application.Features.Users.Commands.Confirm;
 using Services.Application.Features.Users.Commands.Create;
 using Services.Application.Features.Users.Commands.Delete;
 using Services.Application.Features.Users.Commands.Login;
@@ -10,30 +11,72 @@ using Services.Application.Features.Users.Queries.GetById;
 
 namespace Services.Api.Implementation.Users
 {
-	public class UserEndpoint : IEndpoint
-	{
-		public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
-		{
-			RouteGroupBuilder group = endpoints.MapGroup("/Users").WithTags("Users");
+    public class UserEndpoint : IEndpoint
+    {
+        public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
+        {
+            RouteGroupBuilder group = endpoints.MapGroup("/Users").WithTags("Users");
 
-			group.MapPost("/RegisterAsync", async ([FromBody] CreateUserCommand command, ISender _sender, CancellationToken cancellationToken) =>
-			 Results.Ok(await _sender.Send(command, cancellationToken)));
+            group.MapPost(
+                "/RegisterAsync",
+                async (
+                    [FromBody] CreateUserCommand command,
+                    ISender _sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await _sender.Send(command, cancellationToken))
+            );
 
-			group.MapDelete("/DeleteAsync", async ([FromBody] DeleteUserCommand command, ISender _sender, CancellationToken cancellationToken) =>
-			 Results.Ok(await _sender.Send(command, cancellationToken)));
+            group.MapDelete(
+                "/DeleteAsync/{id}",
+                async (Guid id, ISender _sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await _sender.Send(new DeleteUserCommand(id), cancellationToken))
+            );
 
-			group.MapDelete("/LoginAsync", async ([FromBody] LoginUserCommand command, ISender _sender, CancellationToken cancellationToken) =>
-			 Results.Ok(await _sender.Send(command, cancellationToken)));
+            group.MapGet(
+                "/LoginAsync/{emailOrPhone}/{password}",
+                async (
+                    string emailOrPhone,
+                    string password,
+                    ISender _sender,
+                    CancellationToken cancellationToken
+                ) =>
+                    Results.Ok(
+                        await _sender.Send(
+                            new LoginUserCommand(emailOrPhone, password),
+                            cancellationToken
+                        )
+                    )
+            );
 
-			group.MapDelete("/LogoutAsync", async ([FromBody] LogoutUserCommand command, ISender _sender, CancellationToken cancellationToken) =>
-			 Results.Ok(await _sender.Send(command, cancellationToken)));
+            group.MapDelete(
+                "/LogoutAsync",
+                async (ISender _sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await _sender.Send(new LogoutUserCommand(), cancellationToken))
+            );
 
-			group.MapDelete("/UpdateAsync", async ([FromBody] UpdateUserCommand command, ISender _sender, CancellationToken cancellationToken) =>
-			 Results.Ok(await _sender.Send(command, cancellationToken)));
+            group.MapPut(
+                "/UpdateAsync",
+                async (
+                    [FromBody] UpdateUserCommand command,
+                    ISender _sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await _sender.Send(command, cancellationToken))
+            );
 
-			group.MapDelete("/GetAsync", async ([FromBody] GetUserQuery query, ISender _sender, CancellationToken cancellationToken) =>
-			 Results.Ok(await _sender.Send(query, cancellationToken)));
+            group.MapPut(
+                "/ConfirmAsync",
+                async (
+                    [FromBody] ConfirmUserCommand command,
+                    ISender _sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await _sender.Send(command, cancellationToken))
+            );
 
-		}
-	}
+            group.MapGet(
+                "/GetAsync/{id}",
+                async (Guid id, ISender _sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await _sender.Send(new GetUserQuery(id), cancellationToken))
+            );
+        }
+    }
 }

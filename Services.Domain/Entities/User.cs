@@ -13,17 +13,18 @@ namespace Services.Domain.Models
             Name = name;
             Email = email;
             Phone = phone;
+            UserRoles = new HashSet<UserRole>();
         }
 
         public string Name { get; set; }
         public string Email { get; set; }
         public string? Code { get; set; }
-		public string Phone { get; set; }
+        public string Phone { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime DeleteOn { get; set; }
         public DateTime? UpdateOn { get; set; }
-		public bool ConfirmAccount { get; set; }
-		public string HashedPassword { get; set; }
+        public bool ConfirmAccount { get; set; }
+        public string HashedPassword { get; set; }
         public Token Token { get; set; }
         public IReadOnlyCollection<UserRole> UserRoles { get; set; }
 
@@ -33,7 +34,8 @@ namespace Services.Domain.Models
         public void HashedCode(IPasswordHasher<User> passwordHasher, string code) =>
             Code = passwordHasher.HashPassword(this, code);
 
-        public static User Create(string name, string email, string phone) => new(name, email, phone);
+        public static User Create(string name, string email, string phone) =>
+            new(name, email, phone);
 
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;
 
@@ -46,6 +48,7 @@ namespace Services.Domain.Models
             this.Name = name;
             this.Email = email;
             this.Phone = phone;
+            this.ConfirmAccount = false;
         }
     }
 }
