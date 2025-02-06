@@ -10,6 +10,7 @@ using Services.Application.Features.Users.Commands.Logout;
 using Services.Application.Features.Users.Commands.ResetPassword;
 using Services.Application.Features.Users.Commands.Update;
 using Services.Application.Features.Users.Queries.GetById;
+using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Users
 {
@@ -35,26 +36,29 @@ namespace Services.Api.Implementation.Users
             );
 
             group.MapGet(
-                "/LoginAsync/{emailOrPhone}/{password}",
+                "/LoginAsync/{emailOrPhone}/{password}/{type}",
                 async (
                     string emailOrPhone,
                     string password,
+                    LoginType type,
                     ISender _sender,
                     CancellationToken cancellationToken
                 ) =>
                     Results.Ok(
                         await _sender.Send(
-                            new LoginUserCommand(emailOrPhone, password),
+                            new LoginUserCommand(type, emailOrPhone, password),
                             cancellationToken
                         )
                     )
             );
 
-            group.MapDelete(
-                "/LogoutAsync",
-                async (ISender _sender, CancellationToken cancellationToken) =>
-                    Results.Ok(await _sender.Send(new LogoutUserCommand(), cancellationToken))
-            );
+            group
+                .MapDelete(
+                    "/LogoutAsync",
+                    async (ISender _sender, CancellationToken cancellationToken) =>
+                        Results.Ok(await _sender.Send(new LogoutUserCommand(), cancellationToken))
+                )
+                .RequireAuthorization();
 
             group.MapPut(
                 "/UpdateAsync",

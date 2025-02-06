@@ -9,6 +9,7 @@ using PhoneNumbers;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
 using Services.Persistence.Data;
+using Services.Shared.Enums;
 using Services.Shared.ValidationMessages;
 
 namespace Services.Persistence.Repositories
@@ -23,27 +24,14 @@ namespace Services.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<bool> EmailOrPhoneIsExist(string emailOrPhone)
+        public async Task<bool> EmailOrPhoneIsExist(LoginType type, string emailOrPhone)
         {
-            if (new EmailAddressAttribute().IsValid(emailOrPhone))
+            if (type == LoginType.Email)
                 return await _context.Set<User>().AnyAsync(email => email.Email == emailOrPhone);
+            else if (type == LoginType.Phone)
+                return await _context.Set<User>().AnyAsync(email => email.Phone == emailOrPhone);
             else
-            {
-                bool validPhoneNumber = false;
-                try
-                {
-                    PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.GetInstance();
-                    PhoneNumber number = phoneNumberUtil.Parse(emailOrPhone, "eg");
-                    validPhoneNumber = phoneNumberUtil.IsValidNumber(number);
-                }
-                catch
-                {
-                    throw new ValidationException(ValidationMessages.User.ValidatePhoneNumber);
-                }
-                return validPhoneNumber
-                    ? await _context.Set<User>().AnyAsync(email => email.Phone == emailOrPhone)
-                    : false;
-            }
+                return false;
         }
 
         public async Task<User> GetByIdAsync(Guid id) =>
@@ -64,6 +52,10 @@ namespace Services.Persistence.Repositories
                 .FirstAsync(user => user.Email == email);
 
         public async Task<User> GetByPhoneAsync(string phone) =>
-            await _context.Set<User>().AsTracking().FirstAsync(user => user.Phone == phone);
+            await _context
+                .Set<User>()
+                .AsTracking()
+                .Include(user => user.Token)
+                .FirstAsync(user => user.Phone == phone);
     }
 }

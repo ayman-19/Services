@@ -31,7 +31,7 @@ namespace Services.Persistence.Repositories
         )
         {
             var Claims = GetClaims(user);
-            var symetreckey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.Secret));
+            var symetreckey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.Key));
             var signCreadential = new SigningCredentials(
                 symetreckey,
                 SecurityAlgorithms.HmacSha256

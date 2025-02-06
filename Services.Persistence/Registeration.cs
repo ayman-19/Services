@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
+using Services.Domain.Models;
 using Services.Domain.Repositories;
 using Services.Persistence.Context.Interceptor;
 using Services.Persistence.Data;
@@ -30,6 +32,7 @@ namespace Services.Persistence
                 .AddScoped<IEmailSender, EmailSender>()
                 .AddScoped<ITokenRepository, TokenRepository>()
                 .AddScoped<IJWTManager, JWTManager>();
+            services.AddAuthentication();
 
             return services;
         }

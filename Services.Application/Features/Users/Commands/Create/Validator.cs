@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Repositories;
+using Services.Shared.Extentions;
 using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Users.Commands.Create
@@ -64,6 +65,10 @@ namespace Services.Application.Features.Users.Commands.Create
                             cancellationToken
                         )
                 )
+                .WithMessage(ValidationMessages.User.EmailIsExist);
+
+            RuleFor(x => x)
+                .Must((e, cancellationToken) => e.phone.ValidatePhoneNumber())
                 .WithMessage(ValidationMessages.User.EmailIsExist);
         }
     }

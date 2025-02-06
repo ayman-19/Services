@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Services.Domain.Abstraction;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
+using Services.Shared.Enums;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
@@ -43,49 +44,44 @@ namespace Services.Application.Features.Users.Commands.Login
             {
                 try
                 {
-                    User user = await _userRepository.GetByEmailAsync(request.emailOrPhone);
-                    if (user != null && user.ConfirmAccount)
+                    User user;
+
+                    if (request.type == LoginType.Email)
                     {
+                        user = await _userRepository.GetByEmailAsync(request.emailOrPhone);
+
+                        if (!user.ConfirmAccount)
+                            throw new InvalidException(ValidationMessages.User.EmailNotConfirmed);
+
                         if (!VerifyPassword(user, user.HashedPassword, request.password))
                             throw new InvalidException(ValidationMessages.User.IncorrectPassword);
-
-                        return new ResponseOf<LoginUserResult>
-                        {
-                            Message = ValidationMessages.Success,
-                            Success = true,
-                            StatusCode = (int)HttpStatusCode.OK,
-                            Result = await _jwtManager.LoginAsync(user),
-                        };
                     }
-
-                    user = await _userRepository.GetByPhoneAsync(request.emailOrPhone);
-                    if (user != null && user.ConfirmAccount)
+                    else if (request.type == LoginType.Phone)
                     {
+                        user = await _userRepository.GetByPhoneAsync(request.emailOrPhone);
+
+                        if (!user.ConfirmAccount)
+                            throw new InvalidException(ValidationMessages.User.EmailNotConfirmed);
+
                         if (!VerifyPassword(user, user.HashedPassword, request.password))
                             throw new InvalidException(ValidationMessages.User.IncorrectPassword);
-
-                        return new ResponseOf<LoginUserResult>
-                        {
-                            Message = ValidationMessages.Success,
-                            Success = true,
-                            StatusCode = (int)HttpStatusCode.OK,
-                            Result = await _jwtManager.LoginAsync(user),
-                        };
                     }
-                    await transaction.CommitAsync();
+                    else
+                        throw new InvalidException(ValidationMessages.User.MakeSureInformation);
+
+                    return new ResponseOf<LoginUserResult>
+                    {
+                        Message = ValidationMessages.Success,
+                        Success = true,
+                        StatusCode = (int)HttpStatusCode.OK,
+                        Result = await _jwtManager.LoginAsync(user),
+                    };
                 }
                 catch (Exception)
                 {
-                    await transaction.RollbackAsync();
                     throw new DatabaseTransactionException(ValidationMessages.Database.Error);
                 }
             }
-            return new Response
-            {
-                Message = ValidationMessages.Falier,
-                Success = false,
-                StatusCode = (int)HttpStatusCode.Conflict,
-            };
         }
 
         private bool VerifyPassword(User user, string hashedPassword, string password) =>

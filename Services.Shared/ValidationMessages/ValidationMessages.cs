@@ -26,6 +26,8 @@
             public const string LogoutError = "Invalid Token.";
             public const string VerifyCode = "Code Incorrect.";
             public const string ResetPassword = "Reset Password Code.";
+            public const string EmailNotConfirmed = "Email Not Confirmed.";
+            public const string MakeSureInformation = "Make Sure Information.";
         }
 
         public static class Database

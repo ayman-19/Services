@@ -48,17 +48,19 @@ namespace Services.Application.Features.Users.Commands.Create
                 User user = request;
                 user.HashPassword(_passwordHasher, request.password);
 
+                EntityEntry<User> result = await _userRepository.CreateAsync(
+                    user,
+                    cancellationToken
+                );
+
                 Token token = await _jwtManager.GenerateTokenAsync(user);
                 user.Token = token;
 
                 string code = await _jwtManager.GenerateCodeAsync();
                 user.HashedCode(_passwordHasher, code);
 
-                EntityEntry<User> result = await _userRepository.CreateAsync(
-                    user,
-                    cancellationToken
-                );
                 int success = await _unitOfWork.SaveChangesAsync(cancellationToken);
+
                 await transaction.CommitAsync(cancellationToken);
                 if (success > 0)
                 {
