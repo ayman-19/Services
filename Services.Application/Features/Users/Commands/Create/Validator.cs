@@ -27,6 +27,12 @@ namespace Services.Application.Features.Users.Commands.Create
                 .NotNull()
                 .WithMessage(ValidationMessages.User.NameIsRequired);
 
+            RuleFor(x => x.UserType)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.User.UserTypeIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.User.UserTypeIsRequired);
+
             RuleFor(x => x.phone)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.User.PhoneIsRequired)

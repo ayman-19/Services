@@ -3,16 +3,18 @@ using Microsoft.AspNetCore.Identity;
 using Services.Domain.Abstraction;
 using Services.Domain.Base;
 using Services.Domain.Entities;
+using Services.Domain.Enums;
 
 namespace Services.Domain.Models
 {
     public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableDelete, ITrackableUpdate
     {
-        private User(string name, string email, string phone)
+        private User(string name, string email, string phone, UserType userType)
         {
             Name = name;
             Email = email;
             Phone = phone;
+            UserType = userType;
             UserRoles = new HashSet<UserRole>();
         }
 
@@ -20,6 +22,7 @@ namespace Services.Domain.Models
         public string Email { get; set; }
         public string? Code { get; set; }
         public string Phone { get; set; }
+        public UserType UserType { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime DeleteOn { get; set; }
         public DateTime? UpdateOn { get; set; }
@@ -34,8 +37,8 @@ namespace Services.Domain.Models
         public void HashedCode(IPasswordHasher<User> passwordHasher, string code) =>
             Code = passwordHasher.HashPassword(this, code);
 
-        public static User Create(string name, string email, string phone) =>
-            new(name, email, phone);
+        public static User Create(string name, string email, string phone, UserType userType) =>
+            new(name, email, phone, userType);
 
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;
 

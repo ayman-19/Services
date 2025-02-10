@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
+using Services.Domain.Enums;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
 using Services.Shared.Exceptions;
@@ -58,6 +59,10 @@ namespace Services.Application.Features.Users.Commands.Create
 
                 string code = await _jwtManager.GenerateCodeAsync();
                 user.HashedCode(_passwordHasher, code);
+
+                if (request.UserType == UserType.Agent) { }
+                else if (request.UserType == UserType.Worker) { }
+                else { }
 
                 int success = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
