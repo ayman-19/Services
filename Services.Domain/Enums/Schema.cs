@@ -4,5 +4,6 @@
     {
         Identity,
         Public,
+        service
     }
 }

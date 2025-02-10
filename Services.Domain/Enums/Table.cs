@@ -8,5 +8,11 @@
         RolePermission,
         Token,
         UserRole,
+        Branch,
+        Customer,
+        CustomerBranch,
+        Service,
+        Worker,
+        WorkerService
     }
 }
