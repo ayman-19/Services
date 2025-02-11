@@ -35,5 +35,11 @@
         {
             public const string Error = "Occur Exception By Transaction.";
         }
+
+        public static class Service
+        {
+         
+        }
+
     }
 }

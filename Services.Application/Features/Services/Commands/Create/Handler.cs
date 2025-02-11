@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using Services.Shared.Responses;
 
 namespace Services.Application.Features.Services.Commands.Create
 {
-    internal class Handler
+    public sealed class CreateServiceHandler : IRequestHandler<CreateServiceCommand, ResponseOf<CreateServiceResult>>
     {
+        public Task<ResponseOf<CreateServiceResult>> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

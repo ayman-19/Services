@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.Domain.Entities;
 
 namespace Services.Application.Features.Services.Commands.Create
 {
-    internal class Result
+    public sealed record CreateServiceResult(Guid id, string name, string description)
     {
+        public static implicit operator CreateServiceResult(Service service) => new (service.Id, service.Name, service.Description);
     }
 }
