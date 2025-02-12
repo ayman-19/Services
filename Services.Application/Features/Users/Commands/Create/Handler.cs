@@ -61,8 +61,10 @@ namespace Services.Application.Features.Users.Commands.Create
                 user.HashedCode(_passwordHasher, code);
 
                 if (request.UserType == UserType.Agent) { }
-                else if (request.UserType == UserType.Worker) { }
-                else { }
+                else if (request.UserType == UserType.Worker)
+                    user.Worker = new() { Experience = 0 };
+                else
+                    user.Customer = new();
 
                 int success = await _unitOfWork.SaveChangesAsync(cancellationToken);
 

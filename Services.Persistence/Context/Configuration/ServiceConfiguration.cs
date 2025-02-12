@@ -9,7 +9,7 @@ namespace Services.Persistence.Context.Configuration
     {
         public void Configure(EntityTypeBuilder<Service> builder)
         {
-            builder.ToTable(nameof(Table.Service), nameof(Schema.service));
+            builder.ToTable(nameof(Table.Service), nameof(Schema.Service));
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Name).IsUnique(true);
         }

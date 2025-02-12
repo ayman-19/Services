@@ -25,6 +25,7 @@ namespace Services.Domain.Repositories
             TEntity entity,
             CancellationToken cancellationToken = default
         );
+
         Task<bool> IsAnyExistAsync(
             Expression<Func<TEntity, bool>> pridecate,
             CancellationToken cancellationToken = default
@@ -44,9 +45,9 @@ namespace Services.Domain.Repositories
         Task<IReadOnlyCollection<TSelctor>> PaginateAsync<TSelctor>(
             int page,
             int pageSize,
-            Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TSelctor>> Selctor,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null!,
+            Expression<Func<TEntity, bool>> predicate = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
             CancellationToken cancellationToken = default
         );
     }

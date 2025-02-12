@@ -1,27 +1,29 @@
 ﻿using System.Net;
 using MediatR;
 using Services.Domain.Abstraction;
-using Services.Domain.Entities;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Services.Commands.Create
+namespace Services.Application.Features.Services.Queries.Paginate
 {
-    public sealed class CreateServiceHandler
-        : IRequestHandler<CreateServiceCommand, ResponseOf<CreateServiceResult>>
+    public sealed class PaginateServiceHandler
+        : IRequestHandler<
+            PaginateServiceQuery,
+            ResponseOf<IReadOnlyCollection<PaginateServiceResult>>
+        >
     {
         private readonly IServiceRepository _serviceRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
+        public PaginateServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
         {
             _serviceRepository = serviceRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseOf<CreateServiceResult>> Handle(
-            CreateServiceCommand request,
+        public async Task<ResponseOf<IReadOnlyCollection<PaginateServiceResult>>> Handle(
+            PaginateServiceQuery request,
             CancellationToken cancellationToken
         )
         {
@@ -29,21 +31,25 @@ namespace Services.Application.Features.Services.Commands.Create
             {
                 try
                 {
-                    Service service = request;
-                    await _serviceRepository.CreateAsync(service, cancellationToken);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    await transaction.CommitAsync();
+                    IReadOnlyCollection<PaginateServiceResult>? result =
+                        await _serviceRepository.PaginateAsync(
+                            request.page == 0 ? 1 : request.page,
+                            request.pageSize == 0 ? 10 : request.pageSize,
+                            s => new PaginateServiceResult(s.Id, s.Name, s.Description),
+                            null!,
+                            null!,
+                            cancellationToken
+                        );
                     return new()
                     {
                         Message = ValidationMessages.Success,
                         Success = true,
                         StatusCode = (int)HttpStatusCode.OK,
-                        Result = service,
+                        Result = result,
                     };
                 }
                 catch
                 {
-                    await transaction.CommitAsync();
                     throw new DatabaseTransactionException(ValidationMessages.Database.Error);
                 }
             }

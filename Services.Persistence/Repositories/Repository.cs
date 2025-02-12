@@ -88,8 +88,8 @@ namespace Services.Persistence.Repositories
         public async Task<IReadOnlyCollection<TSelctor>> PaginateAsync<TSelctor>(
             int page,
             int pageSize,
-            Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TSelctor>> Selctor,
+            Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
             CancellationToken cancellationToken = default
         )

@@ -38,8 +38,11 @@
 
         public static class Service
         {
-         
+            public const string NameIsRequired = "Name Is Required.";
+            public const string NameIsExist = "Name Is Exist.";
+            public const string DescriptionIsRequired = "Description Is Required.";
+            public const string IdIsRequired = "Id Is Required.";
+            public const string ServiceNotExist = "Service Not Exist.";
         }
-
     }
 }

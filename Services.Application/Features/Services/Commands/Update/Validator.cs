@@ -1,16 +1,21 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Application.Features.Services.Commands.Create;
 using Services.Domain.Abstraction;
-using Services.Domain.Repositories;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Services.Commands.Create
+namespace Services.Application.Features.Services.Commands.Update
 {
-    public sealed class CreateServiceValidator : AbstractValidator<CreateServiceCommand>
+    public sealed class UpdateServiceValidator : AbstractValidator<UpdateServiceCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public CreateServiceValidator(IServiceProvider serviceProvider)
+        public UpdateServiceValidator(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -28,16 +33,32 @@ namespace Services.Application.Features.Services.Commands.Create
                 .WithMessage(ValidationMessages.Service.NameIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Service.NameIsRequired);
+
+            RuleFor(s => s.id)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Service.IdIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Service.IdIsRequired);
+
             RuleFor(s => s.description)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Service.DescriptionIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Service.DescriptionIsRequired);
 
-            RuleFor(s => s.name)
+            RuleFor(s => s.id)
                 .MustAsync(
-                    async (name, CancellationToken) =>
-                        !await serviceRepository.IsAnyExistAsync(n => n.Name == name)
+                    async (id, CancellationToken) =>
+                        await serviceRepository.IsAnyExistAsync(n => n.Id == id)
+                )
+                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+
+            RuleFor(s => s)
+                .MustAsync(
+                    async (request, CancellationToken) =>
+                        !await serviceRepository.IsAnyExistAsync(n =>
+                            n.Name == request.name && n.Id != request.id
+                        )
                 )
                 .WithMessage(ValidationMessages.Service.NameIsExist);
         }

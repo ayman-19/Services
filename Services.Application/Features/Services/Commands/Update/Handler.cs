@@ -1,27 +1,33 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using MediatR;
+using Services.Application.Features.Services.Commands.Create;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Services.Commands.Create
+namespace Services.Application.Features.Services.Commands.Update
 {
-    public sealed class CreateServiceHandler
-        : IRequestHandler<CreateServiceCommand, ResponseOf<CreateServiceResult>>
+    public sealed class UpdateServiceHandler
+        : IRequestHandler<UpdateServiceCommand, ResponseOf<UpdateServiceResult>>
     {
         private readonly IServiceRepository _serviceRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
+        public UpdateServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
         {
             _serviceRepository = serviceRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseOf<CreateServiceResult>> Handle(
-            CreateServiceCommand request,
+        public async Task<ResponseOf<UpdateServiceResult>> Handle(
+            UpdateServiceCommand request,
             CancellationToken cancellationToken
         )
         {
@@ -29,8 +35,9 @@ namespace Services.Application.Features.Services.Commands.Create
             {
                 try
                 {
-                    Service service = request;
-                    await _serviceRepository.CreateAsync(service, cancellationToken);
+                    Service service = await _serviceRepository.GetByIdAsync(request.id);
+                    service.UpdateService(request.name, request.description);
+                    await _serviceRepository.UpdateAsync(service, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync();
                     return new()

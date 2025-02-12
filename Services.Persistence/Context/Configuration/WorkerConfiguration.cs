@@ -9,7 +9,8 @@ namespace Services.Persistence.Context.Configuration
     {
         public void Configure(EntityTypeBuilder<Worker> builder)
         {
-            builder.ToTable(nameof(Table.Worker), nameof(Schema.service));
+            builder.ToTable(nameof(Table.Worker), nameof(Schema.Service));
+            builder.HasKey(w => w.UserId);
         }
     }
 }

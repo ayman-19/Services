@@ -10,6 +10,13 @@ namespace Services.Domain.Entities
         public double Duration { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
+
+        public void UpdateService(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+
         public ICollection<WorkerService> WorkerServices { get; set; }
 
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;

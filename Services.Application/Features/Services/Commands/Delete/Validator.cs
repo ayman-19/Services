@@ -1,33 +1,39 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Domain.Abstraction;
 using Services.Domain.Repositories;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Users.Commands.Delete
+namespace Services.Application.Features.Services.Commands.Delete
 {
-    public sealed class DeleteUserValidator : AbstractValidator<DeleteUserCommand>
+    public sealed class DeleteServiceValidator : AbstractValidator<DeleteServiceCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public DeleteUserValidator(IServiceProvider serviceProvider)
+        public DeleteServiceValidator(IServiceProvider serviceProvider)
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
             ClassLevelCascadeMode = CascadeMode.Stop;
             _serviceProvider = serviceProvider;
             var scope = _serviceProvider.CreateScope();
-            ValidateRequest(scope.ServiceProvider.GetRequiredService<IUserRepository>());
+            ValidateRequest(scope.ServiceProvider.GetRequiredService<IServiceRepository>());
         }
 
-        private void ValidateRequest(IUserRepository userRepository)
+        private void ValidateRequest(IServiceRepository serviceRepository)
         {
-            RuleFor(user => user.userId)
+            RuleFor(service => service.Id)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Service.IdIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Service.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
-                        await userRepository.IsAnyExistAsync(user => user.Id == id)
+                        await serviceRepository.IsAnyExistAsync(service => service.Id == id)
                 )
                 .WithMessage(ValidationMessages.Service.ServiceNotExist);
         }

@@ -1,27 +1,29 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using MediatR;
 using Services.Domain.Abstraction;
-using Services.Domain.Entities;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Services.Commands.Create
+namespace Services.Application.Features.Services.Queries.GetById
 {
-    public sealed class CreateServiceHandler
-        : IRequestHandler<CreateServiceCommand, ResponseOf<CreateServiceResult>>
+    public sealed class GetServiceHandler
+        : IRequestHandler<GetServiceQuery, ResponseOf<GetServiceResult>>
     {
         private readonly IServiceRepository _serviceRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
+        public GetServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
         {
             _serviceRepository = serviceRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseOf<CreateServiceResult>> Handle(
-            CreateServiceCommand request,
+        public async Task<ResponseOf<GetServiceResult>> Handle(
+            GetServiceQuery request,
             CancellationToken cancellationToken
         )
         {
@@ -29,21 +31,23 @@ namespace Services.Application.Features.Services.Commands.Create
             {
                 try
                 {
-                    Service service = request;
-                    await _serviceRepository.CreateAsync(service, cancellationToken);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    await transaction.CommitAsync();
+                    var result = await _serviceRepository.GetAsync(
+                        s => s.Id == request.Id,
+                        s => new GetServiceResult(s.Id, s.Name, s.Description),
+                        null!,
+                        false,
+                        cancellationToken
+                    );
                     return new()
                     {
                         Message = ValidationMessages.Success,
                         Success = true,
                         StatusCode = (int)HttpStatusCode.OK,
-                        Result = service,
+                        Result = result,
                     };
                 }
                 catch
                 {
-                    await transaction.CommitAsync();
                     throw new DatabaseTransactionException(ValidationMessages.Database.Error);
                 }
             }

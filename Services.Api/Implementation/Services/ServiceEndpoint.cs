@@ -1,4 +1,11 @@
-﻿using Services.Api.Abstraction;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Services.Api.Abstraction;
+using Services.Application.Features.Services.Commands.Create;
+using Services.Application.Features.Services.Commands.Delete;
+using Services.Application.Features.Services.Commands.Update;
+using Services.Application.Features.Services.Queries.GetById;
+using Services.Application.Features.Services.Queries.Paginate;
 
 namespace Services.Api.Implementation.Services
 {
@@ -7,12 +14,50 @@ namespace Services.Api.Implementation.Services
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
             RouteGroupBuilder group = endpoints.MapGroup("/Services").WithTags("Services");
+            group.MapPost(
+                "CreateAsync/",
+                async (
+                    [FromBody] CreateServiceCommand Command,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(Command, cancellationToken))
+            );
+
+            group.MapPut(
+                "UpdateAsync/",
+                async (
+                    [FromBody] UpdateServiceCommand Command,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(Command, cancellationToken))
+            );
+
+            group.MapDelete(
+                "DeleteAsync/{id}",
+                async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await sender.Send(new DeleteServiceCommand(id), cancellationToken))
+            );
+
             group.MapGet(
-                "Get",
-                () =>
-                {
-                    return Results.Ok("Services");
-                }
+                "GetByIdAsync/{id}",
+                async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await sender.Send(new GetServiceQuery(id), cancellationToken))
+            );
+
+            group.MapGet(
+                "PaginateAsync/{page}/{pageSize}",
+                async (
+                    int page,
+                    int pageSize,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) =>
+                    Results.Ok(
+                        await sender.Send(
+                            new PaginateServiceQuery(page, pageSize),
+                            cancellationToken
+                        )
+                    )
             );
         }
     }
