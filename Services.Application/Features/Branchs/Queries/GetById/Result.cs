@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Services.Application.Features.Branchs.Queries.GetById
 {
-	internal class Result
-	{
-	}
+
+    public sealed record GetBranchResult(Guid id,string name ,double langtude,double latitude);
+	
 }

@@ -15,6 +15,11 @@ namespace Services.Persistence.Repositories
             _context = context;
         }
 
+        public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public async ValueTask<Branch> GetByIdAsync(Guid Id, CancellationToken cancellationToken) =>
             await _context
                 .Set<Branch>()
@@ -29,5 +34,12 @@ namespace Services.Persistence.Repositories
                 .Set<Branch>()
                 .AsTracking()
                 .FirstAsync(id => id.Name == Name, cancellationToken);
-    }
+
+
+
+        
+
+
+}
+
 }
