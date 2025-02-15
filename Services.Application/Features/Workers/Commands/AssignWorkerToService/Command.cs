@@ -1,5 +1,4 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Services.Domain.Entities;
 using Services.Shared.Responses;
 
