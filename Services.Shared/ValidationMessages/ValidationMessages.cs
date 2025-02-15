@@ -44,5 +44,20 @@
             public const string IdIsRequired = "Id Is Required.";
             public const string ServiceNotExist = "Service Not Exist.";
         }
+        public static class Branch
+        {
+            public const string NameIsRequired = "Name Is Required.";
+            public const string IdIsRequired = "Id Is Required";
+            public const string IdIsNotFound = "Id Is Not Found";
+            public const string Langtuide = "Langtuide is required";
+            public const string LangtuideCantBeNull = "Langtuide Cant Be Null";
+            public const string Latitude = "Latitude is required";
+            public const string LatitudeCantBeNull = "Latitude Cant Be Null";
+            public const string NameIsExist = "Name Is Exist.";
+
+
+
+        }
+
     }
 }
