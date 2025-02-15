@@ -1,27 +1,29 @@
 ﻿using System.Net;
 using MediatR;
 using Services.Domain.Abstraction;
-using Services.Domain.Entities;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Services.Commands.Create
+namespace Services.Application.Features.Workers.Commands.RemoveWorkerFromService
 {
-    public sealed class CreateServiceHandler
-        : IRequestHandler<CreateServiceCommand, ResponseOf<CreateServiceResult>>
+    public sealed class RemoveWorkerFromServiceHandler
+        : IRequestHandler<RemoveWorkerFromServiceCommand, Response>
     {
-        private readonly IServiceRepository _serviceRepository;
+        private readonly IWorkerServiceRepository _workerServiceRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
+        public RemoveWorkerFromServiceHandler(
+            IWorkerServiceRepository workerServiceRepository,
+            IUnitOfWork unitOfWork
+        )
         {
-            _serviceRepository = serviceRepository;
+            _workerServiceRepository = workerServiceRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseOf<CreateServiceResult>> Handle(
-            CreateServiceCommand request,
+        public async Task<Response> Handle(
+            RemoveWorkerFromServiceCommand request,
             CancellationToken cancellationToken
         )
         {
@@ -29,16 +31,17 @@ namespace Services.Application.Features.Services.Commands.Create
             {
                 try
                 {
-                    Service service = request;
-                    await _serviceRepository.CreateAsync(service, cancellationToken);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    await _workerServiceRepository.DeleteWorkerFromServiceAsync(
+                        request.WorkerId,
+                        request.ServiceId,
+                        cancellationToken
+                    );
                     await transaction.CommitAsync();
                     return new()
                     {
                         Message = ValidationMessages.Success,
                         Success = true,
                         StatusCode = (int)HttpStatusCode.OK,
-                        Result = service,
                     };
                 }
                 catch

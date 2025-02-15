@@ -44,5 +44,17 @@
             public const string IdIsRequired = "Id Is Required.";
             public const string ServiceNotExist = "Service Not Exist.";
         }
+
+        public static class WorkereService
+        {
+            public const string WorkerIdIsRequired = "Worker Id Is Required.";
+            public const string BranchIdIsRequired = "Branch Id Is Required.";
+            public const string ServiceIdIsRequired = "Service Id Is Required.";
+            public const string ServiceNotExist = "Service Not Exist.";
+            public const string WorkerNotExist = "Worker Not Exist.";
+            public const string AssignWorkerToService = "Assign Worker To Service Exist.";
+            public const string WorkerNotAssignToService = "Worker Not Assign To Service Exist.";
+            public const string BranchNotExist = "Branch Not Exist.";
+        }
     }
 }
