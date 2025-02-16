@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using MediatR;
+using Services.Shared.Responses;
 
 namespace Services.Application.Features.Branchs.Comands.Delete
 {
-	internal class Command
-	{
-	}
+	public sealed  record DeleteBranchCommand(Guid Id) :IRequest<Response>;
 }

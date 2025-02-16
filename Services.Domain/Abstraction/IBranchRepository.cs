@@ -7,5 +7,7 @@ namespace Services.Domain.Abstraction
     {
         ValueTask<Branch> GetByIdAsync(Guid Id, CancellationToken cancellationToken);
         ValueTask<Branch> GetByNameAsync(string Name, CancellationToken cancellationToken);
+        Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+
     }
 }
