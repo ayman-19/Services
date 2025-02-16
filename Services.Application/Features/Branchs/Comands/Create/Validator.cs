@@ -1,17 +1,17 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-using Services.Application.Features.Services.Commands.Create;
-using Services.Domain.Abstraction;
-using Services.Shared.ValidationMessages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using Services.Application.Features.Services.Commands.Create;
+using Services.Domain.Abstraction;
+using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Branchs.Comands.Create
 {
-	public sealed class CreateBranchValidator : AbstractValidator<CreateBranchCommand>
+    public sealed class CreateBranchValidator : AbstractValidator<CreateBranchCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -39,10 +39,10 @@ namespace Services.Application.Features.Branchs.Comands.Create
                 .NotNull()
                 .WithMessage(ValidationMessages.Branch.LangtuideCantBeNull);
             RuleFor(s => s.latitude)
-               .NotEmpty()
-               .WithMessage(ValidationMessages.Branch.Latitude)
-               .NotNull()
-               .WithMessage(ValidationMessages.Branch.LatitudeCantBeNull);
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Branch.Latitude)
+                .NotNull()
+                .WithMessage(ValidationMessages.Branch.LatitudeCantBeNull);
 
             RuleFor(s => s.name)
                 .MustAsync(

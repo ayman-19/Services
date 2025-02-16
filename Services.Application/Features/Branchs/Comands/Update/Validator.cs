@@ -1,17 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Services.Application.Features.Services.Commands.Update;
 using Services.Domain.Abstraction;
 using Services.Shared.ValidationMessages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Application.Features.Branchs.Comands.Update
 {
-	public sealed class UpdateBranchValidator: AbstractValidator<UpdateBranchCommand>
+    public sealed class UpdateBranchValidator : AbstractValidator<UpdateBranchCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -28,7 +22,7 @@ namespace Services.Application.Features.Branchs.Comands.Update
 
         private void ValidateRequest(IBranchRepository branchRepository)
         {
-            RuleFor(b=>b.name)
+            RuleFor(b => b.name)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Branch.NameIsRequired)
                 .NotNull()

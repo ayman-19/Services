@@ -1,19 +1,13 @@
-﻿using MediatR;
-using Services.Application.Features.Services.Commands.Delete;
+﻿using System.Net;
+using MediatR;
 using Services.Domain.Abstraction;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Application.Features.Branchs.Comands.Delete
 {
-	public sealed class DeleteBranchHandler: IRequestHandler<DeleteBranchCommand, Response>
+    public sealed class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, Response>
     {
         private readonly IBranchRepository _branchRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -50,7 +44,5 @@ namespace Services.Application.Features.Branchs.Comands.Delete
                 }
             }
         }
-
-       
     }
 }

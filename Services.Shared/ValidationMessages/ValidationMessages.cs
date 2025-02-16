@@ -44,7 +44,6 @@
             public const string IdIsRequired = "Id Is Required.";
             public const string ServiceNotExist = "Service Not Exist.";
         }
-<<<<<<< HEAD
 
         public static class WorkereService
         {
@@ -57,7 +56,7 @@
             public const string WorkerNotAssignToService = "Worker Not Assign To Service Exist.";
             public const string BranchNotExist = "Branch Not Exist.";
         }
-=======
+
         public static class Branch
         {
             public const string NameIsRequired = "Name Is Required.";
@@ -68,11 +67,6 @@
             public const string Latitude = "Latitude is required";
             public const string LatitudeCantBeNull = "Latitude Cant Be Null";
             public const string NameIsExist = "Name Is Exist.";
-
-
-
         }
-
->>>>>>> 69996ed169fa7d2ce11823422336f0118a518cf8
     }
 }

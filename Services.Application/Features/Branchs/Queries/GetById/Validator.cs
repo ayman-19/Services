@@ -1,18 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Services.Application.Features.Services.Queries.GetById;
 using Services.Domain.Abstraction;
 using Services.Shared.ValidationMessages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Application.Features.Branchs.Queries.GetById
 {
-
-    public sealed class GetBranchValidator:AbstractValidator<GetBranchQuery>
+    public sealed class GetBranchValidator : AbstractValidator<GetBranchQuery>
     {
         private readonly IServiceProvider _serviceProvider;
 
