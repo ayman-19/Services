@@ -9,11 +9,11 @@ using Services.Persistence.Data;
 
 #nullable disable
 
-namespace Services.Persistence.Context.Migrations
+namespace Services.Persistence.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    [Migration("20250203213354_finally")]
-    partial class @finally
+    [Migration("20250217120127_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,99 @@ namespace Services.Persistence.Context.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Services.Domain.Entities.Branch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Langitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branch", "Service");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.Customer", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Customer", "Service");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.CustomerBranch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("BranchId", "CustomerId")
+                        .IsUnique();
+
+                    b.ToTable("CustomerBranch", "Service");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Duration")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdateOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Service", "Service");
+                });
 
             modelBuilder.Entity("Services.Domain.Entities.Token", b =>
                 {
@@ -81,6 +174,58 @@ namespace Services.Persistence.Context.Migrations
                         .IsUnique();
 
                     b.ToTable("UserRole", "Identity");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.Worker", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Experience")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Worker", "Service");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.WorkerService", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Availabilty")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("WorkerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("WorkerId");
+
+                    b.HasIndex("ServiceId", "BranchId", "WorkerId")
+                        .IsUnique();
+
+                    b.ToTable("WorkerService", "Service");
                 });
 
             modelBuilder.Entity("Services.Domain.Models.Permission", b =>
@@ -196,12 +341,41 @@ namespace Services.Persistence.Context.Migrations
                     b.Property<DateTime?>("UpdateOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("User", "Identity");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.Customer", b =>
+                {
+                    b.HasOne("Services.Domain.Models.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("Services.Domain.Entities.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.CustomerBranch", b =>
+                {
+                    b.HasOne("Services.Domain.Entities.Branch", null)
+                        .WithMany("CustomerBranchs")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Services.Domain.Entities.Customer", null)
+                        .WithMany("CustomerBranchs")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Services.Domain.Entities.Token", b =>
@@ -234,6 +408,44 @@ namespace Services.Persistence.Context.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Services.Domain.Entities.Worker", b =>
+                {
+                    b.HasOne("Services.Domain.Models.User", "User")
+                        .WithOne("Worker")
+                        .HasForeignKey("Services.Domain.Entities.Worker", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.WorkerService", b =>
+                {
+                    b.HasOne("Services.Domain.Entities.Branch", "Branch")
+                        .WithMany("WorkerServices")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Services.Domain.Entities.Service", "Service")
+                        .WithMany("WorkerServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Services.Domain.Entities.Worker", "Worker")
+                        .WithMany("WorkerServices")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Service");
+
+                    b.Navigation("Worker");
+                });
+
             modelBuilder.Entity("Services.Domain.Models.RolePermission", b =>
                 {
                     b.HasOne("Services.Domain.Models.Permission", "Permission")
@@ -253,6 +465,28 @@ namespace Services.Persistence.Context.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Services.Domain.Entities.Branch", b =>
+                {
+                    b.Navigation("CustomerBranchs");
+
+                    b.Navigation("WorkerServices");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("CustomerBranchs");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.Service", b =>
+                {
+                    b.Navigation("WorkerServices");
+                });
+
+            modelBuilder.Entity("Services.Domain.Entities.Worker", b =>
+                {
+                    b.Navigation("WorkerServices");
+                });
+
             modelBuilder.Entity("Services.Domain.Models.Permission", b =>
                 {
                     b.Navigation("RolePermissions");
@@ -267,10 +501,16 @@ namespace Services.Persistence.Context.Migrations
 
             modelBuilder.Entity("Services.Domain.Models.User", b =>
                 {
+                    b.Navigation("Customer")
+                        .IsRequired();
+
                     b.Navigation("Token")
                         .IsRequired();
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("Worker")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

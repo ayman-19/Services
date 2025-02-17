@@ -8,7 +8,7 @@ using Services.Persistence.Data;
 
 #nullable disable
 
-namespace Services.Persistence.Context.Migrations
+namespace Services.Persistence.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
     partial class ServiceDbContextModelSnapshot : ModelSnapshot
@@ -180,6 +180,9 @@ namespace Services.Persistence.Context.Migrations
 
                     b.Property<double>("Experience")
                         .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId");
 

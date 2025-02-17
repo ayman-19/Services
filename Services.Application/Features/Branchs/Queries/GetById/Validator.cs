@@ -15,10 +15,10 @@ namespace Services.Application.Features.Branchs.Queries.GetById
             ClassLevelCascadeMode = CascadeMode.Stop;
             _serviceProvider = serviceProvider;
             var scope = _serviceProvider.CreateScope();
-            ValidateRequest(scope.ServiceProvider.GetRequiredService<IServiceRepository>());
+            ValidateRequest(scope.ServiceProvider.GetRequiredService<IBranchRepository>());
         }
 
-        private void ValidateRequest(IServiceRepository serviceRepository)
+        private void ValidateRequest(IBranchRepository branchRepository)
         {
             RuleFor(branch => branch.Id)
                 .NotEmpty()
@@ -27,7 +27,7 @@ namespace Services.Application.Features.Branchs.Queries.GetById
                 .WithMessage(ValidationMessages.Branch.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
-                        await serviceRepository.IsAnyExistAsync(branch => branch.Id == id)
+                        await branchRepository.IsAnyExistAsync(branch => branch.Id == id)
                 )
                 .WithMessage(ValidationMessages.Branch.IdIsNotFound);
         }
