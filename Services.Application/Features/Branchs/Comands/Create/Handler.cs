@@ -32,7 +32,7 @@ namespace Services.Application.Features.Branchs.Comands.Create
                     Branch branch = request;
                     await _branchRepository.CreateAsync(branch, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    await transaction.CommitAsync();
+                    await transaction.CommitAsync(cancellationToken);
                     return new()
                     {
                         Message = ValidationMessages.Success,
@@ -43,7 +43,7 @@ namespace Services.Application.Features.Branchs.Comands.Create
                 }
                 catch
                 {
-                    await transaction.CommitAsync();
+                    await transaction.RollbackAsync(cancellationToken);
                     throw new DatabaseTransactionException(ValidationMessages.Database.Error);
                 }
             }

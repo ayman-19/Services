@@ -32,6 +32,8 @@ namespace Services.Persistence
                 .AddScoped<IEmailSender, EmailSender>()
                 .AddScoped<ITokenRepository, TokenRepository>()
                 .AddScoped<IJWTManager, JWTManager>()
+                .AddScoped<IBranchRepository, BranchRepository>()
+                .AddScoped<IWorkerServiceRepository, WorkerServiceRepository>()
                 .AddScoped<IServiceRepository, ServiceRepository>();
             services.AddAuthentication();
 

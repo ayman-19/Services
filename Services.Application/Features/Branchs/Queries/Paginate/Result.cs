@@ -1,4 +1,9 @@
 ﻿namespace Services.Application.Features.Branchs.Queries.Paginate
 {
-    internal class Result { }
+    public sealed record PaginateBranchResult(
+        Guid id,
+        string name,
+        double langitude,
+        double latitude
+    );
 }
