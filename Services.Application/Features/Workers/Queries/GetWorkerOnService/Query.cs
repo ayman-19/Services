@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Queries.GetWorkerOnService
 {
-	internal class Query
-	{
-	}
+    public sealed record GetWorkerOnServiceQuery(Guid WorkerId, Guid ServiceId, Guid BranchId)
+        : IRequest<ResponseOf<GetWorkerOnServiceResult>>;
 }

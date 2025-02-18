@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Services.Application.Features.Workers.Queries.GetWorkerOnService
+﻿namespace Services.Application.Features.Workers.Queries.GetWorkerOnService
 {
-	internal class Result
-	{
-	}
+    public sealed record GetWorkerOnServiceResult(
+        Guid WorkerId,
+        string WorkerName,
+        Guid ServiceId,
+        string ServiceName,
+        Guid BranchId,
+        string BranchName
+    );
 }
