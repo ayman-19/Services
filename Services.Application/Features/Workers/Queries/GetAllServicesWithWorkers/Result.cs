@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.Application.Features.Services.Queries.GetById;
 
 namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers
 {
-	internal class Result
-	{
-	}
+    public sealed record GetAllServicesWithWorkersResult(
+        Guid WorkerId,
+        string WorkerName,
+        IReadOnlyCollection<GetServiceResult> Services
+    );
 }

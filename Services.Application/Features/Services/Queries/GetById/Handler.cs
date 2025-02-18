@@ -14,42 +14,35 @@ namespace Services.Application.Features.Services.Queries.GetById
         : IRequestHandler<GetServiceQuery, ResponseOf<GetServiceResult>>
     {
         private readonly IServiceRepository _serviceRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public GetServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
-        {
+        public GetServiceHandler(IServiceRepository serviceRepository) =>
             _serviceRepository = serviceRepository;
-            _unitOfWork = unitOfWork;
-        }
 
         public async Task<ResponseOf<GetServiceResult>> Handle(
             GetServiceQuery request,
             CancellationToken cancellationToken
         )
         {
-            using (var transaction = await _unitOfWork.BeginTransactionAsync())
+            try
             {
-                try
+                var result = await _serviceRepository.GetAsync(
+                    s => s.Id == request.Id,
+                    s => new GetServiceResult(s.Id, s.Name, s.Description),
+                    null!,
+                    false,
+                    cancellationToken
+                );
+                return new()
                 {
-                    var result = await _serviceRepository.GetAsync(
-                        s => s.Id == request.Id,
-                        s => new GetServiceResult(s.Id, s.Name, s.Description),
-                        null!,
-                        false,
-                        cancellationToken
-                    );
-                    return new()
-                    {
-                        Message = ValidationMessages.Success,
-                        Success = true,
-                        StatusCode = (int)HttpStatusCode.OK,
-                        Result = result,
-                    };
-                }
-                catch
-                {
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
-                }
+                    Message = ValidationMessages.Success,
+                    Success = true,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Result = result,
+                };
+            }
+            catch
+            {
+                throw new DatabaseTransactionException(ValidationMessages.Database.Error);
             }
         }
     }
