@@ -15,7 +15,7 @@ namespace Services.Api.Implementation.Branchs
     {
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
-            RouteGroupBuilder group = endpoints.MapGroup("/Branch").WithTags("Branches");
+            RouteGroupBuilder group = endpoints.MapGroup("/Branchs").WithTags("Branches");
             group.MapPost(
                 "CreateAsync/",
                 async (

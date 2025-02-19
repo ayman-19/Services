@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using MediatR;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
@@ -42,7 +39,7 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAv
                             request.BranchId,
                             cancellationToken
                         );
-                    workerService.UpdateAvailabilty(true);
+                    workerService.UpdateAvailabilty(request.Availabilty);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                     return new()
