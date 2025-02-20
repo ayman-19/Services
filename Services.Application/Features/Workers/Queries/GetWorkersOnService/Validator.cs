@@ -5,7 +5,7 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
 {
-    internal class GetWorkersOnServiceValidator : AbstractValidator<GetWorkersOnServiceQuery>
+    public class GetWorkersOnServiceValidator : AbstractValidator<GetWorkersOnServiceQuery>
     {
         private readonly IServiceProvider _serviceProvider;
 

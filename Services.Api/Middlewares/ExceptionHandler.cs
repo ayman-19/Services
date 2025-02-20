@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Text.Json;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 
@@ -24,7 +25,7 @@ namespace Services.Api.Middlewares
                 };
                 context.Response.StatusCode = requestStatus.statusCode;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(NetJSON.NetJSON.Serialize(resposne));
+                await context.Response.WriteAsync(JsonSerializer.Serialize(resposne));
             }
         }
 
