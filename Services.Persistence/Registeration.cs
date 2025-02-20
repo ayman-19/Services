@@ -34,6 +34,7 @@ namespace Services.Persistence
                 .AddScoped<IJWTManager, JWTManager>()
                 .AddScoped<IBranchRepository, BranchRepository>()
                 .AddScoped<IWorkerServiceRepository, WorkerServiceRepository>()
+                .AddScoped<IWorkerRepository, WorkerRepository>()
                 .AddScoped<IServiceRepository, ServiceRepository>();
             services.AddAuthentication();
 
