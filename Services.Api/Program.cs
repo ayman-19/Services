@@ -26,9 +26,9 @@ namespace Services.Api
             builder.Services.AddHttpContextAccessor();
             builder
                 .Services.RegisterSharedDepenedncies()
+                .RegisterPersistenceDependancies(configuration)
                 .RegisterApplicationDepenedncies(configuration)
-                .RegisterMiddlewares()
-                .RegisterPersistenceDependancies(configuration);
+                .RegisterMiddlewares();
 
             builder.Services.AddEndpointsApiExplorer();
 
@@ -109,6 +109,7 @@ namespace Services.Api
 
             WebApplication app = builder.Build();
 
+            app.UseMiddleware<ExceptionHandler>();
             app.MapOpenApi();
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -121,7 +122,6 @@ namespace Services.Api
             app.MapControllers();
 
             app.RegisterAllEndpoints();
-            app.UseMiddleware<ExceptionHandler>();
             app.UseCors(_cors);
 
             app.Run();
