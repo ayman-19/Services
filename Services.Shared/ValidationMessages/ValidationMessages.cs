@@ -53,7 +53,7 @@
             public const string ServiceNotExist = "Service Not Exist.";
             public const string WorkerNotExist = "Worker Not Exist.";
             public const string AssignWorkerToService = "Assign Worker To Service Exist.";
-            public const string WorkerNotAssignToService = "Worker Not Assign To Service Exist.";
+            public const string WorkerNotAssignToService = "Worker Not Assign To Service.";
             public const string BranchNotExist = "Branch Not Exist.";
         }
 

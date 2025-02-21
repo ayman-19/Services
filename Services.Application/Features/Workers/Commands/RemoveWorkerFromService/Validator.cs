@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Services.Application.Features.Workers.Commands.AssignWorkerToService;
 using Services.Domain.Abstraction;
 using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Workers.Commands.RemoveWorkerFromService
 {
     public sealed class RemoveWorkerFromServiceValidator
-        : AbstractValidator<AssignWorkerToServiceCommand>
+        : AbstractValidator<RemoveWorkerFromServiceCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 

@@ -28,7 +28,9 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
                 .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
-                        await workerServiceRepository.IsAnyExistAsync(worker => worker.Id == id)
+                        await workerServiceRepository.IsAnyExistAsync(worker =>
+                            worker.WorkerId == id
+                        )
                 )
                 .WithMessage(ValidationMessages.WorkereService.WorkerNotExist);
         }
