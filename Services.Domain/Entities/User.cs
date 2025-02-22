@@ -9,6 +9,8 @@ namespace Services.Domain.Models
 {
     public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableDelete, ITrackableUpdate
     {
+        public User() { }
+
         private User(string name, string email, string phone, UserType userType)
         {
             Name = name;

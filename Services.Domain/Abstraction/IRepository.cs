@@ -16,8 +16,8 @@ namespace Services.Domain.Repositories
         );
 
         Task<IReadOnlyCollection<TSelctor>> GetAllAsync<TSelctor>(
-            Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TSelctor>> Selctor,
+            Expression<Func<TEntity, bool>> predicate = default!,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null!,
             CancellationToken cancellationToken = default
         );

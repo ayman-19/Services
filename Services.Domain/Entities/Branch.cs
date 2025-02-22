@@ -10,17 +10,25 @@ namespace Services.Domain.Entities
         public double Langitude { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
-        public void UpdaeBranch(string name ,double latitude,double langitude)
+
+        public void UpdaeBranch(string name, double latitude, double langitude)
         {
-            Name = name;    
+            Name = name;
             Latitude = latitude;
             Langitude = langitude;
         }
+
         public ICollection<WorkerService> WorkerServices { get; set; }
         public ICollection<CustomerBranch> CustomerBranchs { get; set; }
 
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;
 
         public void SetUpdateOn() => UpdateOn = DateTime.UtcNow;
+
+        public Branch()
+        {
+            WorkerServices = new HashSet<WorkerService>();
+            CustomerBranchs = new HashSet<CustomerBranch>();
+        }
     }
 }

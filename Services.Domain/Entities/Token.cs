@@ -20,7 +20,7 @@ namespace Services.Domain.Entities
         public bool IsExpire => ExpireOn <= DateTime.Now;
         public bool IsValid => !IsExpire;
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = new();
 
         public static Token Create(string content, DateTime expireOn, Guid userId) =>
             new(content, expireOn, userId);

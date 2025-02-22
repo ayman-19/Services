@@ -24,7 +24,6 @@ namespace Services.Persistence
                 cfg.UseSqlServer(configuration.GetConnectionString("SERVICE_CONNECTIONSTRING"));
                 cfg.AddInterceptors(new OnSaveChangesInterceptor());
             });
-
             services
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped(typeof(IRepository<>), typeof(Repository<>))

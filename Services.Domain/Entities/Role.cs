@@ -6,6 +6,8 @@ namespace Services.Domain.Models
 {
     public sealed record Role : Entity<Guid>, ITrackableCreate, ITrackableUpdate
     {
+        public Role() { }
+
         private Role(string name) => Name = name;
 
         public string Name { get; set; }
