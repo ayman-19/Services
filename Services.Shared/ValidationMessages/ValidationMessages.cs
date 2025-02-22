@@ -29,6 +29,8 @@
             public const string ResetPassword = "Reset Password Code.";
             public const string EmailNotConfirmed = "Email Not Confirmed.";
             public const string MakeSureInformation = "Make Sure Information.";
+            public const string MinLength = "Password must be at least 8 characters long.";
+            public const string MaxLength = "Password must be at most 20 characters long.";
         }
 
         public static class Database

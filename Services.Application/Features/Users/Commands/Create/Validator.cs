@@ -51,7 +51,21 @@ namespace Services.Application.Features.Users.Commands.Create
                 .NotEmpty()
                 .WithMessage(ValidationMessages.User.PasswordIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.PasswordIsRequired);
+                .WithMessage(ValidationMessages.User.PasswordIsRequired)
+                .MinimumLength(8)
+                .WithMessage(ValidationMessages.User.MinLength)
+                .MaximumLength(20)
+                .WithMessage(ValidationMessages.User.MaxLength)
+                .Matches(@"[A-Z]")
+                .WithMessage("Password must contain at least one uppercase letter.")
+                .Matches(@"[a-z]")
+                .WithMessage("Password must contain at least one lowercase letter.")
+                .Matches(@"\d")
+                .WithMessage("Password must contain at least one digit.")
+                .Matches(@"[\W_]")
+                .WithMessage(
+                    "Password must contain at least one special character (!@#$%^&* etc.)."
+                );
 
             RuleFor(x => x.confirmPassword)
                 .NotEmpty()
