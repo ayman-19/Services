@@ -4,8 +4,12 @@ using Services.Shared.Responses;
 
 namespace Services.Application.Features.Branchs.Comands.Create
 {
-    public sealed record CreateBranchCommand(string name, double langtuide, double latitude)
-        : IRequest<ResponseOf<CreateBranchResult>>
+    public sealed record CreateBranchCommand(
+        string name,
+        string description,
+        double langtuide,
+        double latitude
+    ) : IRequest<ResponseOf<CreateBranchResult>>
     {
         public static implicit operator Branch(CreateBranchCommand branchCommand) =>
             new()
@@ -13,6 +17,7 @@ namespace Services.Application.Features.Branchs.Comands.Create
                 Name = branchCommand.name,
                 Langitude = branchCommand.langtuide,
                 Latitude = branchCommand.latitude,
+                Description = branchCommand.description,
             };
     }
 }

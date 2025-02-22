@@ -28,6 +28,12 @@ namespace Services.Application.Features.Branchs.Comands.Update
                 .NotNull()
                 .WithMessage(ValidationMessages.Branch.NameIsRequired);
 
+            RuleFor(s => s.description)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired);
+
             RuleFor(b => b.id)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Branch.IdIsRequired)

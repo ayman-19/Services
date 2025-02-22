@@ -33,7 +33,12 @@ namespace Services.Application.Features.Branchs.Comands.Update
                         request.id,
                         cancellationToken
                     );
-                    branch.UpdaeBranch(request.name, request.langtuide, request.latitude);
+                    branch.UpdaeBranch(
+                        request.name,
+                        request.description,
+                        request.langtuide,
+                        request.latitude
+                    );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                     return new()

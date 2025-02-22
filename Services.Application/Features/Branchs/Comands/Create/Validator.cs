@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Services.Application.Features.Services.Commands.Create;
 using Services.Domain.Abstraction;
 using Services.Shared.ValidationMessages;
 
@@ -28,6 +27,13 @@ namespace Services.Application.Features.Branchs.Comands.Create
                 .WithMessage(ValidationMessages.Branch.NameIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Branch.NameIsRequired);
+
+            RuleFor(s => s.description)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired);
+
             RuleFor(s => s.langtuide)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Branch.Langtuide)
@@ -39,10 +45,12 @@ namespace Services.Application.Features.Branchs.Comands.Create
                 .NotNull()
                 .WithMessage(ValidationMessages.Branch.LatitudeCantBeNull);
 
-            RuleFor(s => s.name)
+            RuleFor(s => s)
                 .MustAsync(
-                    async (name, CancellationToken) =>
-                        !await branchRepository.IsAnyExistAsync(n => n.Name == name)
+                    async (request, CancellationToken) =>
+                        !await branchRepository.IsAnyExistAsync(n =>
+                            n.Name == request.name && n.Description == request.description
+                        )
                 )
                 .WithMessage(ValidationMessages.Branch.NameIsExist);
         }

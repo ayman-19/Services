@@ -69,6 +69,7 @@
             public const string Latitude = "Latitude is required";
             public const string LatitudeCantBeNull = "Latitude Cant Be Null";
             public const string NameIsExist = "Name Is Exist.";
+            public const string DescriptionIsRequired = "Description Is Required.";
         }
     }
 }
