@@ -4,6 +4,7 @@ using Services.Api.Abstraction;
 using Services.Application.Features.Services.Commands.Create;
 using Services.Application.Features.Services.Commands.Delete;
 using Services.Application.Features.Services.Commands.Update;
+using Services.Application.Features.Services.Queries.GetAll;
 using Services.Application.Features.Services.Queries.GetById;
 using Services.Application.Features.Services.Queries.Paginate;
 
@@ -58,6 +59,11 @@ namespace Services.Api.Implementation.Services
                             cancellationToken
                         )
                     )
+            );
+            group.MapGet(
+                "GetAllAsync",
+                async (ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await sender.Send(new GetAllServicesQuery(), cancellationToken))
             );
         }
     }

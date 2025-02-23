@@ -1,11 +1,10 @@
-﻿using System.Text.RegularExpressions;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Services.Api.Abstraction;
 using Services.Application.Features.Branchs.Comands.Create;
 using Services.Application.Features.Branchs.Comands.Delete;
 using Services.Application.Features.Branchs.Comands.Update;
+using Services.Application.Features.Branchs.Queries.GetAll;
 using Services.Application.Features.Branchs.Queries.GetById;
 using Services.Application.Features.Branchs.Queries.Paginate;
 
@@ -60,6 +59,12 @@ namespace Services.Api.Implementation.Branchs
                             cancellationToken
                         )
                     )
+            );
+
+            group.MapGet(
+                "GetAllAsync",
+                async (ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await sender.Send(new GetAllBranchsQuery(), cancellationToken))
             );
         }
     }

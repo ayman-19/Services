@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Services.Application.Features.Services.Queries.GetAll
+﻿namespace Services.Application.Features.Services.Queries.GetAll
 {
-	internal class Result
-	{
-	}
+    public sealed record GetAllServicesResult(Guid Id, string Name, string Description);
 }

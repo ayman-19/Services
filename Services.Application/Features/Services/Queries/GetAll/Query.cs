@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using Services.Shared.Responses;
 
 namespace Services.Application.Features.Services.Queries.GetAll
 {
-	internal class Query
-	{
-	}
+    public sealed record GetAllServicesQuery()
+        : IRequest<ResponseOf<IReadOnlyCollection<GetAllServicesResult>>>;
 }
