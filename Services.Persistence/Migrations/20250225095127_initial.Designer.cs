@@ -9,11 +9,11 @@ using Services.Persistence.Data;
 
 #nullable disable
 
-namespace Services.Persistence.Context.Migrations
+namespace Services.Persistence.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    [Migration("20250222200507_updatedBranch")]
-    partial class updatedBranch
+    [Migration("20250225095127_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

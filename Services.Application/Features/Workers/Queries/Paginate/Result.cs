@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Services.Application.Features.Workers.Queries.Paginate
 {
-	internal class Result
-	{
-	}
+    public sealed record PaginateWorkerServiceResult(
+        Guid WorkerServiceId,
+        Guid ServiceId,
+        string ServiceName,
+        Guid WorkerId,
+        string WorkerName,
+        Guid BranchId,
+        string BranchName,
+        bool Availabilty
+    );
 }

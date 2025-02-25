@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Services.Persistence.Context.Migrations
+namespace Services.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,7 @@ namespace Services.Persistence.Context.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Langitude = table.Column<double>(type: "float", nullable: false),
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -71,7 +72,7 @@ namespace Services.Persistence.Context.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Duration = table.Column<double>(type: "float", nullable: false),
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateOn = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -336,10 +337,10 @@ namespace Services.Persistence.Context.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Service_Name",
+                name: "IX_Service_Name_Description",
                 schema: "Service",
                 table: "Service",
-                column: "Name",
+                columns: new[] { "Name", "Description" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
