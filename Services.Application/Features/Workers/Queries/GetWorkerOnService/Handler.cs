@@ -24,10 +24,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkerOnService
             try
             {
                 GetWorkerOnServiceResult? workerService = await _workerServiceRepository.GetAsync(
-                    n =>
-                        n.WorkerId == request.WorkerId
-                        && n.ServiceId == request.ServiceId
-                        && n.BranchId == request.BranchId,
+                    n => n.WorkerId == request.WorkerServiceId,
                     ws => new GetWorkerOnServiceResult(
                         ws.WorkerId,
                         ws.Worker.User.Name,

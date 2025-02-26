@@ -5,7 +5,7 @@ using Services.Application.Features.Services.Queries.Paginate;
 using Services.Application.Features.Workers.Commands.AssignWorkerToService;
 using Services.Application.Features.Workers.Commands.RemoveWorkerFromService;
 using Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAvailabilty;
-using Services.Application.Features.Workers.Queries.GetAll;
+//using Services.Application.Features.Workers.Queries.GetAll;
 using Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers;
 using Services.Application.Features.Workers.Queries.GetWorkerOnService;
 using Services.Application.Features.Workers.Queries.GetWorkersOnService;
@@ -65,22 +65,6 @@ namespace Services.Api.Implementation.Workers
             );
 
             group.MapGet(
-                "GetWorkerOnServiceAsync/{workerId}/{serviceId}/{branchId}",
-                async (
-                    Guid workerId,
-                    Guid serviceId,
-                    Guid branchId,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new GetWorkerOnServiceQuery(workerId, serviceId, branchId),
-                            cancellationToken
-                        )
-                    )
-            );
-            group.MapGet(
                 "GetAllServicesWithWorkers/{workerId}",
                 async (Guid workerId, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(
@@ -104,11 +88,6 @@ namespace Services.Api.Implementation.Workers
                             cancellationToken
                         )
                     )
-            );
-            group.MapGet(
-                "GetAllAsync",
-                async (ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(await sender.Send(new GetAllWorkerQuery(), cancellationToken))
             );
         }
     }
