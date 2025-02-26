@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Services.Application.Features.Services.Queries.GetAll;
-using Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers;
 using Services.Domain.Abstraction;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;

@@ -3,6 +3,6 @@ using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Queries.GetWorkerOnService
 {
-    public sealed record GetWorkerOnServiceQuery(Guid WorkerId, Guid ServiceId, Guid BranchId)
+    public sealed record GetWorkerOnServiceQuery(Guid WorkerServiceId)
         : IRequest<ResponseOf<GetWorkerOnServiceResult>>;
 }

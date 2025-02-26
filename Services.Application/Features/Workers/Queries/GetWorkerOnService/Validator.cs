@@ -23,31 +23,16 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
 
         private void ValidateRequest(IWorkerServiceRepository workerServiceRepository)
         {
-            RuleFor(s => s.WorkerId)
+            RuleFor(ws => ws.WorkerServiceId)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired);
-
-            RuleFor(s => s.ServiceId)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired);
-
-            RuleFor(s => s.BranchId)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.BranchIdIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.BranchIdIsRequired);
-
             RuleFor(query => query)
                 .MustAsync(
                     async (query, CancellationToken) =>
                         await workerServiceRepository.IsAnyExistAsync(n =>
-                            n.WorkerId == query.WorkerId
-                            && n.ServiceId == query.ServiceId
-                            && n.BranchId == query.BranchId
+                            n.WorkerId == query.WorkerServiceId
                         )
                 )
                 .WithMessage(ValidationMessages.WorkereService.WorkerNotAssignToService);
