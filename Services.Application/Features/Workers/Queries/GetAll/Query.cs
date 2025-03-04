@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Queries.GetAll
 {
-    public sealed record GetAllWorkerQuery() : IRequest { }
+    public sealed record GettAllWorkerQuery()
+        : IRequest<ResponseOf<IReadOnlyCollection<GetAllWorkerResult>>>;
 }

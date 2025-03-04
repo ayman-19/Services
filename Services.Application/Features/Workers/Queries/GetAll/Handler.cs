@@ -8,12 +8,12 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Workers.Queries.GetAll
 {
-    public sealed record GetAllWorkerHandler
+    public sealed record GettAllWorkerHandler
         : IRequestHandler<GetAllWorkerQuery, ResponseOf<IReadOnlyCollection<GetAllWorkerResult>>>
     {
         private readonly IWorkerServiceRepository _workerserviceRepository;
 
-        public GetAllWorkerHandler(IWorkerServiceRepository workerserviceRepository) =>
+        public GettAllWorkerHandler(IWorkerServiceRepository workerserviceRepository) =>
             _workerserviceRepository = workerserviceRepository;
 
         public async Task<ResponseOf<IReadOnlyCollection<GetAllWorkerResult>>> Handle(
