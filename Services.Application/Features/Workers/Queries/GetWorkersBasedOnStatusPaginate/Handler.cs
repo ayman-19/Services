@@ -9,15 +9,15 @@ using Services.Shared.ValidationMessages;
 namespace Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus
 {
     public sealed record GetWorkerPaginateHandler
-        : IRequestHandler<GetWorkerPaginateQuery, ResponseOf<GetWorkerPaginateResult>>
+        : IRequestHandler<GetWorkerStatusPaginateQuery, ResponseOf<GetWorkerStatusPaginateResult>>
     {
         private readonly IWorkerRepository _workerRepository;
 
         public GetWorkerPaginateHandler(IWorkerRepository workerRepository) =>
             _workerRepository = workerRepository;
 
-        public async Task<ResponseOf<GetWorkerPaginateResult>> Handle(
-            GetWorkerPaginateQuery request,
+        public async Task<ResponseOf<GetWorkerStatusPaginateResult>> Handle(
+            GetWorkerStatusPaginateQuery request,
             CancellationToken cancellationToken
         )
         {

@@ -3,6 +3,7 @@ using Services.Api.Abstraction;
 using Services.Application.Features.Workers.Commands.AssignWorkerToService;
 using Services.Application.Features.Workers.Commands.RemoveWorkerFromService;
 using Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAvailabilty;
+using Services.Application.Features.Workers.Queries.GetAll;
 using Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers;
 using Services.Application.Features.Workers.Queries.GetWorkerOnService;
 using Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus;
@@ -90,6 +91,26 @@ namespace Services.Api.Implementation.Workers
                     )
             );
             group.MapGet(
+                "/GetWorkersPaginateAsync/{page}/{pageSize}",
+                async (
+                    int page,
+                    int pageSize,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) =>
+                    Results.Ok(
+                        await sender.Send(
+                            new GetWorkerPaginateQuery(page, pageSize),
+                            cancellationToken
+                        )
+                    )
+            );
+            group.MapGet(
+                "/GetAllWorkerAsync",
+                async (ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await sender.Send(new GetAllWorkerQuery(), cancellationToken))
+            );
+            group.MapGet(
                 "/GetWorkersBasedOnStatus/{page}/{pageSize}/{status}",
                 async (
                     int page,
@@ -100,7 +121,7 @@ namespace Services.Api.Implementation.Workers
                 ) =>
                     Results.Ok(
                         await sender.Send(
-                            new GetWorkerPaginateQuery(status, page, pageSize),
+                            new GetWorkerStatusPaginateQuery(status, page, pageSize),
                             cancellationToken
                         )
                     )
