@@ -70,6 +70,7 @@
             public const string LatitudeCantBeNull = "Latitude Cant Be Null";
             public const string NameIsExist = "Name Is Exist.";
             public const string DescriptionIsRequired = "Description Is Required.";
+            public const string BranchNotExist = "Branch Not Exist.";
         }
     }
 }

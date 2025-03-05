@@ -51,7 +51,7 @@ namespace Services.Application.Features.Branchs.Comands.Update
                 }
                 catch
                 {
-                    await transaction.CommitAsync(cancellationToken);
+                    await transaction.RollbackAsync(cancellationToken);
                     throw new DatabaseTransactionException(ValidationMessages.Database.Error);
                 }
             }

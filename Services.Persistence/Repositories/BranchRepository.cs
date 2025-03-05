@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Persistence.Data;
@@ -15,10 +16,11 @@ namespace Services.Persistence.Repositories
             _context = context;
         }
 
-        public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken) =>
+            await _context
+                .Set<Branch>()
+                .Where(s => s.Id == id)
+                .ExecuteDeleteAsync(cancellationToken);
 
         public async ValueTask<Branch> GetByIdAsync(Guid Id, CancellationToken cancellationToken) =>
             await _context
@@ -34,12 +36,5 @@ namespace Services.Persistence.Repositories
                 .Set<Branch>()
                 .AsTracking()
                 .FirstAsync(id => id.Name == Name, cancellationToken);
-
-
-
-        
-
-
-}
-
+    }
 }
