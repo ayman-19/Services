@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 using Services.Domain.Abstraction;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
@@ -36,6 +37,15 @@ namespace Services.Persistence
                 .AddScoped<IWorkerRepository, WorkerRepository>()
                 .AddScoped<IServiceRepository, ServiceRepository>();
             services.AddAuthentication();
+
+            services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionJobFactory();
+            });
+            services.AddQuartzHostedService(opt =>
+            {
+                opt.WaitForJobsToComplete = true;
+            });
 
             return services;
         }

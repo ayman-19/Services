@@ -12,8 +12,8 @@ using Services.Persistence.Data;
 namespace Services.Persistence.Context.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    [Migration("20250220163926_Initial")]
-    partial class Initial
+    [Migration("20250305100437_Initail")]
+    partial class Initail
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,10 @@ namespace Services.Persistence.Context.Migrations
 
                     b.Property<DateTime>("CreateOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Langitude")
                         .HasColumnType("float");
@@ -98,7 +102,7 @@ namespace Services.Persistence.Context.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Duration")
                         .HasColumnType("float");
@@ -112,7 +116,7 @@ namespace Services.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Name", "Description")
                         .IsUnique();
 
                     b.ToTable("Service", "Service");

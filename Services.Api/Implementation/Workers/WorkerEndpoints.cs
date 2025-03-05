@@ -1,13 +1,12 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Services.Api.Abstraction;
 using Services.Application.Features.Workers.Commands.AssignWorkerToService;
 using Services.Application.Features.Workers.Commands.RemoveWorkerFromService;
 using Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAvailabilty;
 using Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers;
 using Services.Application.Features.Workers.Queries.GetWorkerOnService;
+using Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus;
 using Services.Application.Features.Workers.Queries.GetWorkersOnService;
-using Services.Domain.Abstraction;
 using Services.Domain.Enums;
 
 namespace Services.Api.Implementation.Workers
@@ -91,21 +90,20 @@ namespace Services.Api.Implementation.Workers
                     )
             );
             group.MapGet(
-                "/get-workers-based-on-status/{status}",
-                async (Status status, IWorkerServiceRepository workerService) =>
-                {
-                    var workers = await workerService.GetAllAsync(
-                        w => w,
-                        w => w.Worker.Status == status,
-                        q => q.Include(w => w.Worker),
-                        CancellationToken.None
-                    );
-
-                    if (workers == null || !workers.Any())
-                        return Results.NotFound("No workers found with the specified status.");
-
-                    return Results.Ok(workers);
-                }
+                "/GetWorkersBasedOnStatus/{page}/{pageSize}/{status}",
+                async (
+                    int page,
+                    int pageSize,
+                    Status status,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) =>
+                    Results.Ok(
+                        await sender.Send(
+                            new GetWorkerPaginateQuery(status, page, pageSize),
+                            cancellationToken
+                        )
+                    )
             );
         }
     }
