@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Services.Domain.Abstraction;
-using Services.Domain.Models;
 using Services.Domain.Repositories;
 using Services.Persistence.Context.Interceptor;
 using Services.Persistence.Data;
@@ -20,9 +18,11 @@ namespace Services.Persistence
             IConfiguration configuration
         )
         {
+            string connectionString = configuration.GetConnectionString("SERVICE_CONNECTIONSTRING");
+
             services.AddDbContextPool<ServiceDbContext>(cfg =>
             {
-                cfg.UseSqlServer(configuration.GetConnectionString("SERVICE_CONNECTIONSTRING"));
+                cfg.UseSqlServer(connectionString);
                 cfg.AddInterceptors(new OnSaveChangesInterceptor());
             });
             services
@@ -35,18 +35,20 @@ namespace Services.Persistence
                 .AddScoped<IBranchRepository, BranchRepository>()
                 .AddScoped<IWorkerServiceRepository, WorkerServiceRepository>()
                 .AddScoped<IWorkerRepository, WorkerRepository>()
-                .AddScoped<IServiceRepository, ServiceRepository>();
+                .AddScoped<IServiceRepository, ServiceRepository>()
+                .AddScoped<IJobs, Jobs>()
+                .AddQuartz(q =>
+                {
+                    q.UsePersistentStore(op =>
+                    {
+                        op.UseSqlServer(cstr => cstr.ConnectionString = connectionString);
+                        op.UseNewtonsoftJsonSerializer();
+                        op.UseProperties = true;
+                        op.PerformSchemaValidation = true;
+                    });
+                })
+                .AddQuartzHostedService(h => h.WaitForJobsToComplete = true);
             services.AddAuthentication();
-
-            services.AddQuartz(q =>
-            {
-                q.UseMicrosoftDependencyInjectionJobFactory();
-            });
-            services.AddQuartzHostedService(opt =>
-            {
-                opt.WaitForJobsToComplete = true;
-            });
-
             return services;
         }
     }

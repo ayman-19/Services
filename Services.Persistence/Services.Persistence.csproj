@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" Version="0.5.1" />
+    <PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.SqlServer" Version="0.5.1" />
     <PackageReference Include="MailKit" Version="4.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
@@ -23,8 +25,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
     <PackageReference Include="MimeKit" Version="4.10.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
-    <PackageReference Include="Quartz" Version="3.13.1" />
-    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.13.1" />
+    <PackageReference Include="Quartz.AspNetCore" Version="3.13.1" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.13.1" />
     <PackageReference Include="Quartz.Serialization.Json" Version="3.13.1" />
   </ItemGroup>
@@ -32,6 +33,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Services.Domain\Services.Domain.csproj" />
     <ProjectReference Include="..\Services.Shared\Services.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Context\Migrations\" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,8 @@
     public enum Schema
     {
         Identity,
-        Public,
+
+        //Public,
         Service,
     }
 }

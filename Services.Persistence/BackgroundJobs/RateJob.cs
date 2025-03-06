@@ -2,7 +2,7 @@
 
 namespace Services.Persistence.BackgroundJobs
 {
-    public sealed record BackgroundJobRate : IJob
+    public sealed record RateJob : IJob
     {
         public Task Execute(IJobExecutionContext context)
         {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
@@ -21,7 +19,7 @@ namespace Services.Application.Features.Users.Commands.Create
         private readonly IJWTManager _jwtManager;
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEmailSender _emailSender;
+        private readonly IJobs _jobs;
         private readonly IPasswordHasher<User> _passwordHasher;
 
         public CreateUserCommandHandler(
@@ -29,14 +27,14 @@ namespace Services.Application.Features.Users.Commands.Create
             IUserRepository userRepository,
             IUnitOfWork unitOfWork,
             IPasswordHasher<User> passwordHasher,
-            IEmailSender emailSender
+            IJobs jobs
         )
         {
             _jwtManager = jwtManager;
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
-            _emailSender = emailSender;
+            _jobs = jobs;
         }
 
         public async Task<ResponseOf<CreateUserResult>> Handle(
@@ -71,9 +69,8 @@ namespace Services.Application.Features.Users.Commands.Create
                 await transaction.CommitAsync(cancellationToken);
                 if (success > 0)
                 {
-                    await _emailSender.SendEmailAsync(
+                    await _jobs.SendEmailByJobAsync(
                         user.Email,
-                        ValidationMessages.User.ConfirmEmail,
                         $"To Confirm Email Code: <h3>{code}</h3>"
                     );
                     return new ResponseOf<CreateUserResult>
