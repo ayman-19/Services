@@ -35,21 +35,13 @@ namespace Services.Api.Implementation.Users
                     Results.Ok(await _sender.Send(new DeleteUserCommand(id), cancellationToken))
             );
 
-            group.MapGet(
-                "/LoginAsync/{emailOrPhone}/{password}/{type}",
+            group.MapPost(
+                "/LoginAsync",
                 async (
-                    string emailOrPhone,
-                    string password,
-                    LoginType type,
+                    LoginUserCommand command,
                     ISender _sender,
                     CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await _sender.Send(
-                            new LoginUserCommand(type, emailOrPhone, password),
-                            cancellationToken
-                        )
-                    )
+                ) => Results.Ok(await _sender.Send(command, cancellationToken))
             );
 
             group

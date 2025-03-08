@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 using MediatR;
-using Services.Application.Features.Services.Commands.Create;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
-using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
@@ -48,10 +41,10 @@ namespace Services.Application.Features.Services.Commands.Update
                         Result = service,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
-                    await transaction.CommitAsync();
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw new Exception(ex.Message, ex);
                 }
             }
         }

@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Services.Domain.Abstraction;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
@@ -12,30 +11,28 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Users.Commands.Login
 {
-    public sealed class LoginUserHandler : IRequestHandler<LoginUserCommand, Response>
+    public sealed class LoginUserHandler
+        : IRequestHandler<LoginUserCommand, ResponseOf<LoginUserResult>>
     {
         private readonly IJWTManager _jwtManager;
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEmailSender _emailSender;
         private readonly IPasswordHasher<User> _passwordHasher;
 
         public LoginUserHandler(
             IJWTManager jwtManager,
             IUserRepository userRepository,
             IUnitOfWork unitOfWork,
-            IPasswordHasher<User> passwordHasher,
-            IEmailSender emailSender
+            IPasswordHasher<User> passwordHasher
         )
         {
             _jwtManager = jwtManager;
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
-            _emailSender = emailSender;
         }
 
-        public async Task<Response> Handle(
+        public async Task<ResponseOf<LoginUserResult>> Handle(
             LoginUserCommand request,
             CancellationToken cancellationToken
         )
@@ -77,9 +74,9 @@ namespace Services.Application.Features.Users.Commands.Login
                         Result = await _jwtManager.LoginAsync(user),
                     };
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    throw new DatabaseTransactionException(ex.Message);
                 }
             }
         }

@@ -28,7 +28,6 @@ namespace Services.Application.Features.Services.Commands.Delete
                 try
                 {
                     await _serviceRepository.DeleteByIdAsync(request.Id, cancellationToken);
-                    //await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync();
                     return new()
                     {
@@ -37,10 +36,10 @@ namespace Services.Application.Features.Services.Commands.Delete
                         StatusCode = (int)HttpStatusCode.OK,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
-                    await transaction.RollbackAsync();
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw new DatabaseTransactionException(ex.Message);
                 }
             }
         }

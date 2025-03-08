@@ -18,6 +18,8 @@ namespace Services.Domain.Entities
         }
 
         public ICollection<WorkerService> WorkerServices { get; set; }
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;
 

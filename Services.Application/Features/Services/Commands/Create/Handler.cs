@@ -41,10 +41,10 @@ namespace Services.Application.Features.Services.Commands.Create
                         Result = service,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
-                    await transaction.RollbackAsync();
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw new DatabaseTransactionException(ex.Message);
                 }
             }
         }

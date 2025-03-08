@@ -13,6 +13,7 @@
         CustomerBranch,
         Service,
         Worker,
-        WorkerService
+        WorkerService,
+        Category,
     }
 }

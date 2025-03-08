@@ -8,7 +8,7 @@
         public static class User
         {
             public const string NameIsRequired = "Name Is Required.";
-            public const string UserTypeIsRequired = "Name Is Required.";
+            public const string UserTypeIsRequired = "Type Is Required.";
             public const string PhoneIsRequired = "Phone Is Required.";
             public const string IdIsRequired = "Id Is Required.";
             public const string EmailIsRequired = "Email Is Required.";

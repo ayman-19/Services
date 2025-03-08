@@ -54,10 +54,10 @@ namespace Services.Application.Features.Users.Commands.ResetPassword
                         StatusCode = (int)HttpStatusCode.OK,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
-                    await transaction.RollbackAsync();
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw new DatabaseTransactionException(ex.Message);
                 }
             }
         }

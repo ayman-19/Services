@@ -44,7 +44,6 @@ namespace Services.Application.Features.Users.Commands.Confirm
                         throw new InvalidException(ValidationMessages.User.VerifyCode);
 
                     user.ConfirmAccount = true;
-                    //await _userRepository.UpdateAsync(user, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                     return new Response
@@ -54,10 +53,10 @@ namespace Services.Application.Features.Users.Commands.Confirm
                         Message = ValidationMessages.Success,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
                     await transaction.RollbackAsync(cancellationToken);
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    throw new DatabaseTransactionException(ex.Message);
                 }
             }
         }
