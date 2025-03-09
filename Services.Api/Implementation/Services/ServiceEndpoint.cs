@@ -46,24 +46,27 @@ namespace Services.Api.Implementation.Services
             );
 
             group.MapGet(
-                "PaginateAsync/{page}/{pageSize}",
+                "PaginateAsync/{page}/{pageSize}/{categoryId}",
                 async (
                     int page,
                     int pageSize,
+                    Guid categoryId,
                     ISender sender,
                     CancellationToken cancellationToken
                 ) =>
                     Results.Ok(
                         await sender.Send(
-                            new PaginateServiceQuery(page, pageSize),
+                            new PaginateServiceQuery(page, pageSize, categoryId),
                             cancellationToken
                         )
                     )
             );
             group.MapGet(
-                "GetAllAsync",
-                async (ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(await sender.Send(new GetAllServicesQuery(), cancellationToken))
+                "GetAllAsync/{categoryId}",
+                async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(
+                        await sender.Send(new GetAllServicesQuery(categoryId), cancellationToken)
+                    )
             );
         }
     }

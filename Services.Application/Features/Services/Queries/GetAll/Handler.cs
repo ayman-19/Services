@@ -28,7 +28,7 @@ namespace Services.Application.Features.Services.Queries.GetAll
                 IReadOnlyCollection<GetAllServicesResult>? result =
                     await _serviceRepository.GetAllAsync(
                         s => new GetAllServicesResult(s.Id, s.Name, s.Description),
-                        null!,
+                        s => s.CategoryId == request.categoryId,
                         null!,
                         cancellationToken
                     );

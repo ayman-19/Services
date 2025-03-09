@@ -23,6 +23,6 @@ namespace Services.Persistence.Repositories
                 .ExecuteDeleteAsync(cancellationToken);
 
         public async ValueTask<Service> GetByIdAsync(Guid Id) =>
-            await _context.Set<Service>().Where(s => s.Id == Id).AsNoTracking().FirstAsync();
+            await _context.Set<Service>().Where(s => s.Id == Id).FirstAsync();
     }
 }

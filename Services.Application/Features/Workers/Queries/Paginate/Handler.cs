@@ -22,51 +22,44 @@ namespace Services.Application.Features.Workers.Queries.GetAll
             CancellationToken cancellationToken
         )
         {
-            try
-            {
-                int page = request.page == 0 ? 1 : request.page;
-                int pagesize = request.pagesize == 0 ? 1 : request.pagesize;
+            int page = request.page == 0 ? 1 : request.page;
+            int pagesize = request.pagesize == 0 ? 1 : request.pagesize;
 
-                IReadOnlyCollection<GetAllWorkerPaginateResult>? result =
-                    await _WorkerserviceRepository.PaginateAsync(
-                        page,
-                        pagesize,
-                        ws => new GetAllWorkerPaginateResult(
-                            ws.Id,
-                            ws.Service.Id,
-                            ws.Service.Name,
-                            ws.Worker.UserId,
-                            ws.Worker.User.Name,
-                            ws.Branch.Id,
-                            ws.Branch.Name,
-                            ws.Availabilty
-                        ),
-                        null!,
-                        q =>
-                            q.Include(ws => ws.Service)
-                                .Include(ws => ws.Worker)
-                                .ThenInclude(w => w.User)
-                                .Include(ws => ws.Branch),
-                        cancellationToken
-                    );
-
-                return new()
-                {
-                    Message = ValidationMessages.Success,
-                    Success = true,
-                    StatusCode = (int)HttpStatusCode.OK,
-                    Result = new(
-                        page,
-                        pagesize,
-                        (int)Math.Ceiling(result.Count / (double)pagesize),
-                        result
+            IReadOnlyCollection<GetAllWorkerPaginateResult>? result =
+                await _WorkerserviceRepository.PaginateAsync(
+                    page,
+                    pagesize,
+                    ws => new GetAllWorkerPaginateResult(
+                        ws.Id,
+                        ws.Service.Id,
+                        ws.Service.Name,
+                        ws.Worker.UserId,
+                        ws.Worker.User.Name,
+                        ws.Branch.Id,
+                        ws.Branch.Name,
+                        ws.Availabilty
                     ),
-                };
-            }
-            catch
+                    null!,
+                    q =>
+                        q.Include(ws => ws.Service)
+                            .Include(ws => ws.Worker)
+                            .ThenInclude(w => w.User)
+                            .Include(ws => ws.Branch),
+                    cancellationToken
+                );
+
+            return new()
             {
-                throw new DatabaseTransactionException(ValidationMessages.Database.Error);
-            }
+                Message = ValidationMessages.Success,
+                Success = true,
+                StatusCode = (int)HttpStatusCode.OK,
+                Result = new(
+                    page,
+                    pagesize,
+                    (int)Math.Ceiling(result.Count / (double)pagesize),
+                    result
+                ),
+            };
         }
     }
 }

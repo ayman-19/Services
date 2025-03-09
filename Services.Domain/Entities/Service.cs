@@ -11,10 +11,11 @@ namespace Services.Domain.Entities
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
 
-        public void UpdateService(string name, string description)
+        public void UpdateService(string name, string description, Guid categoryId)
         {
             Name = name;
             Description = description;
+            CategoryId = categoryId;
         }
 
         public ICollection<WorkerService> WorkerServices { get; set; }

@@ -36,7 +36,7 @@ namespace Services.Application.Features.Services.Queries.Paginate
                             request.page == 0 ? 1 : request.page,
                             request.pageSize == 0 ? 10 : request.pageSize,
                             s => new PaginateServiceResult(s.Id, s.Name, s.Description),
-                            null!,
+                            s => s.CategoryId == request.categoryId,
                             null!,
                             cancellationToken
                         );

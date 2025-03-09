@@ -72,5 +72,11 @@
             public const string DescriptionIsRequired = "Description Is Required.";
             public const string BranchNotExist = "Branch Not Exist.";
         }
+
+        public static class Category
+        {
+            public const string CategoryNotExist = "Category Not Exist.";
+            public const string CategoryIdIsRequired = "Category Id Is Required.";
+        }
     }
 }
