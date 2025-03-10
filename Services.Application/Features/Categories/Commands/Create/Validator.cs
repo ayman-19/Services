@@ -28,10 +28,17 @@ namespace Services.Application.Features.Categories.Commands.Create
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Category.NameIsRequired);
 
+            RuleFor(c => c.Name)
+                .MustAsync(
+                    async (name, CancellationToken) =>
+                        !await categoryRepository.IsAnyExistAsync(c => c.Name == name)
+                )
+                .WithMessage(ValidationMessages.Category.CategoryExist);
+
             RuleFor(c => c.ParentId)
                 .MustAsync(
                     async (id, CancellationToken) =>
-                        id == Guid.Empty
+                        id == null
                             ? true
                             : await categoryRepository.IsAnyExistAsync(c => c.Id == id)
                 )

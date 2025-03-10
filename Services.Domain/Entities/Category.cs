@@ -6,9 +6,9 @@ namespace Services.Domain.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public Guid ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
-        public void UpdateCategory(string name, Guid parentid)
+        public void UpdateCategory(string name, Guid? parentid)
         {
             Name = name;
             ParentId = parentid;

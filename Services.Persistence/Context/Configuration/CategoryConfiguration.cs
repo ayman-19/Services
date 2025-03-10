@@ -15,7 +15,7 @@ namespace Services.Persistence.Context.Configuration
                 .WithMany(c => c.SubCategories)
                 .HasForeignKey(c => c.ParentId)
                 .IsRequired(false);
-            builder.Property(c => c.ParentId).HasDefaultValue(Guid.Empty);
+            builder.Property(c => c.ParentId).HasDefaultValue(null).IsRequired(false);
             builder.HasKey(k => k.Id);
             builder.HasIndex(x => x.Name).IsUnique(true);
         }
