@@ -75,8 +75,11 @@
 
         public static class Category
         {
+            public const string IdIsRequired = "Id Is Required";
             public const string CategoryNotExist = "Category Not Exist.";
+            public const string CategoryExist = "Category Is Exist.";
             public const string CategoryIdIsRequired = "Category Id Is Required.";
+            public const string NameIsRequired = "Name Is Required.";
         }
     }
 }

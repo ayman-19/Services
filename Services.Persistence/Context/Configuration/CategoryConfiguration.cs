@@ -13,7 +13,9 @@ namespace Services.Persistence.Context.Configuration
                 .ToTable(nameof(Table.Category))
                 .HasOne(c => c.ParentCategory)
                 .WithMany(c => c.SubCategories)
-                .HasForeignKey(c => c.ParentId);
+                .HasForeignKey(c => c.ParentId)
+                .IsRequired(false);
+            builder.Property(c => c.ParentId).HasDefaultValue(Guid.Empty);
             builder.HasKey(k => k.Id);
             builder.HasIndex(x => x.Name).IsUnique(true);
         }
