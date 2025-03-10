@@ -51,7 +51,7 @@ namespace Services.Application.Features.Branchs.Comands.Update
                     async (id, CancellationToken) =>
                         await branchRepository.IsAnyExistAsync(n => n.Id == id)
                 )
-                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+                .WithMessage(ValidationMessages.Branch.BranchNotExist);
 
             RuleFor(b => b)
                 .MustAsync(
@@ -60,7 +60,7 @@ namespace Services.Application.Features.Branchs.Comands.Update
                             n.Name == request.name && n.Id != request.id
                         )
                 )
-                .WithMessage(ValidationMessages.Service.NameIsExist);
+                .WithMessage(ValidationMessages.Branch.BranchNotExist);
         }
     }
 }
