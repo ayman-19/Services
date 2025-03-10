@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Services.Application.Features.Workers.Queries.Paginate;
 using Services.Domain.Abstraction;
 using Services.Shared.Responses;
@@ -24,9 +25,9 @@ namespace Services.Application.Features.Categories.Queries.PaginateParentCategor
             IReadOnlyCollection<ParentCategories> result = await _categoryRepository.PaginateAsync(
                 page,
                 pagesize,
-                c => new ParentCategories(c.Id, c.Name),
+                c => new ParentCategories(c.Id, c.Name, c.SubCategories.Count),
                 c => c.ParentId == null,
-                null!,
+                c => c.Include(sub => sub.SubCategories),
                 cancellationToken
             );
 

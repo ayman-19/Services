@@ -7,5 +7,5 @@
         IReadOnlyCollection<ParentCategories> Categories
     );
 
-    public sealed record ParentCategories(Guid Id, string Name);
+    public sealed record ParentCategories(Guid Id, string Name, int NumberOfSubCategories);
 }
