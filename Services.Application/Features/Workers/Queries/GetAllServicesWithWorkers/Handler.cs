@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Net;
+﻿using System.Net;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.Application.Features.Services.Queries.GetById;
@@ -33,7 +32,10 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
                     ws => new GetAllServicesWithWorkersResult(
                         ws.UserId,
                         ws.User.Name,
-                        ws.WorkerServices.Select(s => new GetServiceResult(
+                        ws.WorkerServices.Where(s =>
+                                s.ServiceId == request.ServiceId || request.ServiceId == null
+                            )
+                            .Select(s => new GetServiceResult(
                                 s.Service.Id,
                                 s.Service.Name,
                                 s.Service.Description

@@ -15,9 +15,14 @@ namespace Services.Api
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.RegisterPersistenceDependancies(builder.Configuration);
-
+            string _cors = "services";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    _cors,
+                    policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                );
+            });
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
@@ -95,20 +100,9 @@ namespace Services.Api
                     };
                 });
 
-            string _cors = "services";
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy(
-                    _cors,
-                    policy =>
-                    {
-                        policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
-                    }
-                );
-            });
-
             WebApplication app = builder.Build();
 
+            app.UseCors(_cors);
             app.UseMiddleware<ExceptionHandler>();
             app.MapOpenApi();
             app.UseSwagger();
@@ -122,7 +116,6 @@ namespace Services.Api
             app.MapControllers();
 
             app.RegisterAllEndpoints();
-            app.UseCors(_cors);
 
             app.Run();
         }

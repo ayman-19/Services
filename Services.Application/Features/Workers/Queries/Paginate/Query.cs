@@ -4,6 +4,6 @@ using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Queries.GetAll
 {
-    public sealed record GetWorkerPaginateQuery(int page, int pagesize)
+    public sealed record GetWorkerPaginateQuery(Guid? WorkerId, int page, int pagesize)
         : IRequest<ResponseOf<GetWorkerPaginateResult>>;
 }

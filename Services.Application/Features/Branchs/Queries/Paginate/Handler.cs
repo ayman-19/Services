@@ -37,7 +37,7 @@ namespace Services.Application.Features.Branchs.Queries.Paginate
                             b.Langitude,
                             b.Latitude
                         ),
-                        null!,
+                        b => b.Id == request.Id || request.Id == null,
                         null!,
                         cancellationToken
                     );

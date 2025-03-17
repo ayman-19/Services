@@ -17,41 +17,22 @@ namespace Services.Api.Implementation.Categories
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
             RouteGroupBuilder group = endpoints.MapGroup("/Categories").WithTags("Categories");
-            group.MapGet(
-                "PaginateParentCategoriesQueryAsync/{page}/{pageSize}",
+            group.MapPost(
+                "PaginateParentCategoriesQueryAsync",
                 async (
-                    int page,
-                    int pageSize,
+                    PaginateParentCategoriesQuery query,
                     ISender sender,
                     CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new PaginateParentCategoriesQuery(page, pageSize),
-                            cancellationToken
-                        )
-                    )
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
 
-            group.MapGet(
-                "PaginateSubCategoriesByParentCategoryQueryAsync/{page}/{pageSize}/{parentId}",
+            group.MapPost(
+                "PaginateSubCategoriesByParentCategoryQueryAsync",
                 async (
-                    int page,
-                    int pageSize,
-                    Guid parentId,
+                    PaginateSubCategoriesByParentCategoryQuery query,
                     ISender sender,
                     CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new PaginateSubCategoriesByParentCategoryQuery(
-                                page,
-                                pageSize,
-                                parentId
-                            ),
-                            cancellationToken
-                        )
-                    )
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
 
             group.MapPost(

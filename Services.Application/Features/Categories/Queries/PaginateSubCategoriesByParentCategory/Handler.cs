@@ -22,13 +22,15 @@ namespace Services.Application.Features.Categories.Queries.PaginateSubCategories
         )
         {
             int page = request.page == 0 ? 1 : request.page;
-            int pagesize = request.pageSize == 0 ? 1 : request.pageSize;
+            int pagesize = request.pageSize == 0 ? 10 : request.pageSize;
 
             IReadOnlyCollection<SubCategories> result = await _categoryRepository.PaginateAsync(
                 page,
                 pagesize,
                 c => new SubCategories(c.Id, c.Name, c.SubCategories.Count),
-                c => c.ParentId == request.parentCategory,
+                c =>
+                    c.ParentId == request.parentCategory
+                    && (c.Id == request.Id || request.Id == null),
                 c => c.Include(sub => sub.SubCategories),
                 cancellationToken
             );

@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
-using Services.Domain.Entities;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
@@ -29,7 +28,10 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
                     s => new GetWorkersOnServiceResult(
                         s.Id,
                         s.Name,
-                        s.WorkerServices.Select(ws => new GetWorkerResult(
+                        s.WorkerServices.Where(ws =>
+                                request.WorkerId == null || ws.WorkerId == request.WorkerId
+                            )
+                            .Select(ws => new GetWorkerResult(
                                 ws.WorkerId,
                                 ws.Worker.User.Name,
                                 ws.BranchId,

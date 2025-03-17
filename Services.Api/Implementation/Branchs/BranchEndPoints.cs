@@ -45,20 +45,13 @@ namespace Services.Api.Implementation.Branchs
                     Results.Ok(await sender.Send(new GetBranchQuery(id), cancellationToken))
             );
 
-            group.MapGet(
-                "PaginateAsync/{page}/{pageSize}",
+            group.MapPost(
+                "PaginateAsync",
                 async (
-                    int page,
-                    int pageSize,
+                    PaginateBranchQuery query,
                     ISender sender,
                     CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new PaginateBranchQuery(page, pageSize),
-                            cancellationToken
-                        )
-                    )
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
 
             group.MapGet(

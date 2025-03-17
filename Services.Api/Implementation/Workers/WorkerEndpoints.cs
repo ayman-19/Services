@@ -8,7 +8,6 @@ using Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers;
 using Services.Application.Features.Workers.Queries.GetWorkerOnService;
 using Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus;
 using Services.Application.Features.Workers.Queries.GetWorkersOnService;
-using Services.Domain.Enums;
 
 namespace Services.Api.Implementation.Workers
 {
@@ -52,15 +51,13 @@ namespace Services.Api.Implementation.Workers
                 ) => Results.Ok(await sender.Send(command, cancellationToken))
             );
 
-            group.MapGet(
-                "GetWorkersOnServiceAsync/{serviceId}",
-                async (Guid serviceId, ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new GetWorkersOnServiceQuery(serviceId),
-                            cancellationToken
-                        )
-                    )
+            group.MapPost(
+                "GetWorkersOnServiceAsync",
+                async (
+                    GetWorkersOnServiceQuery query,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
 
             group.MapGet(
@@ -80,51 +77,34 @@ namespace Services.Api.Implementation.Workers
                     )
             );
 
-            group.MapGet(
-                "GetAllServicesWithWorkers/{workerId}",
-                async (Guid workerId, ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new GetAllServicesWithWorkersQuery(workerId),
-                            cancellationToken
-                        )
-                    )
-            );
-            group.MapGet(
-                "/GetWorkersPaginateAsync/{page}/{pageSize}",
+            group.MapPost(
+                "GetAllServicesOnWorker",
                 async (
-                    int page,
-                    int pageSize,
+                    GetAllServicesWithWorkersQuery query,
                     ISender sender,
                     CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new GetWorkerPaginateQuery(page, pageSize),
-                            cancellationToken
-                        )
-                    )
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
+            );
+            group.MapPost(
+                "/GetWorkersPaginateAsync",
+                async (
+                    GetWorkerPaginateQuery query,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
             group.MapGet(
                 "/GetAllWorkerAsync",
                 async (ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new GetAllWorkerQuery(), cancellationToken))
             );
-            group.MapGet(
-                "/GetWorkersBasedOnStatus/{page}/{pageSize}/{status}",
+            group.MapPost(
+                "/GetWorkersBasedOnStatus",
                 async (
-                    int page,
-                    int pageSize,
-                    Status status,
+                    GetWorkerStatusPaginateQuery query,
                     ISender sender,
                     CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new GetWorkerStatusPaginateQuery(status, page, pageSize),
-                            cancellationToken
-                        )
-                    )
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
         }
     }

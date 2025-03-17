@@ -24,13 +24,15 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus
             try
             {
                 int page = request.page == 0 ? 1 : request.page;
-                int pagesize = request.pagesize == 0 ? 1 : request.pagesize;
+                int pagesize = request.pagesize == 0 ? 10 : request.pagesize;
 
                 IReadOnlyCollection<GetWorkers>? result = await _workerRepository.PaginateAsync(
                     page,
                     pagesize,
                     w => new GetWorkers(w.UserId, w.User.Name, w.Status),
-                    w => w.Status == request.status,
+                    w =>
+                        w.Status == request.status
+                        && (w.UserId == request.WorkerId || request.WorkerId == null),
                     w => w.Include(u => u.User)
                 );
 

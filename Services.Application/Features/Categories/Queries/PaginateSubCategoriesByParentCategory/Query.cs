@@ -6,6 +6,7 @@ namespace Services.Application.Features.Categories.Queries.PaginateSubCategories
     public sealed record PaginateSubCategoriesByParentCategoryQuery(
         int page,
         int pageSize,
-        Guid parentCategory
+        Guid parentCategory,
+        Guid? Id
     ) : IRequest<ResponseOf<PaginateSubCategoriesByParentCategoryResults>>;
 }

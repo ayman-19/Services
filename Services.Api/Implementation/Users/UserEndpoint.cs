@@ -14,7 +14,7 @@ using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Users
 {
-    public class UserEndpoint : IEndpoint
+    public sealed class UserEndpoint : IEndpoint
     {
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {

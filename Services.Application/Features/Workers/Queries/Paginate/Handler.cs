@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.Application.Features.Workers.Queries.Paginate;
 using Services.Domain.Abstraction;
-using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
@@ -23,7 +22,7 @@ namespace Services.Application.Features.Workers.Queries.GetAll
         )
         {
             int page = request.page == 0 ? 1 : request.page;
-            int pagesize = request.pagesize == 0 ? 1 : request.pagesize;
+            int pagesize = request.pagesize == 0 ? 10 : request.pagesize;
 
             IReadOnlyCollection<GetAllWorkerPaginateResult>? result =
                 await _WorkerserviceRepository.PaginateAsync(
@@ -39,7 +38,7 @@ namespace Services.Application.Features.Workers.Queries.GetAll
                         ws.Branch.Name,
                         ws.Availabilty
                     ),
-                    null!,
+                    w => w.WorkerId == request.WorkerId || request.WorkerId == null,
                     q =>
                         q.Include(ws => ws.Service)
                             .Include(ws => ws.Worker)
