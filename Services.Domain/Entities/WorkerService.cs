@@ -9,9 +9,9 @@ namespace Services.Domain.Entities
         public Guid BranchId { get; set; }
         public Guid ServiceId { get; set; }
         public bool Availabilty { get; set; }
-        public Worker Worker { get; set; } = new();
-        public Branch Branch { get; set; } = new();
-        public Service Service { get; set; } = new();
+        public Worker? Worker { get; set; }
+        public Branch? Branch { get; set; }
+        public Service? Service { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
 

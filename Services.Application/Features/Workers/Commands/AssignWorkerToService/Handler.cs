@@ -69,10 +69,10 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
                         Result = result,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    throw new Exception(ex.Message, ex);
                 }
             }
         }
