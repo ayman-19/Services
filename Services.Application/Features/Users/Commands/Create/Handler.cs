@@ -60,7 +60,7 @@ namespace Services.Application.Features.Users.Commands.Create
 
                 if (request.UserType == UserType.Agent) { }
                 else if (request.UserType == UserType.Worker)
-                    user.Worker = new() { Experience = 0 };
+                    user.Worker = new() { Experience = 0, Status = Status.Pending };
                 else
                     user.Customer = new();
 

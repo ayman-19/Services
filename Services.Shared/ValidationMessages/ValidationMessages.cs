@@ -38,6 +38,8 @@
             public const string Error = "Occur Exception By Transaction.";
         }
 
+        public static class Worker { }
+
         public static class Service
         {
             public const string NameIsRequired = "Name Is Required.";

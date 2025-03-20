@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.Application.Features.Workers.Queries.Paginate;
 using Services.Domain.Abstraction;
+using Services.Domain.Enums;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
@@ -38,7 +39,9 @@ namespace Services.Application.Features.Workers.Queries.GetAll
                         ws.Branch.Name,
                         ws.Availabilty
                     ),
-                    w => w.WorkerId == request.WorkerId || request.WorkerId == null,
+                    w =>
+                        (w.WorkerId == request.WorkerId || request.WorkerId == null)
+                        && w.Worker.Status == request.Status,
                     q =>
                         q.Include(ws => ws.Service)
                             .Include(ws => ws.Worker)

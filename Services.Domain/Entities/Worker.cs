@@ -8,7 +8,7 @@ namespace Services.Domain.Entities
         public double Experience { get; set; }
         public Status Status { get; set; }
         public Guid UserId { get; set; }
-        public User User { get; set; } = new();
+        public User? User { get; set; }
         public ICollection<WorkerService> WorkerServices { get; set; } = new List<WorkerService>();
     }
 }

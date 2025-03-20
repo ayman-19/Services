@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
+using Services.Domain.Enums;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
@@ -27,7 +28,8 @@ namespace Services.Application.Features.Workers.Queries.GetWorkerOnService
                     n =>
                         n.WorkerId == request.WorkerId
                         && n.ServiceId == request.ServiceId
-                        && n.BranchId == request.BranchId,
+                        && n.BranchId == request.BranchId
+                        && n.Worker.Status == Status.Active,
                     ws => new GetWorkerOnServiceResult(
                         ws.WorkerId,
                         ws.Worker.User.Name,

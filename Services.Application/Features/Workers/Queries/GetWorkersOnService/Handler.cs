@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
+using Services.Domain.Enums;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
@@ -24,12 +25,15 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
             try
             {
                 var workersService = await _ServiceRepository.GetAsync(
-                    ws => ws.Id == request.ServiceId,
+                    s =>
+                        s.Id == request.ServiceId
+                        && s.WorkerServices.Any(ws => ws.Worker.Status == Status.Active),
                     s => new GetWorkersOnServiceResult(
                         s.Id,
                         s.Name,
                         s.WorkerServices.Where(ws =>
-                                request.WorkerId == null || ws.WorkerId == request.WorkerId
+                                (request.WorkerId == null || ws.WorkerId == request.WorkerId)
+                                && ws.Worker.Status == Status.Active
                             )
                             .Select(ws => new GetWorkerResult(
                                 ws.WorkerId,

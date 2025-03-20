@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Services.Application.Features.Services.Queries.GetById;
 using Services.Domain.Abstraction;
+using Services.Domain.Enums;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
@@ -28,7 +29,7 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
             try
             {
                 var result = await _workerRepository.GetAsync(
-                    ws => ws.UserId == request.WorkerId,
+                    ws => ws.UserId == request.WorkerId && ws.Status == Status.Active,
                     ws => new GetAllServicesWithWorkersResult(
                         ws.UserId,
                         ws.User.Name,
@@ -42,7 +43,10 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
                             ))
                             .ToList()
                     ),
-                    ws => ws.Include(w => w.WorkerServices).ThenInclude(ws => ws.Service),
+                    ws =>
+                        ws.Include(w => w.WorkerServices)
+                            .ThenInclude(ws => ws.Service)
+                            .Include(w => w.User),
                     false,
                     cancellationToken
                 );

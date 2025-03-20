@@ -3,6 +3,7 @@ using Services.Api.Abstraction;
 using Services.Application.Features.Workers.Commands.AssignWorkerToService;
 using Services.Application.Features.Workers.Commands.RemoveWorkerFromService;
 using Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAvailabilty;
+using Services.Application.Features.Workers.Commands.UpdateWorkerStatus;
 using Services.Application.Features.Workers.Queries.GetAll;
 using Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers;
 using Services.Application.Features.Workers.Queries.GetWorkerOnService;
@@ -46,6 +47,14 @@ namespace Services.Api.Implementation.Workers
                 "UpdateWorkerOnServiceAvailabiltyAsync/",
                 async (
                     UpdateWorkerOnServiceAvailabiltyCommand command,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(command, cancellationToken))
+            );
+            group.MapPut(
+                "UpdateWorkerStatusAsync/",
+                async (
+                    UpdateWorkerStatusCommand command,
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(command, cancellationToken))
