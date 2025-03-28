@@ -7,6 +7,7 @@ namespace Services.Domain.Repositories
     {
         public Task<User> GetByIdAsync(Guid id);
         public Task<bool> EmailOrPhoneIsExist(LoginType type, string emailOrPhone);
+        public Task UpdateCodeAsync(Guid Id, string code);
 
         public Task<User> GetByEmailAsync(string email);
         public Task<User> GetByPhoneAsync(string phone);

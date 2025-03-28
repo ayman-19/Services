@@ -1,9 +1,10 @@
-﻿using Services.Domain.Base;
+﻿using Services.Domain.Abstraction;
+using Services.Domain.Base;
 using Services.Domain.Enums;
 
 namespace Services.Domain.Entities
 {
-    public sealed record Booking : Entity<Guid>
+    public sealed record Booking : Entity<Guid>, ITrackableCreate
     {
         public DateTime CreateOn { get; set; }
         public BookingStatus Status { get; set; }
@@ -12,5 +13,7 @@ namespace Services.Domain.Entities
         public Customer? Customer { get; set; }
         public Guid WorkerId { get; set; }
         public Worker? Worker { get; set; }
+
+        public void SetCreateOn() => CreateOn = DateTime.UtcNow;
     }
 }

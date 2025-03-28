@@ -57,5 +57,11 @@ namespace Services.Persistence.Repositories
                 .AsTracking()
                 .Include(user => user.Token)
                 .FirstAsync(user => user.Phone == phone);
+
+        public async Task UpdateCodeAsync(Guid Id, string code) =>
+            await _context
+                .Set<User>()
+                .Where(u => u.Id == Id)
+                .ExecuteUpdateAsync(p => p.SetProperty(p => p.Code, code));
     }
 }

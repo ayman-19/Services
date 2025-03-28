@@ -18,18 +18,21 @@ namespace Services.Application.Features.Users.Commands.Login
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IJobs _jobs;
 
         public LoginUserHandler(
             IJWTManager jwtManager,
             IUserRepository userRepository,
             IUnitOfWork unitOfWork,
-            IPasswordHasher<User> passwordHasher
+            IPasswordHasher<User> passwordHasher,
+            IJobs jobs
         )
         {
             _jwtManager = jwtManager;
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
+            _jobs = jobs;
         }
 
         public async Task<ResponseOf<LoginUserResult>> Handle(
@@ -44,27 +47,31 @@ namespace Services.Application.Features.Users.Commands.Login
                     User user;
 
                     if (request.type == LoginType.Email)
-                    {
                         user = await _userRepository.GetByEmailAsync(request.emailOrPhone);
-
-                        if (!user.ConfirmAccount)
-                            throw new InvalidException(ValidationMessages.User.EmailNotConfirmed);
-
-                        if (!VerifyPassword(user, user.HashedPassword, request.password))
-                            throw new InvalidException(ValidationMessages.User.IncorrectPassword);
-                    }
                     else if (request.type == LoginType.Phone)
-                    {
                         user = await _userRepository.GetByPhoneAsync(request.emailOrPhone);
-
-                        if (!user.ConfirmAccount)
-                            throw new InvalidException(ValidationMessages.User.EmailNotConfirmed);
-
-                        if (!VerifyPassword(user, user.HashedPassword, request.password))
-                            throw new InvalidException(ValidationMessages.User.IncorrectPassword);
-                    }
                     else
                         throw new InvalidException(ValidationMessages.User.MakeSureInformation);
+
+                    if (!user.ConfirmAccount)
+                    {
+                        string code = await _jwtManager.GenerateCodeAsync();
+                        await _userRepository.UpdateCodeAsync(user.Id, code);
+                        await transaction.CommitAsync(cancellationToken);
+                        await _jobs.SendEmailByJobAsync(
+                            user.Email,
+                            $"To Confirm Email Code: <h3>{code}</h3>"
+                        );
+                        return new ResponseOf<LoginUserResult>
+                        {
+                            Message = ValidationMessages.User.EmailNotConfirmed,
+                            StatusCode = 499,
+                            Success = false,
+                        };
+                    }
+
+                    if (!VerifyPassword(user, user.HashedPassword, request.password))
+                        throw new InvalidException(ValidationMessages.User.IncorrectPassword);
 
                     return new ResponseOf<LoginUserResult>
                     {
@@ -76,6 +83,7 @@ namespace Services.Application.Features.Users.Commands.Login
                 }
                 catch (Exception ex)
                 {
+                    await transaction.RollbackAsync(cancellationToken);
                     throw new DatabaseTransactionException(ex.Message);
                 }
             }

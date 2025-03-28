@@ -18,7 +18,8 @@
             public const string ComparePassword = "ConfirmPassword Not Equal Password.";
             public const string EmailIsExist = "Email Is Exist.";
             public const string EmailIsNotExist = "Email Is Not Exist.";
-            public const string ValidMail = "Make Sure This is Valid.";
+            public const string ValidMail = "Make Sure This Email is Valid.";
+            public const string PhoneNumberNotValid = "Phone Number Not Valid.";
             public const string UserNotExist = "User Not Exist.";
             public const string ConfirmEmail = "Write this Code Correct that Confirm Email.";
             public const string ValidatePhoneNumber = "Phone Number Invalid.";

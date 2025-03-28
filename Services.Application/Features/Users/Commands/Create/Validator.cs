@@ -89,7 +89,7 @@ namespace Services.Application.Features.Users.Commands.Create
 
             RuleFor(x => x)
                 .Must((e, cancellationToken) => e.phone.ValidatePhoneNumber())
-                .WithMessage(ValidationMessages.User.EmailIsExist);
+                .WithMessage(ValidationMessages.User.PhoneNumberNotValid);
         }
     }
 }
