@@ -3,7 +3,7 @@ using Services.Domain.Base;
 
 namespace Services.Domain.Entities
 {
-    public sealed record Discound : Entity<Guid>, ITrackableCreate
+    public sealed record Discount : Entity<Guid>, ITrackableCreate
     {
         public double Percentage { get; set; }
         public DateTime ExpireOn { get; set; }

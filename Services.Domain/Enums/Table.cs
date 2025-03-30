@@ -15,5 +15,7 @@
         Worker,
         WorkerService,
         Category,
+        Discound,
+        Booking,
     }
 }
