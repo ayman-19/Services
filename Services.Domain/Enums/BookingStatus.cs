@@ -2,10 +2,10 @@
 {
     public enum BookingStatus
     {
-        Completed,
         Pending,
         Confrimed,
         InProgress,
+        Completed,
         Canceled,
     }
 }

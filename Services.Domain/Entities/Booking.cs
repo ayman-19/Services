@@ -14,6 +14,10 @@ namespace Services.Domain.Entities
         public Guid WorkerId { get; set; }
         public Worker? Worker { get; set; }
 
-        public void SetCreateOn() => CreateOn = DateTime.UtcNow;
+        public void SetCreateOn()
+        {
+            CreateOn = DateTime.UtcNow;
+            Status = BookingStatus.Pending;
+        }
     }
 }
