@@ -5,7 +5,7 @@ using Services.Domain.Enums;
 
 namespace Services.Persistence.Context.Configuration
 {
-    public sealed class BoockingConfiguration : IEntityTypeConfiguration<Booking>
+    public sealed class BookingConfiguration : IEntityTypeConfiguration<Booking>
     {
         public void Configure(EntityTypeBuilder<Booking> builder)
         {
