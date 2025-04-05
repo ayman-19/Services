@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Services.Application.Features.Discount.Queries.GetById
+﻿namespace Services.Application.Features.Discount.Queries.GetById
 {
-	internal class Result
-	{
-	}
+    public sealed record GetDiscountByIdResult(Guid Id, double Percentage, DateTime ExpireOn);
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Services.Application.Features.Discount.Queries.Paginate
+﻿namespace Services.Application.Features.Discount.Queries.Paginate
 {
-	internal class Result
-	{
-	}
+    public sealed record PaginateDiscountsResults(
+        int Page,
+        int PageSize,
+        int TotalPage,
+        IReadOnlyCollection<DiscountsResult> Discounts
+    );
+
+    public sealed record DiscountsResult(Guid Id, double Percentage, DateTime ExpireOn);
 }

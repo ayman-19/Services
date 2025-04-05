@@ -26,19 +26,19 @@ namespace Services.Application.Features.Bookings.Command.Create
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Booking.LocationIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.LocationCantBeNull);
+                .WithMessage(ValidationMessages.Booking.LocationIsRequired);
 
             RuleFor(s => s.CustomerId)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Booking.CustomerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.CustomerIdCantBeNull);
+                .WithMessage(ValidationMessages.Booking.CustomerIdIsRequired);
 
             RuleFor(s => s.WorkerId)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.WorkerIdCantBeNull);
+                .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired);
         }
     }
 }

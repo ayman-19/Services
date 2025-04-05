@@ -50,6 +50,14 @@
             public const string ServiceNotExist = "Service Not Exist.";
         }
 
+        public static class Discount
+        {
+            public const string NameIsRequired = "Name Is Required.";
+            public const string NameIsExist = "Name Is Exist.";
+            public const string IdIsRequired = "Id Is Required.";
+            public const string DiscountNotExist = "Discount Not Exist.";
+        }
+
         public static class WorkereService
         {
             public const string WorkerIdIsRequired = "Worker Id Is Required.";
@@ -84,6 +92,15 @@
             public const string CategoryIdIsRequired = "Category Id Is Required.";
             public const string NameIsRequired = "Name Is Required.";
             public const string DescriptionIsRequired = "Description Is Required.";
+        }
+
+        public static class Booking
+        {
+            public const string IdIsRequired = "Id Is Required";
+            public const string WorkerIdIsRequired = "Worker Id Is Required.";
+            public const string CustomerIdIsRequired = "Customer Id Is Required.";
+            public const string LocationIsRequired = "Location Is Required.";
+            public const string BookingNotExist = "Booking Not Exist.";
         }
     }
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using Services.Shared.Responses;
 
 namespace Services.Application.Features.Discount.Queries.Paginate
 {
-	internal class Query
-	{
-	}
+    public sealed record PaginateDiscountsQuery(int page, int pageSize, Guid? Id)
+        : IRequest<ResponseOf<PaginateDiscountsResults>>;
 }

@@ -10,7 +10,7 @@ using Services.Application.Features.Branchs.Queries.Paginate;
 
 namespace Services.Api.Implementation.Branchs
 {
-    public class BranchEndPoints : IEndpoint
+    public sealed class BranchEndPoints : IEndpoint
     {
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
