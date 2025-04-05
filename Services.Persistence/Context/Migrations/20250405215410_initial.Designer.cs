@@ -12,8 +12,8 @@ using Services.Persistence.Data;
 namespace Services.Persistence.Context.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    [Migration("20250310224002_updateFinaly")]
-    partial class updateFinaly
+    [Migration("20250405215410_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -567,6 +567,36 @@ namespace Services.Persistence.Context.Migrations
                     b.ToTable("QRTZ_TRIGGERS", "dbo");
                 });
 
+            modelBuilder.Entity("Services.Domain.Entities.Booking", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Location")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WorkerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("Booking", "Service");
+                });
+
             modelBuilder.Entity("Services.Domain.Entities.Branch", b =>
                 {
                     b.Property<Guid>("Id")
@@ -656,6 +686,26 @@ namespace Services.Persistence.Context.Migrations
                     b.ToTable("CustomerBranch", "Service");
                 });
 
+            modelBuilder.Entity("Services.Domain.Entities.Discount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpireOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discount", "Service");
+                });
+
             modelBuilder.Entity("Services.Domain.Entities.Service", b =>
                 {
                     b.Property<Guid>("Id")
@@ -672,6 +722,9 @@ namespace Services.Persistence.Context.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<Guid?>("DiscountId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<double>("Duration")
                         .HasColumnType("float");
 
@@ -685,6 +738,8 @@ namespace Services.Persistence.Context.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("DiscountId");
 
                     b.HasIndex("Name", "Description")
                         .IsUnique();
@@ -981,6 +1036,25 @@ namespace Services.Persistence.Context.Migrations
                     b.Navigation("JobDetail");
                 });
 
+            modelBuilder.Entity("Services.Domain.Entities.Booking", b =>
+                {
+                    b.HasOne("Services.Domain.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Services.Domain.Entities.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Worker");
+                });
+
             modelBuilder.Entity("Services.Domain.Entities.Category", b =>
                 {
                     b.HasOne("Services.Domain.Entities.Category", "ParentCategory")
@@ -1024,7 +1098,13 @@ namespace Services.Persistence.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Services.Domain.Entities.Discount", "Discount")
+                        .WithMany()
+                        .HasForeignKey("DiscountId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("Discount");
                 });
 
             modelBuilder.Entity("Services.Domain.Entities.Token", b =>

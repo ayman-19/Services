@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using Services.Shared.Responses;
 
 namespace Services.Application.Features.Bookings.Query.Paginate
 {
-    internal class Query
-    {
-    }
+    public sealed record PaginateBookingsQuery(int page, int pageSize, Guid? Id)
+        : IRequest<ResponseOf<PaginateBookingsResults>>;
 }

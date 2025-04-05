@@ -10,7 +10,7 @@ namespace Services.Domain.Entities
         public double Duration { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
-        public Guid DiscountId { get; set; }
+        public Guid? DiscountId { get; set; }
         public Discount? Discount { get; set; }
 
         public void UpdateService(string name, string description, Guid categoryId)

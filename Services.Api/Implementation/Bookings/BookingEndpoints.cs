@@ -2,6 +2,10 @@
 using Services.Api.Abstraction;
 using Services.Application.Features.Bookings.Command.Create;
 using Services.Application.Features.Bookings.Command.Delete;
+using Services.Application.Features.Bookings.Query.GetById;
+using Services.Application.Features.Bookings.Query.Paginate;
+using Services.Application.Features.Discount.Queries.GetById;
+using Services.Application.Features.Discount.Queries.Paginate;
 
 namespace Services.Api.Implementation.Bookings
 {
@@ -33,6 +37,21 @@ namespace Services.Api.Implementation.Bookings
                 "DeleteAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new DeleteBookingCommand(id), cancellationToken))
+            );
+
+            group.MapGet(
+                "GetByIdAsync/{id}",
+                async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await sender.Send(new GetBookingByIdQuery(id), cancellationToken))
+            );
+
+            group.MapPost(
+                "PaginateAsync",
+                async (
+                    PaginateBookingsQuery query,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
         }
     }

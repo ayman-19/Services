@@ -9,7 +9,7 @@ namespace Services.Persistence.Context.Configuration
     {
         public void Configure(EntityTypeBuilder<Discount> builder)
         {
-            builder.ToTable(nameof(Table.Discound), nameof(Schema.Service));
+            builder.ToTable(nameof(Table.Discount), nameof(Schema.Service));
             builder.HasKey(t => t.Id);
         }
     }

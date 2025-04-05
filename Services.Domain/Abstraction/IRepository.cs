@@ -10,7 +10,7 @@ namespace Services.Domain.Repositories
         Task<TSelctor> GetAsync<TSelctor>(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TSelctor>> Selctor,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null!,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>> includes = null!,
             bool astracking = true,
             CancellationToken cancellationToken = default
         );
@@ -46,8 +46,8 @@ namespace Services.Domain.Repositories
             int page,
             int pageSize,
             Expression<Func<TEntity, TSelctor>> Selctor,
-            Expression<Func<TEntity, bool>> predicate = null,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
+            Expression<Func<TEntity, bool>> predicate = null!,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>> includes = null!,
             CancellationToken cancellationToken = default
         );
     }

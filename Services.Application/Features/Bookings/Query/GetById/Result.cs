@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.Domain.Enums;
 
 namespace Services.Application.Features.Bookings.Query.GetById
 {
-    internal class Result
-    {
-    }
+    public sealed record GetBookingByIdResult(
+        Guid Id,
+        DateTime CreateOn,
+        BookingStatus Status,
+        LocationType Location,
+        Guid CustomerId,
+        string CustomerName,
+        Guid WorkerId,
+        string WorkerName
+    );
 }
