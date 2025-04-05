@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Bookings\Command\Delete\" />
+    <Folder Include="Features\Bookings\Command\Update\" />
+    <Folder Include="Features\Bookings\Query\" />
     <Folder Include="Features\Customers\Commands\" />
     <Folder Include="Features\Customers\Queries\" />
     <Folder Include="Features\Users\Queries\GetAll\" />
