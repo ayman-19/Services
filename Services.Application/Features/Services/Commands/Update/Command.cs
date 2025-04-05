@@ -7,6 +7,7 @@ namespace Services.Application.Features.Services.Commands.Update
         Guid id,
         string name,
         string description,
-        Guid categoryId
+        Guid categoryId,
+        Guid? DiscountId
     ) : IRequest<ResponseOf<UpdateServiceResult>>;
 }

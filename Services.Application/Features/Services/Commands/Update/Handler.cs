@@ -29,7 +29,12 @@ namespace Services.Application.Features.Services.Commands.Update
                 try
                 {
                     Service service = await _serviceRepository.GetByIdAsync(request.id);
-                    service.UpdateService(request.name, request.description, request.categoryId);
+                    service.UpdateService(
+                        request.name,
+                        request.description,
+                        request.categoryId,
+                        request.DiscountId
+                    );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync();
                     return new()

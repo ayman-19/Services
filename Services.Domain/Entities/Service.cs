@@ -13,11 +13,17 @@ namespace Services.Domain.Entities
         public Guid? DiscountId { get; set; }
         public Discount? Discount { get; set; }
 
-        public void UpdateService(string name, string description, Guid categoryId)
+        public void UpdateService(
+            string name,
+            string description,
+            Guid categoryId,
+            Guid? discountId
+        )
         {
             Name = name;
             Description = description;
             CategoryId = categoryId;
+            DiscountId = discountId;
         }
 
         public ICollection<WorkerService> WorkerServices { get; set; }
