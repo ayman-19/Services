@@ -1,4 +1,4 @@
-﻿namespace Services.Application.Features.Discount.Queries.Paginate
+﻿namespace Services.Application.Features.Discounts.Queries.Paginate
 {
     public sealed record PaginateDiscountsResults(
         int Page,

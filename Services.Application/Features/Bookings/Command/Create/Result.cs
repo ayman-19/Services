@@ -1,8 +1,5 @@
 ﻿using Services.Domain.Entities;
 using Services.Domain.Enums;
-
-/*public static implicit operator CreateBranchResult(Branch branch) =>
-            new(branch.Id, branch.Name, branch.Description, branch.Latitude, branch.Langitude);*/
 namespace Services.Application.Features.Bookings.Command.Create
 {
     public sealed record CreateBookingResult(

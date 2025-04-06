@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Discount.Queries.GetById
+namespace Services.Application.Features.Discounts.Queries.GetById
 {
     public sealed class GetDiscountByIdValidator : AbstractValidator<GetDiscountByIdQuery>
     {

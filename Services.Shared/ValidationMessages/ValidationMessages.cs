@@ -50,13 +50,13 @@
             public const string ServiceNotExist = "Service Not Exist.";
         }
 
-        public static class Discount
-        {
-            public const string NameIsRequired = "Name Is Required.";
-            public const string NameIsExist = "Name Is Exist.";
-            public const string IdIsRequired = "Id Is Required.";
-            public const string DiscountNotExist = "Discount Not Exist.";
-        }
+        //public static class Discount
+        //{
+        //    public const string NameIsRequired = "Name Is Required.";
+        //    public const string NameIsExist = "Name Is Exist.";
+        //    public const string IdIsRequired = "Id Is Required.";
+        //    public const string DiscountNotExist = "Discount Not Exist.";
+        //}
 
         public static class WorkereService
         {
@@ -101,6 +101,21 @@
             public const string CustomerIdIsRequired = "Customer Id Is Required.";
             public const string LocationIsRequired = "Location Is Required.";
             public const string BookingNotExist = "Booking Not Exist.";
+            public const string UserNotFound = "User Not Found.";
+        }
+        public static class Discount
+        {
+            public const string IdIsRequired = "Id Is Required.";
+            public const string PercentageIsRequired = "Percentage Is Required.";
+            public const string PercentageCantBeNull = "Percentage Cant BeNull.";
+            public const string ExpireDateIsRequired = "Expire Date IsRequired.";
+            public const string ExpireDateCantBeNull = "Expire Date Cant Be Null.";
+            public const string DiscountIsExist      = "Discount Is Exist.";
+            public const string DiscountNotExist = "Discount Not Exist.";
+
+
+
+
         }
     }
 }

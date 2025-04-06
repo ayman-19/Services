@@ -2,10 +2,9 @@
 using Services.Api.Abstraction;
 using Services.Application.Features.Bookings.Command.Create;
 using Services.Application.Features.Bookings.Command.Delete;
+using Services.Application.Features.Bookings.Command.Update;
 using Services.Application.Features.Bookings.Query.GetById;
 using Services.Application.Features.Bookings.Query.Paginate;
-using Services.Application.Features.Discount.Queries.GetById;
-using Services.Application.Features.Discount.Queries.Paginate;
 
 namespace Services.Api.Implementation.Bookings
 {
@@ -24,14 +23,14 @@ namespace Services.Api.Implementation.Bookings
                 ) => Results.Ok(await sender.Send(Command, cancellationToken))
             );
 
-            //group.MapPut(
-            //    "UpdateAsync/",
-            //    async (
-            //        UpdateServiceCommand Command,
-            //        ISender sender,
-            //        CancellationToken cancellationToken
-            //    ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            //);
+            group.MapPut(
+                "UpdateAsync/",
+                async (
+                    UpdateBookingCommand Command,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(Command, cancellationToken))
+            );
 
             group.MapDelete(
                 "DeleteAsync/{id}",
