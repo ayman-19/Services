@@ -5,7 +5,7 @@ using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Discount.Queries.Paginate
+namespace Services.Application.Features.Discounts.Queries.Paginate
 {
     public sealed record PaginateDiscountsHandler(IDiscountRepository discountRepository)
         : IRequestHandler<PaginateDiscountsQuery, ResponseOf<PaginateDiscountsResults>>

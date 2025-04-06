@@ -5,7 +5,7 @@ using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Discount.Queries.GetById
+namespace Services.Application.Features.Discounts.Queries.GetById
 {
     public sealed class GetDiscountByIdHandler(IDiscountRepository discountRepository)
         : IRequestHandler<GetDiscountByIdQuery, ResponseOf<GetDiscountByIdResult>>

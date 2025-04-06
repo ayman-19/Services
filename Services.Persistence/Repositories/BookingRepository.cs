@@ -16,9 +16,17 @@ namespace Services.Persistence.Repositories
         }
 
         public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken) =>
+             await _context
+                 .Set<Booking>()
+                 .Where(s => s.Id == id)
+                 .ExecuteDeleteAsync(cancellationToken);
+
+        public async ValueTask<Booking> GetByIdAsync(Guid Id, CancellationToken cancellationToken) =>
             await _context
                 .Set<Booking>()
-                .Where(s => s.Id == id)
-                .ExecuteDeleteAsync(cancellationToken);
+                .AsTracking()
+                .FirstAsync(id => id.Id == Id, cancellationToken);
+
+      
     }
 }

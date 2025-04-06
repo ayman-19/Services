@@ -8,7 +8,10 @@ namespace Services.Domain.Entities
         public double Percentage { get; set; }
         public DateTime ExpireOn { get; set; }
         public DateTime CreateOn { get; set; }
-
+        public void UpdateDiscount(double percentage)
+        {
+            Percentage = percentage;
+        }
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;
     }
 }

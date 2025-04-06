@@ -6,5 +6,6 @@ namespace Services.Domain.Abstraction
     public interface IBookingRepository : IRepository<Booking>
     {
         Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+        ValueTask<Booking> GetByIdAsync(Guid Id, CancellationToken cancellationToken);
     }
 }
