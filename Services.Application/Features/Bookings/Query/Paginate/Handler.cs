@@ -33,7 +33,7 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                         s.WorkerId,
                         s.Worker!.User!.Name
                     ),
-                    s => s.Id == request.Id,
+                    s => s.Id == request.Id || request.Id == null,
                     c =>
                         c.Include(cust => cust.Customer)
                             .ThenInclude(user => user!.User)
