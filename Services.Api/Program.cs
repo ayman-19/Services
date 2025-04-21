@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Api.Middlewares;
@@ -15,28 +16,6 @@ namespace Services.Api
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-            string _cors = "services";
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy(
-                    _cors,
-                    policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-                );
-            });
-            builder.Services.AddControllers();
-            builder.Services.AddOpenApi();
-            builder.Services.AddSwaggerGen();
-            ConfigurationManager configuration = builder.Configuration;
-
-            builder.Services.AddHttpContextAccessor();
-            builder
-                .Services.RegisterSharedDepenedncies()
-                .RegisterPersistenceDependancies(configuration)
-                .RegisterApplicationDepenedncies(configuration)
-                .RegisterMiddlewares();
-
-            builder.Services.AddEndpointsApiExplorer();
-
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Service.", Version = "v1" });
@@ -75,6 +54,29 @@ namespace Services.Api
                     }
                 );
             });
+            builder.Services.AddEndpointsApiExplorer();
+            string _cors = "services";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    _cors,
+                    policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                );
+            });
+            builder.Services.AddControllers();
+            builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen();
+            ConfigurationManager configuration = builder.Configuration;
+
+            builder.Services.AddHttpContextAccessor();
+            builder
+                .Services.RegisterSharedDepenedncies()
+                .RegisterPersistenceDependancies(configuration)
+                .RegisterApplicationDepenedncies(configuration)
+                .RegisterMiddlewares();
+
+            builder.Services.AddEndpointsApiExplorer();
+
             builder
                 .Services.AddAuthentication(o =>
                 {
@@ -101,18 +103,17 @@ namespace Services.Api
                 });
 
             WebApplication app = builder.Build();
-
-            app.UseCors(_cors);
-            app.UseMiddleware<ExceptionHandler>();
-            app.MapOpenApi();
             app.UseSwagger();
             app.UseSwaggerUI();
-
-            app.UseHttpsRedirection();
-
+            app.UseMiddleware<ExceptionHandler>();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseRouting();
+            app.UseStaticFiles();
 
+            app.UseCors(_cors);
+            app.MapOpenApi();
+            app.UseHttpsRedirection();
             app.MapControllers();
 
             app.RegisterAllEndpoints();

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Services.Domain.Entities;
 using Services.Shared.Responses;
 
@@ -8,6 +9,7 @@ namespace Services.Application.Features.Services.Commands.Create
         string name,
         string description,
         Guid categoryId,
+        IFormFile File,
         Guid? DiscountId
     ) : IRequest<ResponseOf<CreateServiceResult>>
     {

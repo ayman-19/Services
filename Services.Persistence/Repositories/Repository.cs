@@ -91,6 +91,7 @@ namespace Services.Persistence.Repositories
             Expression<Func<TEntity, TSelctor>> Selctor,
             Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null,
+            Expression<Func<TEntity, object>> ordering = null!,
             CancellationToken cancellationToken = default
         )
         {
@@ -103,6 +104,9 @@ namespace Services.Persistence.Repositories
                 query = includes(query);
 
             query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
+            if (ordering != null)
+                query = query.OrderByDescending(ordering);
 
             return await query.Select(Selctor).ToListAsync(cancellationToken);
         }

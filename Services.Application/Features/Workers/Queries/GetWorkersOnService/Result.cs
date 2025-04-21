@@ -9,7 +9,10 @@
     public sealed record GetWorkerResult(
         Guid WorkerId,
         string WorkerName,
-        Guid BranchId,
-        string BranchName
+        double Rate,
+        double Price,
+        double Distance,
+        double Latitude,
+        double Longitude
     );
 }

@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Services.Application.Features.Users.Commands.Create;
 using Services.Domain.Abstraction;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
@@ -54,7 +53,7 @@ namespace Services.Application.Features.Users.Commands.ForgetPassword
                     if (modify > 0)
                         await _emailSender.SendEmailAsync(
                             user.Email,
-                            ValidationMessages.User.ResetPassword,
+                            ValidationMessages.Users.ResetPassword,
                             $"To Confirm Email Code: <h3>{code}</h3>"
                         );
 

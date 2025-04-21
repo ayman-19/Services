@@ -4,7 +4,7 @@ using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
 {
-    public sealed record AssignWorkerToServiceCommand(Guid WorkerId, Guid ServiceId, Guid BranchId)
+    public sealed record AssignWorkerToServiceCommand(Guid WorkerId, Guid ServiceId, double Price)
         : IRequest<ResponseOf<AssignWorkerToServiceResult>>
     {
         public static implicit operator WorkerService(AssignWorkerToServiceCommand command) =>
@@ -12,7 +12,7 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
             {
                 WorkerId = command.WorkerId,
                 ServiceId = command.ServiceId,
-                BranchId = command.BranchId,
+                Price = command.Price,
             };
     }
 }

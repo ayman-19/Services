@@ -61,7 +61,7 @@ namespace Services.Application.Features.Users.Commands.Update
                     {
                         await _emailSender.SendEmailAsync(
                             user.Email,
-                            ValidationMessages.User.ConfirmEmail,
+                            ValidationMessages.Users.ConfirmEmail,
                             $"To Confirm Email Code: <h3>'{code}'</h3>"
                         );
 

@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Services.Application.Features.Services.Queries.GetById;
 using Services.Domain.Abstraction;
@@ -17,9 +19,16 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
         >
     {
         private readonly IWorkerRepository _workerRepository;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public GetAllServicesWithWorkersHandler(IWorkerRepository workerRepository) =>
+        public GetAllServicesWithWorkersHandler(
+            IWorkerRepository workerRepository,
+            IHttpContextAccessor contextAccessor
+        )
+        {
             _workerRepository = workerRepository;
+            _contextAccessor = contextAccessor;
+        }
 
         public async Task<ResponseOf<GetAllServicesWithWorkersResult>> Handle(
             GetAllServicesWithWorkersQuery request,
@@ -39,7 +48,8 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
                             .Select(s => new GetServiceResult(
                                 s.Service.Id,
                                 s.Service.Name,
-                                s.Service.Description
+                                s.Service.Description,
+                                GetUrlImage(s.Service.Image)
                             ))
                             .ToList()
                     ),
@@ -63,5 +73,9 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
                 throw new DatabaseTransactionException(ValidationMessages.Database.Error);
             }
         }
+
+        private string GetUrlImage(string fileName) =>
+            $"{_contextAccessor.HttpContext!.Request.Scheme}://{_contextAccessor.HttpContext!.Request.Host}{_contextAccessor.HttpContext!.Request.PathBase}"
+            + fileName;
     }
 }

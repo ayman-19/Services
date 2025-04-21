@@ -45,12 +45,6 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
                 .NotNull()
                 .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired);
 
-            RuleFor(s => s.BranchId)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.BranchIdIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.BranchIdIsRequired);
-
             RuleFor(w => w.WorkerId)
                 .MustAsync(
                     async (workerId, CancellationToken) =>
@@ -65,20 +59,11 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
                 )
                 .WithMessage(ValidationMessages.WorkereService.ServiceNotExist);
 
-            RuleFor(b => b.BranchId)
-                .MustAsync(
-                    async (branchId, CancellationToken) =>
-                        await branchRepository.IsAnyExistAsync(n => n.Id == branchId)
-                )
-                .WithMessage(ValidationMessages.WorkereService.BranchNotExist);
-
             RuleFor(command => command)
                 .MustAsync(
                     async (command, CancellationToken) =>
                         !await workerServiceRepository.IsAnyExistAsync(n =>
-                            n.WorkerId == command.WorkerId
-                            && n.ServiceId == command.ServiceId
-                            && n.BranchId == command.BranchId
+                            n.WorkerId == command.WorkerId && n.ServiceId == command.ServiceId
                         )
                 )
                 .WithMessage(ValidationMessages.WorkereService.AssignWorkerToService);

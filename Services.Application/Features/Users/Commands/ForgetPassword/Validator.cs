@@ -27,11 +27,11 @@ namespace Services.Application.Features.Users.Commands.ForgetPassword
         {
             RuleFor(x => x.email)
                 .EmailAddress()
-                .WithMessage(ValidationMessages.User.ValidMail)
+                .WithMessage(ValidationMessages.Users.ValidMail)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.EmailIsRequired)
+                .WithMessage(ValidationMessages.Users.EmailIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.EmailIsRequired);
+                .WithMessage(ValidationMessages.Users.EmailIsRequired);
 
             RuleFor(x => x)
                 .MustAsync(
@@ -41,7 +41,7 @@ namespace Services.Application.Features.Users.Commands.ForgetPassword
                             cancellationToken
                         )
                 )
-                .WithMessage(ValidationMessages.User.EmailIsNotExist);
+                .WithMessage(ValidationMessages.Users.EmailIsNotExist);
         }
     }
 }

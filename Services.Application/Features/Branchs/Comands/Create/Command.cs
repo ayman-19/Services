@@ -12,12 +12,6 @@ namespace Services.Application.Features.Branchs.Comands.Create
     ) : IRequest<ResponseOf<CreateBranchResult>>
     {
         public static implicit operator Branch(CreateBranchCommand branchCommand) =>
-            new()
-            {
-                Name = branchCommand.name,
-                Langitude = branchCommand.langtuide,
-                Latitude = branchCommand.latitude,
-                Description = branchCommand.description,
-            };
+            new() { Langitude = branchCommand.langtuide, Latitude = branchCommand.latitude };
     }
 }

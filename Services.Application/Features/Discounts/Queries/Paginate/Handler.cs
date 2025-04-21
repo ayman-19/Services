@@ -26,6 +26,7 @@ namespace Services.Application.Features.Discounts.Queries.Paginate
                         s => new DiscountsResult(s.Id, s.Percentage, s.CreateOn),
                         s => s.Id == request.Id || request.Id == null,
                         null!,
+                        null!,
                         cancellationToken
                     );
                 return new()

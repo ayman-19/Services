@@ -1,4 +1,4 @@
 ﻿namespace Services.Application.Features.Branchs.Queries.GetAll
 {
-    public sealed record GetAllBranchsResult(Guid Id, string Name, string Description);
+    public sealed record GetAllBranchsResult(Guid Id, double Latitude, double Longitude);
 }

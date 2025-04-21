@@ -36,7 +36,6 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAv
                         await _workerServiceRepository.GetWorkerFromServiceAsync(
                             request.WorkerId,
                             request.ServiceId,
-                            request.BranchId,
                             cancellationToken
                         );
                     workerService.UpdateAvailabilty(request.Availabilty);

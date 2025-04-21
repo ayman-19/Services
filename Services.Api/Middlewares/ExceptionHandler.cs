@@ -19,7 +19,7 @@ namespace Services.Api.Middlewares
                 var requestStatus = GetStatusRequest(ex);
                 var resposne = new Response
                 {
-                    Message = requestStatus.message,
+                    Message = requestStatus.message.Replace('/', ','),
                     StatusCode = requestStatus.statusCode,
                     Success = false,
                 };

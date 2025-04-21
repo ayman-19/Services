@@ -31,14 +31,11 @@ namespace Services.Persistence.Repositories
         public async ValueTask<WorkerService> GetWorkerFromServiceAsync(
             Guid WorkerId,
             Guid ServiceId,
-            Guid BranchId,
             CancellationToken cancellationToken
         ) =>
             await _context
                 .Set<WorkerService>()
                 .AsTracking()
-                .FirstAsync(ws =>
-                    ws.WorkerId == WorkerId && ws.ServiceId == ServiceId && ws.BranchId == BranchId
-                );
+                .FirstAsync(ws => ws.WorkerId == WorkerId && ws.ServiceId == ServiceId);
     }
 }

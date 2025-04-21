@@ -12,8 +12,8 @@ using Services.Persistence.Data;
 namespace Services.Persistence.Context.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    [Migration("20250405215410_initial")]
-    partial class initial
+    [Migration("20250419211041_DeleteColumn")]
+    partial class DeleteColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -592,6 +592,9 @@ namespace Services.Persistence.Context.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("WorkerId");
 
                     b.ToTable("Booking", "Service");
@@ -606,24 +609,22 @@ namespace Services.Persistence.Context.Migrations
                     b.Property<DateTime>("CreateOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("Langitude")
                         .HasColumnType("float");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("UpdateOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Branch", "Service");
                 });
@@ -659,31 +660,6 @@ namespace Services.Persistence.Context.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Customer", "Service");
-                });
-
-            modelBuilder.Entity("Services.Domain.Entities.CustomerBranch", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BranchId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreateOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("BranchId", "CustomerId")
-                        .IsUnique();
-
-                    b.ToTable("CustomerBranch", "Service");
                 });
 
             modelBuilder.Entity("Services.Domain.Entities.Discount", b =>
@@ -727,6 +703,10 @@ namespace Services.Persistence.Context.Migrations
 
                     b.Property<double>("Duration")
                         .HasColumnType("float");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -830,11 +810,14 @@ namespace Services.Persistence.Context.Migrations
                     b.Property<bool>("Availabilty")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("BranchId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreateOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<double?>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
@@ -847,11 +830,9 @@ namespace Services.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BranchId");
-
                     b.HasIndex("WorkerId");
 
-                    b.HasIndex("ServiceId", "BranchId", "WorkerId")
+                    b.HasIndex("ServiceId", "WorkerId")
                         .IsUnique();
 
                     b.ToTable("WorkerService", "Service");
@@ -1055,6 +1036,17 @@ namespace Services.Persistence.Context.Migrations
                     b.Navigation("Worker");
                 });
 
+            modelBuilder.Entity("Services.Domain.Entities.Branch", b =>
+                {
+                    b.HasOne("Services.Domain.Models.User", "User")
+                        .WithOne("Branch")
+                        .HasForeignKey("Services.Domain.Entities.Branch", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Services.Domain.Entities.Category", b =>
                 {
                     b.HasOne("Services.Domain.Entities.Category", "ParentCategory")
@@ -1073,21 +1065,6 @@ namespace Services.Persistence.Context.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Services.Domain.Entities.CustomerBranch", b =>
-                {
-                    b.HasOne("Services.Domain.Entities.Branch", null)
-                        .WithMany("CustomerBranchs")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Services.Domain.Entities.Customer", null)
-                        .WithMany("CustomerBranchs")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Services.Domain.Entities.Service", b =>
@@ -1150,12 +1127,6 @@ namespace Services.Persistence.Context.Migrations
 
             modelBuilder.Entity("Services.Domain.Entities.WorkerService", b =>
                 {
-                    b.HasOne("Services.Domain.Entities.Branch", "Branch")
-                        .WithMany("WorkerServices")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Services.Domain.Entities.Service", "Service")
                         .WithMany("WorkerServices")
                         .HasForeignKey("ServiceId")
@@ -1167,8 +1138,6 @@ namespace Services.Persistence.Context.Migrations
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Branch");
 
                     b.Navigation("Service");
 
@@ -1210,21 +1179,9 @@ namespace Services.Persistence.Context.Migrations
                     b.Navigation("SimpleTriggers");
                 });
 
-            modelBuilder.Entity("Services.Domain.Entities.Branch", b =>
-                {
-                    b.Navigation("CustomerBranchs");
-
-                    b.Navigation("WorkerServices");
-                });
-
             modelBuilder.Entity("Services.Domain.Entities.Category", b =>
                 {
                     b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("Services.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("CustomerBranchs");
                 });
 
             modelBuilder.Entity("Services.Domain.Entities.Service", b =>
@@ -1251,6 +1208,9 @@ namespace Services.Persistence.Context.Migrations
 
             modelBuilder.Entity("Services.Domain.Models.User", b =>
                 {
+                    b.Navigation("Branch")
+                        .IsRequired();
+
                     b.Navigation("Customer")
                         .IsRequired();
 

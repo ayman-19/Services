@@ -8,12 +8,14 @@
 
   <ItemGroup>
     <Folder Include="Features\Bookings\Command\Delete\" />
+    <Folder Include="Features\Bookings\Command\Update\" />
+    <Folder Include="Features\Bookings\Query\" />
     <Folder Include="Features\Customers\Commands\" />
     <Folder Include="Features\Customers\Queries\" />
     <Folder Include="Features\Users\Queries\GetAll\" />
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.1" />

@@ -22,45 +22,17 @@ namespace Services.Application.Features.Branchs.Comands.Update
 
         private void ValidateRequest(IBranchRepository branchRepository)
         {
-            RuleFor(b => b.name)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.NameIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.Branch.NameIsRequired);
-
-            RuleFor(s => s.description)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired);
-
-            RuleFor(b => b.id)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.IdIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.Branch.IdIsRequired);
-
             RuleFor(s => s.langtuide)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Branch.Langtuide)
                 .NotNull()
                 .WithMessage(ValidationMessages.Branch.Langtuide);
 
-            RuleFor(b => b.id)
-                .MustAsync(
-                    async (id, CancellationToken) =>
-                        await branchRepository.IsAnyExistAsync(n => n.Id == id)
-                )
-                .WithMessage(ValidationMessages.Branch.BranchNotExist);
-
-            RuleFor(b => b)
-                .MustAsync(
-                    async (request, CancellationToken) =>
-                        !await branchRepository.IsAnyExistAsync(n =>
-                            n.Name == request.name && n.Id != request.id
-                        )
-                )
-                .WithMessage(ValidationMessages.Branch.BranchNotExist);
+            RuleFor(s => s.latitude)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Branch.Latitude)
+                .NotNull()
+                .WithMessage(ValidationMessages.Branch.Latitude);
         }
     }
 }

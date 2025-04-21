@@ -8,6 +8,7 @@ namespace Services.Application.Features.Discounts.Commands.Update
     public sealed class UpdateDiscountValidator : AbstractValidator<UpdateDiscountCommand>
     {
         private readonly IServiceProvider _serviceProvider;
+
         public UpdateDiscountValidator(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -22,30 +23,25 @@ namespace Services.Application.Features.Discounts.Commands.Update
         private void ValidateRequest(IDiscountRepository discountRepository)
         {
             RuleFor(d => d.Id)
-            .NotEmpty()
-            .WithMessage(ValidationMessages.Discount.IdIsRequired)
-            .NotNull()
-            .WithMessage(ValidationMessages.Discount.IdIsRequired);
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Discount.IdIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Discount.IdIsRequired);
 
             RuleFor(d => d.Percentage)
-           .NotEmpty()
-           .WithMessage(ValidationMessages.Discount.PercentageIsRequired)
-           .NotNull()
-           .WithMessage(ValidationMessages.Discount.PercentageCantBeNull);
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Discount.PercentageIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Discount.PercentageIsRequired);
 
-                 RuleFor(b => b)
+            RuleFor(b => b)
                 .MustAsync(
                     async (request, CancellationToken) =>
                         !await discountRepository.IsAnyExistAsync(d =>
-                            d.Percentage == request.Percentage && d.Id != request.Id    
+                            d.Percentage == request.Percentage && d.Id != request.Id
                         )
                 )
                 .WithMessage(ValidationMessages.Discount.DiscountIsExist);
-
-
-
-
-
         }
     }
 }

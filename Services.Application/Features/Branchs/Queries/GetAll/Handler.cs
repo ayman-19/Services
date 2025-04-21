@@ -25,7 +25,7 @@ namespace Services.Application.Features.Branchs.Queries.GetAll
             {
                 IReadOnlyCollection<GetAllBranchsResult>? result =
                     await _branchRepository.GetAllAsync(
-                        b => new GetAllBranchsResult(b.Id, b.Name, b.Description),
+                        b => new GetAllBranchsResult(b.Id, b.Latitude, b.Langitude),
                         null!,
                         null!,
                         cancellationToken

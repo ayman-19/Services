@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Persistence.Data;
@@ -26,15 +25,6 @@ namespace Services.Persistence.Repositories
             await _context
                 .Set<Branch>()
                 .AsTracking()
-                .FirstAsync(id => id.Id == Id, cancellationToken);
-
-        public async ValueTask<Branch> GetByNameAsync(
-            string Name,
-            CancellationToken cancellationToken
-        ) =>
-            await _context
-                .Set<Branch>()
-                .AsTracking()
-                .FirstAsync(id => id.Name == Name, cancellationToken);
+                .FirstAsync(id => id.UserId == Id, cancellationToken);
     }
 }

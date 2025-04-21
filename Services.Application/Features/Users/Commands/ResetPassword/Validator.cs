@@ -22,27 +22,27 @@ namespace Services.Application.Features.Users.Commands.ResetPassword
         {
             RuleFor(x => x.email)
                 .EmailAddress()
-                .WithMessage(ValidationMessages.User.ValidMail)
+                .WithMessage(ValidationMessages.Users.ValidMail)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.EmailIsRequired)
+                .WithMessage(ValidationMessages.Users.EmailIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.EmailIsRequired);
+                .WithMessage(ValidationMessages.Users.EmailIsRequired);
 
             RuleFor(x => x.password)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.PasswordIsRequired)
+                .WithMessage(ValidationMessages.Users.PasswordIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.PasswordIsRequired);
+                .WithMessage(ValidationMessages.Users.PasswordIsRequired);
 
             RuleFor(x => x.confirmPassword)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.ConfirmPasswordIsRequired)
+                .WithMessage(ValidationMessages.Users.ConfirmPasswordIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.ConfirmPasswordIsRequired);
+                .WithMessage(ValidationMessages.Users.ConfirmPasswordIsRequired);
 
             RuleFor(x => x.confirmPassword)
                 .Equal(x => x.password)
-                .WithMessage(ValidationMessages.User.ComparePassword);
+                .WithMessage(ValidationMessages.Users.ComparePassword);
         }
     }
 }

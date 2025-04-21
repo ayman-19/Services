@@ -38,21 +38,12 @@ namespace Services.Application.Features.Branchs.Comands.Create
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Branch.Langtuide)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.LangtuideCantBeNull);
+                .WithMessage(ValidationMessages.Branch.Langtuide);
             RuleFor(s => s.latitude)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Branch.Latitude)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.LatitudeCantBeNull);
-
-            RuleFor(s => s)
-                .MustAsync(
-                    async (request, CancellationToken) =>
-                        !await branchRepository.IsAnyExistAsync(n =>
-                            n.Name == request.name && n.Description == request.description
-                        )
-                )
-                .WithMessage(ValidationMessages.Branch.NameIsExist);
+                .WithMessage(ValidationMessages.Branch.Latitude);
         }
     }
 }

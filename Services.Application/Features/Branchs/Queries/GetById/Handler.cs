@@ -30,13 +30,7 @@ namespace Services.Application.Features.Branchs.Queries.GetById
                 {
                     var result = await _branchRepository.GetAsync(
                         b => b.Id == request.Id,
-                        b => new GetBranchResult(
-                            b.Id,
-                            b.Name,
-                            b.Description,
-                            b.Langitude,
-                            b.Latitude
-                        ),
+                        b => new GetBranchResult(b.Id, b.Langitude, b.Latitude),
                         null!,
                         false,
                         cancellationToken

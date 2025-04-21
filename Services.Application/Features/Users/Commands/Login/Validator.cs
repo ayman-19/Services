@@ -23,22 +23,22 @@ namespace Services.Application.Features.Users.Commands.Login
         {
             RuleFor(x => x.emailOrPhone)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.EmailOrPhoneIsRequired)
+                .WithMessage(ValidationMessages.Users.EmailOrPhoneIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.EmailOrPhoneIsRequired);
+                .WithMessage(ValidationMessages.Users.EmailOrPhoneIsRequired);
 
             RuleFor(x => x.password)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.PasswordIsRequired)
+                .WithMessage(ValidationMessages.Users.PasswordIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.PasswordIsRequired);
+                .WithMessage(ValidationMessages.Users.PasswordIsRequired);
 
             RuleFor(x => x)
                 .MustAsync(
                     async (eOp, CancellationToken) =>
                         await userRepository.EmailOrPhoneIsExist(eOp.type, eOp.emailOrPhone)
                 )
-                .WithMessage(ValidationMessages.User.EmailOrPhoneNumberNotExist);
+                .WithMessage(ValidationMessages.Users.EmailOrPhoneNumberNotExist);
         }
     }
 }

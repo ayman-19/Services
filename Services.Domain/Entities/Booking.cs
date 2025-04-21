@@ -10,16 +10,23 @@ namespace Services.Domain.Entities
         public BookingStatus Status { get; set; }
         public LocationType Location { get; set; }
         public Guid CustomerId { get; set; }
-        public Customer? Customer { get; set; }
+        public Customer Customer { get; set; }
         public Guid WorkerId { get; set; }
-        public Worker? Worker { get; set; }
-        public void UpdateBooking(DateTime createOn, LocationType location, Guid customerId, Guid workerId)
+        public Worker Worker { get; set; }
+
+        public void UpdateBooking(
+            DateTime createOn,
+            LocationType location,
+            Guid customerId,
+            Guid workerId
+        )
         {
             CreateOn = createOn;
             Location = location;
             CustomerId = customerId;
             WorkerId = workerId;
         }
+
         public void SetCreateOn()
         {
             CreateOn = DateTime.UtcNow;

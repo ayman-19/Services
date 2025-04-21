@@ -17,7 +17,7 @@ namespace Services.Persistence.BackgroundJobs
             string code = jobDate.GetString("Code")!;
             await _emailSender.SendEmailAsync(
                 email,
-                ValidationMessages.User.ConfirmEmail,
+                ValidationMessages.Users.ConfirmEmail,
                 $"To Confirm Email Code: <h3>{code}</h3>"
             );
         }

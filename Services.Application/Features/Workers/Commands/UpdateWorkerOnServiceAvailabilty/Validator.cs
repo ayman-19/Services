@@ -27,9 +27,7 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAv
                 .MustAsync(
                     async (command, CancellationToken) =>
                         await workerServiceRepository.IsAnyExistAsync(n =>
-                            n.WorkerId == command.WorkerId
-                            && n.ServiceId == command.ServiceId
-                            && n.BranchId == command.BranchId
+                            n.WorkerId == command.WorkerId && n.ServiceId == command.ServiceId
                         )
                 )
                 .WithMessage(ValidationMessages.WorkereService.WorkerNotAssignToService);

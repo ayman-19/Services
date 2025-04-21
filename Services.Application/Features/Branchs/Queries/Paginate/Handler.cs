@@ -30,14 +30,9 @@ namespace Services.Application.Features.Branchs.Queries.Paginate
                     await _branchRepository.PaginateAsync(
                         request.page == 0 ? 1 : request.page,
                         request.pageSize == 0 ? 10 : request.pageSize,
-                        b => new PaginateBranchResult(
-                            b.Id,
-                            b.Name,
-                            b.Description,
-                            b.Langitude,
-                            b.Latitude
-                        ),
+                        b => new PaginateBranchResult(b.Id, b.Langitude, b.Latitude),
                         b => b.Id == request.Id || request.Id == null,
+                        null!,
                         null!,
                         cancellationToken
                     );

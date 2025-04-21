@@ -7,8 +7,7 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
         string WorkerName,
         Guid ServiceId,
         string ServiceName,
-        Guid BranchId,
-        string BranchName
+        double Price
     )
     {
         public static implicit operator AssignWorkerToServiceResult(WorkerService workerService) =>
@@ -17,8 +16,7 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
                 workerService.Worker.User.Name,
                 workerService.ServiceId,
                 workerService.Service.Name,
-                workerService.BranchId,
-                workerService.Branch.Name
+                workerService.Price
             );
     }
 }

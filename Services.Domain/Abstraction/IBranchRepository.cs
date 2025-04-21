@@ -6,8 +6,6 @@ namespace Services.Domain.Abstraction
     public interface IBranchRepository : IRepository<Branch>
     {
         ValueTask<Branch> GetByIdAsync(Guid Id, CancellationToken cancellationToken);
-        ValueTask<Branch> GetByNameAsync(string Name, CancellationToken cancellationToken);
         Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
     }
 }

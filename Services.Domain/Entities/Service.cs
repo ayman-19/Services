@@ -8,6 +8,7 @@ namespace Services.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public double Duration { get; set; }
+        public string Image { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
         public Guid? DiscountId { get; set; }

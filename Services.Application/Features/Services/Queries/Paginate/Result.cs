@@ -1,4 +1,9 @@
 ﻿namespace Services.Application.Features.Services.Queries.Paginate
 {
-    public sealed record PaginateServiceResult(Guid id, string name, string description);
+    public sealed record PaginateServiceResult(
+        Guid id,
+        string name,
+        string description,
+        string imageUrl
+    );
 }

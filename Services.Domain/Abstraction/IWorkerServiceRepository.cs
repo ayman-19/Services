@@ -14,7 +14,6 @@ namespace Services.Domain.Abstraction
         ValueTask<WorkerService> GetWorkerFromServiceAsync(
             Guid WorkerId,
             Guid ServiceId,
-            Guid BranchId,
             CancellationToken cancellationToken
         );
     }

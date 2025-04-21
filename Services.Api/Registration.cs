@@ -1,5 +1,7 @@
 ﻿using Services.Api.Abstraction;
+using Services.Api.Implementation.Images;
 using Services.Api.Middlewares;
+using Services.Application.Abstarction;
 
 namespace Services.Api
 {
@@ -7,7 +9,7 @@ namespace Services.Api
     {
         public static IServiceCollection RegisterMiddlewares(this IServiceCollection services)
         {
-            services.AddScoped<ExceptionHandler>();
+            services.AddScoped<ExceptionHandler>().AddScoped<IFileService, FileService>();
             return services;
         }
 

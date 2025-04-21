@@ -37,7 +37,7 @@ namespace Services.Application.Features.Users.Commands.Logout
                     (string, bool) userId = _userContext.UserId;
 
                     if (!userId.Item2)
-                        throw new InvalidException(ValidationMessages.User.LogoutError);
+                        throw new InvalidException(ValidationMessages.Users.LogoutError);
 
                     await _tokenRepository.DeleteByUserIdAsync(Guid.Parse(userId.Item1));
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

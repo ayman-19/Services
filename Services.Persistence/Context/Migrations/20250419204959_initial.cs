@@ -18,25 +18,6 @@ namespace Services.Persistence.Context.Migrations
             migrationBuilder.EnsureSchema(name: "dbo");
 
             migrationBuilder.CreateTable(
-                name: "Branch",
-                schema: "Service",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Langitude = table.Column<double>(type: "float", nullable: false),
-                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Branch", x => x.Id);
-                }
-            );
-
-            migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
                 {
@@ -346,6 +327,7 @@ namespace Services.Persistence.Context.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Duration = table.Column<double>(type: "float", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DiscountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -490,6 +472,32 @@ namespace Services.Persistence.Context.Migrations
             );
 
             migrationBuilder.CreateTable(
+                name: "Branch",
+                schema: "Service",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Langitude = table.Column<double>(type: "float", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Branch", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Branch_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Identity",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
+
+            migrationBuilder.CreateTable(
                 name: "Customer",
                 schema: "Service",
                 columns: table => new
@@ -576,6 +584,7 @@ namespace Services.Persistence.Context.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Experience = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
@@ -827,38 +836,6 @@ namespace Services.Persistence.Context.Migrations
             );
 
             migrationBuilder.CreateTable(
-                name: "CustomerBranch",
-                schema: "Service",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BranchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerBranch", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CustomerBranch_Branch_BranchId",
-                        column: x => x.BranchId,
-                        principalSchema: "Service",
-                        principalTable: "Branch",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade
-                    );
-                    table.ForeignKey(
-                        name: "FK_CustomerBranch_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "Service",
-                        principalTable: "Customer",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade
-                    );
-                }
-            );
-
-            migrationBuilder.CreateTable(
                 name: "Booking",
                 schema: "Service",
                 columns: table => new
@@ -899,23 +876,16 @@ namespace Services.Persistence.Context.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WorkerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BranchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Availabilty = table.Column<bool>(type: "bit", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: true),
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkerService", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkerService_Branch_BranchId",
-                        column: x => x.BranchId,
-                        principalSchema: "Service",
-                        principalTable: "Branch",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade
-                    );
                     table.ForeignKey(
                         name: "FK_WorkerService_Service_ServiceId",
                         column: x => x.ServiceId,
@@ -943,10 +913,26 @@ namespace Services.Persistence.Context.Migrations
             );
 
             migrationBuilder.CreateIndex(
+                name: "IX_Booking_Id",
+                schema: "Service",
+                table: "Booking",
+                column: "Id",
+                unique: true
+            );
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Booking_WorkerId",
                 schema: "Service",
                 table: "Booking",
                 column: "WorkerId"
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Branch_UserId",
+                schema: "Service",
+                table: "Branch",
+                column: "UserId",
+                unique: true
             );
 
             migrationBuilder.CreateIndex(
@@ -960,21 +946,6 @@ namespace Services.Persistence.Context.Migrations
                 name: "IX_Category_ParentId",
                 table: "Category",
                 column: "ParentId"
-            );
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerBranch_BranchId_CustomerId",
-                schema: "Service",
-                table: "CustomerBranch",
-                columns: new[] { "BranchId", "CustomerId" },
-                unique: true
-            );
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerBranch_CustomerId",
-                schema: "Service",
-                table: "CustomerBranch",
-                column: "CustomerId"
             );
 
             migrationBuilder.CreateIndex(
@@ -1146,17 +1117,10 @@ namespace Services.Persistence.Context.Migrations
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkerService_BranchId",
+                name: "IX_WorkerService_ServiceId_WorkerId",
                 schema: "Service",
                 table: "WorkerService",
-                column: "BranchId"
-            );
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkerService_ServiceId_BranchId_WorkerId",
-                schema: "Service",
-                table: "WorkerService",
-                columns: new[] { "ServiceId", "BranchId", "WorkerId" },
+                columns: new[] { "ServiceId", "WorkerId" },
                 unique: true
             );
 
@@ -1173,7 +1137,7 @@ namespace Services.Persistence.Context.Migrations
         {
             migrationBuilder.DropTable(name: "Booking", schema: "Service");
 
-            migrationBuilder.DropTable(name: "CustomerBranch", schema: "Service");
+            migrationBuilder.DropTable(name: "Branch", schema: "Service");
 
             migrationBuilder.DropTable(name: "QRTZ_BLOB_TRIGGERS", schema: "dbo");
 
@@ -1208,8 +1172,6 @@ namespace Services.Persistence.Context.Migrations
             migrationBuilder.DropTable(name: "Permission", schema: "Identity");
 
             migrationBuilder.DropTable(name: "Role", schema: "Identity");
-
-            migrationBuilder.DropTable(name: "Branch", schema: "Service");
 
             migrationBuilder.DropTable(name: "Service", schema: "Service");
 

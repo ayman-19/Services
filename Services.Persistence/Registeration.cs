@@ -39,6 +39,7 @@ namespace Services.Persistence
                 .AddScoped<ICategoryRepository, CategoryRepository>()
                 .AddScoped<IJobs, Jobs>()
                 .AddScoped<IBookingRepository, BookingRepository>()
+                .AddScoped<ICustomerRepository, CustomerRepository>()
                 .AddScoped<IDiscountRepository, DiscountRepository>()
                 .AddQuartz(q =>
                 {

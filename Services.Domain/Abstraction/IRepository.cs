@@ -48,6 +48,7 @@ namespace Services.Domain.Repositories
             Expression<Func<TEntity, TSelctor>> Selctor,
             Expression<Func<TEntity, bool>> predicate = null!,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>> includes = null!,
+            Expression<Func<TEntity, object>> ordering = null!,
             CancellationToken cancellationToken = default
         );
     }

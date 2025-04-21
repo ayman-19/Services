@@ -1,7 +1,9 @@
 ﻿using System.Net;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
+using Services.Shared.Context;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
@@ -13,11 +15,17 @@ namespace Services.Application.Features.Branchs.Comands.Update
     {
         private readonly IBranchRepository _branchRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserContext _userContext;
 
-        public UpdateBranchHandler(IBranchRepository branchRepository, IUnitOfWork unitOfWork)
+        public UpdateBranchHandler(
+            IBranchRepository branchRepository,
+            IUnitOfWork unitOfWork,
+            IUserContext userContext
+        )
         {
             _branchRepository = branchRepository;
             _unitOfWork = unitOfWork;
+            _userContext = userContext;
         }
 
         public async Task<ResponseOf<UpdateBranchResult>> Handle(
@@ -29,16 +37,15 @@ namespace Services.Application.Features.Branchs.Comands.Update
             {
                 try
                 {
+                    var userContext = _userContext.UserId;
+                    if (!userContext.Exist)
+                        throw new Exception("Not Authorized.");
+
                     Branch branch = await _branchRepository.GetByIdAsync(
-                        request.id,
+                        Guid.Parse(userContext.Value),
                         cancellationToken
                     );
-                    branch.UpdaeBranch(
-                        request.name,
-                        request.description,
-                        request.langtuide,
-                        request.latitude
-                    );
+                    branch.UpdaeBranch(request.langtuide, request.latitude);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                     return new()

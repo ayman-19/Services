@@ -51,7 +51,7 @@ namespace Services.Application.Features.Users.Commands.Login
                     else if (request.type == LoginType.Phone)
                         user = await _userRepository.GetByPhoneAsync(request.emailOrPhone);
                     else
-                        throw new InvalidException(ValidationMessages.User.MakeSureInformation);
+                        throw new InvalidException(ValidationMessages.Users.MakeSureInformation);
 
                     if (!user.ConfirmAccount)
                     {
@@ -64,14 +64,20 @@ namespace Services.Application.Features.Users.Commands.Login
                         );
                         return new ResponseOf<LoginUserResult>
                         {
-                            Message = ValidationMessages.User.EmailNotConfirmed,
+                            Message = ValidationMessages.Users.EmailNotConfirmed,
                             StatusCode = 499,
                             Success = false,
                         };
                     }
 
                     if (!VerifyPassword(user, user.HashedPassword, request.password))
-                        throw new InvalidException(ValidationMessages.User.IncorrectPassword);
+                        throw new InvalidException(ValidationMessages.Users.IncorrectPassword);
+
+                    await _userRepository.UpdateBranchAsync(
+                        user.Id,
+                        request.Latitude,
+                        request.Longitude
+                    );
 
                     return new ResponseOf<LoginUserResult>
                     {

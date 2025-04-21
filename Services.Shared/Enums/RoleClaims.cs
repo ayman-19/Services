@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Services.Shared.Enums
 {
-	public enum RoleClaims
-	{
-		Roles,
-		UserId
-	}
+    public enum RoleClaims
+    {
+        Roles,
+        UserId,
+        UserType,
+    }
 }

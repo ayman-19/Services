@@ -33,6 +33,7 @@ namespace Services.Domain.Models
         public Token Token { get; set; }
         public Worker Worker { get; set; }
         public Customer Customer { get; set; }
+        public Branch Branch { get; set; }
         public IReadOnlyCollection<UserRole> UserRoles { get; set; }
 
         public void HashPassword(IPasswordHasher<User> passwordHasher, string password) =>

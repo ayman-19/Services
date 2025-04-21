@@ -6,11 +6,11 @@ namespace Services.Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid WorkerId { get; set; }
-        public Guid BranchId { get; set; }
         public Guid ServiceId { get; set; }
         public bool Availabilty { get; set; }
-        public Worker? Worker { get; set; }
-        public Branch? Branch { get; set; }
+        public double Price { get; set; }
+        public double? Discount { get; set; }
+        public Worker Worker { get; set; }
         public Service? Service { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }

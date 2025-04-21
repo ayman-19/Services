@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Domain.Abstraction;
 using Services.Domain.Repositories;
 using Services.Shared.Extentions;
 using Services.Shared.ValidationMessages;
@@ -16,46 +17,52 @@ namespace Services.Application.Features.Users.Commands.Create
             ClassLevelCascadeMode = CascadeMode.Stop;
             _serviceProvider = serviceProvider;
             var scope = _serviceProvider.CreateScope();
-            ValidateRequest(scope.ServiceProvider.GetRequiredService<IUserRepository>());
+            ValidateRequest(
+                scope.ServiceProvider.GetRequiredService<IUserRepository>(),
+                scope.ServiceProvider.GetRequiredService<IServiceRepository>()
+            );
         }
 
-        private void ValidateRequest(IUserRepository userRepository)
+        private void ValidateRequest(
+            IUserRepository userRepository,
+            IServiceRepository serviceRepository
+        )
         {
             RuleFor(x => x.name)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.NameIsRequired)
+                .WithMessage(ValidationMessages.Users.NameIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.NameIsRequired);
+                .WithMessage(ValidationMessages.Users.NameIsRequired);
 
             RuleFor(x => x.UserType)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.UserTypeIsRequired)
+                .WithMessage(ValidationMessages.Users.UserTypeIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.UserTypeIsRequired);
+                .WithMessage(ValidationMessages.Users.UserTypeIsRequired);
 
             RuleFor(x => x.phone)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.PhoneIsRequired)
+                .WithMessage(ValidationMessages.Users.PhoneIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.PhoneIsRequired);
+                .WithMessage(ValidationMessages.Users.PhoneIsRequired);
 
             RuleFor(x => x.email)
                 .EmailAddress()
-                .WithMessage(ValidationMessages.User.ValidMail)
+                .WithMessage(ValidationMessages.Users.ValidMail)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.EmailIsRequired)
+                .WithMessage(ValidationMessages.Users.EmailIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.EmailIsRequired);
+                .WithMessage(ValidationMessages.Users.EmailIsRequired);
 
             RuleFor(x => x.password)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.PasswordIsRequired)
+                .WithMessage(ValidationMessages.Users.PasswordIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.PasswordIsRequired)
+                .WithMessage(ValidationMessages.Users.PasswordIsRequired)
                 .MinimumLength(8)
-                .WithMessage(ValidationMessages.User.MinLength)
+                .WithMessage(ValidationMessages.Users.MinLength)
                 .MaximumLength(20)
-                .WithMessage(ValidationMessages.User.MaxLength)
+                .WithMessage(ValidationMessages.Users.MaxLength)
                 .Matches(@"[A-Z]")
                 .WithMessage("Password must contain at least one uppercase letter.")
                 .Matches(@"[a-z]")
@@ -69,13 +76,13 @@ namespace Services.Application.Features.Users.Commands.Create
 
             RuleFor(x => x.confirmPassword)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.User.ConfirmPasswordIsRequired)
+                .WithMessage(ValidationMessages.Users.ConfirmPasswordIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.User.ConfirmPasswordIsRequired);
+                .WithMessage(ValidationMessages.Users.ConfirmPasswordIsRequired);
 
             RuleFor(x => x.confirmPassword)
                 .Equal(x => x.password)
-                .WithMessage(ValidationMessages.User.ComparePassword);
+                .WithMessage(ValidationMessages.Users.ComparePassword);
 
             RuleFor(x => x)
                 .MustAsync(
@@ -85,11 +92,21 @@ namespace Services.Application.Features.Users.Commands.Create
                             cancellationToken
                         )
                 )
-                .WithMessage(ValidationMessages.User.EmailIsExist);
+                .WithMessage(ValidationMessages.Users.EmailIsExist);
+
+            //RuleFor(x => x.ServiceId)
+            //    .MustAsync(
+            //        async (id, cancellationToken) =>
+            //            await serviceRepository.IsAnyExistAsync(
+            //                s => id == null || s.Id == id,
+            //                cancellationToken
+            //            )
+            //    )
+            //    .WithMessage(ValidationMessages.Service.ServiceNotExist);
 
             RuleFor(x => x)
                 .Must((e, cancellationToken) => e.phone.ValidatePhoneNumber())
-                .WithMessage(ValidationMessages.User.PhoneNumberNotValid);
+                .WithMessage(ValidationMessages.Users.PhoneNumberNotValid);
         }
     }
 }

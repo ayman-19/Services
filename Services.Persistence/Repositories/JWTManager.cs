@@ -87,7 +87,10 @@ namespace Services.Persistence.Repositories
                         x.RoleId.ToString()
                     ))
                 );
-            claims.Add(new Claim(nameof(RoleClaims.UserId), user.Id.ToString()));
+            claims.AddRange(
+                new Claim(nameof(RoleClaims.UserId), user.Id.ToString()),
+                new Claim(nameof(RoleClaims.UserType), user.UserType.ToString())
+            );
 
             return claims;
         }

@@ -11,5 +11,7 @@ namespace Services.Domain.Repositories
 
         public Task<User> GetByEmailAsync(string email);
         public Task<User> GetByPhoneAsync(string phone);
+
+        public Task UpdateBranchAsync(Guid userId, double Latitude, double Longitude);
     }
 }

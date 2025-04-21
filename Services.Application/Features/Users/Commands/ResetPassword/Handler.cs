@@ -42,7 +42,7 @@ namespace Services.Application.Features.Users.Commands.ResetPassword
                         _passwordHasher.VerifyHashedPassword(user, user.Code, request.code)
                         != PasswordVerificationResult.Success
                     )
-                        throw new InvalidException(ValidationMessages.User.VerifyCode);
+                        throw new InvalidException(ValidationMessages.Users.VerifyCode);
 
                     user.HashPassword(_passwordHasher, request.password);
                     int modify = await _unitOfWork.SaveChangesAsync();

@@ -12,14 +12,7 @@ namespace Services.Persistence.Context.Configuration
             builder.ToTable(nameof(Table.WorkerService), nameof(Schema.Service));
 
             builder.HasKey(x => x.Id);
-            builder
-                .HasIndex(x => new
-                {
-                    x.ServiceId,
-                    x.BranchId,
-                    x.WorkerId,
-                })
-                .IsUnique(true);
+            builder.HasIndex(x => new { x.ServiceId, x.WorkerId }).IsUnique(true);
         }
     }
 }

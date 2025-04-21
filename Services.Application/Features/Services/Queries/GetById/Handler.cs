@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Services.Application.Abstarction;
 using Services.Domain.Abstraction;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
@@ -7,14 +9,11 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Services.Queries.GetById
 {
-    public sealed class GetServiceHandler
-        : IRequestHandler<GetServiceQuery, ResponseOf<GetServiceResult>>
+    public sealed class GetServiceHandler(
+        IFileService _fileService,
+        IServiceRepository _serviceRepository
+    ) : IRequestHandler<GetServiceQuery, ResponseOf<GetServiceResult>>
     {
-        private readonly IServiceRepository _serviceRepository;
-
-        public GetServiceHandler(IServiceRepository serviceRepository) =>
-            _serviceRepository = serviceRepository;
-
         public async Task<ResponseOf<GetServiceResult>> Handle(
             GetServiceQuery request,
             CancellationToken cancellationToken
@@ -24,7 +23,12 @@ namespace Services.Application.Features.Services.Queries.GetById
             {
                 var result = await _serviceRepository.GetAsync(
                     s => s.Id == request.Id,
-                    s => new GetServiceResult(s.Id, s.Name, s.Description),
+                    s => new GetServiceResult(
+                        s.Id,
+                        s.Name,
+                        s.Description,
+                        _fileService.GetUrlImage(s.Image)
+                    ),
                     null!,
                     false,
                     cancellationToken
@@ -37,9 +41,9 @@ namespace Services.Application.Features.Services.Queries.GetById
                     Result = result,
                 };
             }
-            catch
+            catch (Exception ex)
             {
-                throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                throw new Exception(ex.Message, ex);
             }
         }
     }

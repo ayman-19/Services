@@ -5,40 +5,40 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Users.Commands.Update
 {
-	public class CreateUserValidator : AbstractValidator<UpdateUserCommand>
-	{
-		private readonly IServiceProvider _serviceProvider;
-		public CreateUserValidator(IServiceProvider serviceProvider)
-		{
-			RuleLevelCascadeMode = CascadeMode.Stop;
-			ClassLevelCascadeMode = CascadeMode.Stop;
-			_serviceProvider = serviceProvider;
-			var scope = _serviceProvider.CreateScope();
-			ValidateRequest(scope.ServiceProvider.GetRequiredService<IUserRepository>());
-		}
-		private void ValidateRequest(IUserRepository userRepository)
-		{
-			RuleFor(x => x.name)
-				.NotEmpty()
-				.WithMessage(ValidationMessages.User.NameIsRequired)
-				.NotNull()
-				.WithMessage(ValidationMessages.User.NameIsRequired);
+    public class CreateUserValidator : AbstractValidator<UpdateUserCommand>
+    {
+        private readonly IServiceProvider _serviceProvider;
 
-			RuleFor(x => x.phone)
-				.NotEmpty()
-				.WithMessage(ValidationMessages.User.PhoneIsRequired)
-				.NotNull()
-				.WithMessage(ValidationMessages.User.PhoneIsRequired);
+        public CreateUserValidator(IServiceProvider serviceProvider)
+        {
+            RuleLevelCascadeMode = CascadeMode.Stop;
+            ClassLevelCascadeMode = CascadeMode.Stop;
+            _serviceProvider = serviceProvider;
+            var scope = _serviceProvider.CreateScope();
+            ValidateRequest(scope.ServiceProvider.GetRequiredService<IUserRepository>());
+        }
 
-			RuleFor(x => x.email)
-				.EmailAddress()
-				.WithMessage(ValidationMessages.User.ValidMail)
-				.NotEmpty()
-				.WithMessage(ValidationMessages.User.EmailIsRequired)
-				.NotNull()
-				.WithMessage(ValidationMessages.User.EmailIsRequired);
+        private void ValidateRequest(IUserRepository userRepository)
+        {
+            RuleFor(x => x.name)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Users.NameIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Users.NameIsRequired);
 
-		}
+            RuleFor(x => x.phone)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Users.PhoneIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Users.PhoneIsRequired);
 
-	}
+            RuleFor(x => x.email)
+                .EmailAddress()
+                .WithMessage(ValidationMessages.Users.ValidMail)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Users.EmailIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Users.EmailIsRequired);
+        }
+    }
 }

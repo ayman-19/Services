@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PhoneNumbers;
+using Services.Domain.Entities;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
 using Services.Persistence.Data;
@@ -63,5 +64,14 @@ namespace Services.Persistence.Repositories
                 .Set<User>()
                 .Where(u => u.Id == Id)
                 .ExecuteUpdateAsync(p => p.SetProperty(p => p.Code, code));
+
+        public async Task UpdateBranchAsync(Guid userId, double Latitude, double Longitude) =>
+            await _context
+                .Set<Branch>()
+                .Where(b => b.UserId == userId)
+                .ExecuteUpdateAsync(b =>
+                    b.SetProperty(lat => lat.Langitude, Latitude)
+                        .SetProperty(lon => lon.Langitude, Longitude)
+                );
     }
 }

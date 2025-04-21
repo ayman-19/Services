@@ -45,9 +45,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
                 .MustAsync(
                     async (query, CancellationToken) =>
                         await workerServiceRepository.IsAnyExistAsync(n =>
-                            n.WorkerId == query.WorkerId
-                            && n.ServiceId == query.ServiceId
-                            && n.BranchId == query.BranchId
+                            n.WorkerId == query.WorkerId && n.ServiceId == query.ServiceId
                         )
                 )
                 .WithMessage(ValidationMessages.WorkereService.WorkerNotAssignToService);

@@ -15,14 +15,16 @@ namespace Services.Api.Implementation.Services
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
             RouteGroupBuilder group = endpoints.MapGroup("/Services").WithTags("Services");
-            group.MapPost(
-                "CreateAsync/",
-                async (
-                    [FromBody] CreateServiceCommand Command,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            );
+            group
+                .MapPost(
+                    "CreateAsync/",
+                    async (
+                        [FromForm] CreateServiceCommand Command,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(Command, cancellationToken))
+                )
+                .DisableAntiforgery();
 
             group.MapPut(
                 "UpdateAsync/",

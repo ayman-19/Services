@@ -3,11 +3,6 @@ using Services.Shared.Responses;
 
 namespace Services.Application.Features.Branchs.Comands.Update
 {
-    public sealed record UpdateBranchCommand(
-        Guid id,
-        string name,
-        string description,
-        double langtuide,
-        double latitude
-    ) : IRequest<ResponseOf<UpdateBranchResult>>;
+    public sealed record UpdateBranchCommand(double langtuide, double latitude)
+        : IRequest<ResponseOf<UpdateBranchResult>>;
 }

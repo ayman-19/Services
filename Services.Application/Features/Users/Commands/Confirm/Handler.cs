@@ -41,7 +41,7 @@ namespace Services.Application.Features.Users.Commands.Confirm
                         _passwordHasher.VerifyHashedPassword(user, user.Code, request.code)
                         != PasswordVerificationResult.Success
                     )
-                        throw new InvalidException(ValidationMessages.User.VerifyCode);
+                        throw new InvalidException(ValidationMessages.Users.VerifyCode);
 
                     user.ConfirmAccount = true;
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

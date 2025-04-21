@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using MediatR;
+using Services.Application.Abstarction;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Shared.Exceptions;
@@ -13,11 +14,17 @@ namespace Services.Application.Features.Services.Commands.Create
     {
         private readonly IServiceRepository _serviceRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IFileService _fileService;
 
-        public CreateServiceHandler(IServiceRepository serviceRepository, IUnitOfWork unitOfWork)
+        public CreateServiceHandler(
+            IServiceRepository serviceRepository,
+            IUnitOfWork unitOfWork,
+            IFileService fileService
+        )
         {
             _serviceRepository = serviceRepository;
             _unitOfWork = unitOfWork;
+            _fileService = fileService;
         }
 
         public async Task<ResponseOf<CreateServiceResult>> Handle(
@@ -30,6 +37,10 @@ namespace Services.Application.Features.Services.Commands.Create
                 try
                 {
                     Service service = request;
+                    service.Image = await _fileService.SaveImageAsync(
+                        request.File.OpenReadStream(),
+                        request.File.FileName
+                    );
                     await _serviceRepository.CreateAsync(service, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync();

@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
-using Services.Domain.Repositories;
 using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Services.Commands.Create
@@ -33,6 +32,14 @@ namespace Services.Application.Features.Services.Commands.Create
                 .WithMessage(ValidationMessages.Service.DescriptionIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Service.DescriptionIsRequired);
+
+            RuleFor(s => s.File)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Service.ImageIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Service.ImageIsRequired)
+                .Must((file) => file.Length == 0 ? false : true)
+                .WithMessage(ValidationMessages.Service.ImageIsRequired);
 
             RuleFor(s => s.name)
                 .MustAsync(
