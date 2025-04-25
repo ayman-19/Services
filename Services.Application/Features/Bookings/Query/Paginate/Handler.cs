@@ -38,7 +38,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     s.CustomerId,
                     s.Customer!.User.Name,
                     s.WorkerId,
-                    s.Worker!.User!.Name
+                    s.Worker!.User!.Name,
+                    s.Total
                 );
 
                 Func<IQueryable<Booking>, IIncludableQueryable<Booking, object>> includes = c =>
@@ -55,7 +56,7 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                         (request.Id != null || b.CustomerId == request.Id),
                     var t when t == UserType.Worker.ToString() => b =>
                         (request.Id != null || b.WorkerId == request.Id),
-                    var t when t == UserType.Agent.ToString() => b =>
+                    var t when t == UserType.Admin.ToString() => b =>
                         request.Id == null || b.Id == request.Id,
                     _ => throw new InvalidOperationException("Unknown user type."),
                 };

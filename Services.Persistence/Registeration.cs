@@ -41,6 +41,9 @@ namespace Services.Persistence
                 .AddScoped<IBookingRepository, BookingRepository>()
                 .AddScoped<ICustomerRepository, CustomerRepository>()
                 .AddScoped<IDiscountRepository, DiscountRepository>()
+                .AddScoped<IRolePermissionRepository, RolePermissionRepository>()
+                .AddScoped<IRoleRepository, RoleRepository>()
+                .AddScoped<IPermissionRepository, PermissionRepository>()
                 .AddQuartz(q =>
                 {
                     q.UsePersistentStore(op =>

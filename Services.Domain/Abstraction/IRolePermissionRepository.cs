@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.Domain.Models;
+using Services.Domain.Repositories;
 
 namespace Services.Domain.Abstraction
 {
-    internal interface IRolePermissionRepository
+    public interface IRolePermissionRepository : IRepository<RolePermission>
     {
+        Task DeleteTokenForUsersAssignThisRole(Guid RoleId, CancellationToken cancellationToken);
     }
 }

@@ -22,14 +22,14 @@ namespace Services.Application.Features.Branchs.Comands.Delete
         {
             RuleFor(branch => branch.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.IdIsRequired)
+                .WithMessage(ValidationMessages.Branchs.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.IdIsRequired)
+                .WithMessage(ValidationMessages.Branchs.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await branchRepository.IsAnyExistAsync(branch => branch.Id == id)
                 )
-                .WithMessage(ValidationMessages.Branch.BranchNotExist);
+                .WithMessage(ValidationMessages.Branchs.BranchNotExist);
         }
     }
 }

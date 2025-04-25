@@ -24,26 +24,26 @@ namespace Services.Application.Features.Branchs.Comands.Create
         {
             RuleFor(s => s.name)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.NameIsRequired)
+                .WithMessage(ValidationMessages.Branchs.NameIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.NameIsRequired);
+                .WithMessage(ValidationMessages.Branchs.NameIsRequired);
 
             RuleFor(s => s.description)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired)
+                .WithMessage(ValidationMessages.Branchs.DescriptionIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.DescriptionIsRequired);
+                .WithMessage(ValidationMessages.Branchs.DescriptionIsRequired);
 
             RuleFor(s => s.langtuide)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.Langtuide)
+                .WithMessage(ValidationMessages.Branchs.Langtuide)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.Langtuide);
+                .WithMessage(ValidationMessages.Branchs.Langtuide);
             RuleFor(s => s.latitude)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.Latitude)
+                .WithMessage(ValidationMessages.Branchs.Latitude)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.Latitude);
+                .WithMessage(ValidationMessages.Branchs.Latitude);
         }
     }
 }

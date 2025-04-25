@@ -24,15 +24,15 @@ namespace Services.Application.Features.Branchs.Comands.Update
         {
             RuleFor(s => s.langtuide)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.Langtuide)
+                .WithMessage(ValidationMessages.Branchs.Langtuide)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.Langtuide);
+                .WithMessage(ValidationMessages.Branchs.Langtuide);
 
             RuleFor(s => s.latitude)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.Latitude)
+                .WithMessage(ValidationMessages.Branchs.Latitude)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.Latitude);
+                .WithMessage(ValidationMessages.Branchs.Latitude);
         }
     }
 }

@@ -22,14 +22,14 @@ namespace Services.Application.Features.Branchs.Queries.GetById
         {
             RuleFor(branch => branch.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branch.IdIsRequired)
+                .WithMessage(ValidationMessages.Branchs.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branch.IdIsRequired)
+                .WithMessage(ValidationMessages.Branchs.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await branchRepository.IsAnyExistAsync(branch => branch.Id == id)
                 )
-                .WithMessage(ValidationMessages.Branch.IdIsNotFound);
+                .WithMessage(ValidationMessages.Branchs.IdIsNotFound);
         }
     }
 }

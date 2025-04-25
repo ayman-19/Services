@@ -19,6 +19,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 CustomerId = bookingCommand.CustomerId,
                 WorkerId = bookingCommand.WorkerId,
                 Total = bookingCommand.Total,
+                Status = BookingStatus.Pending,
             };
     }
 }

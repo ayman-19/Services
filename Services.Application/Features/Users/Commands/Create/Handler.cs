@@ -1,25 +1,25 @@
 ﻿using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Services.Application.Features.Users.Commands.Create;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Domain.Enums;
 using Services.Domain.Models;
+using Services.Domain.Repositories;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
-
-namespace Services.Application.Features.Users.Commands.Create;
 
 public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response>
 {
     private readonly IJWTManager _jwtManager;
     private readonly IWorkerRepository _workerRepository;
     private readonly ICustomerRepository _customerRepository;
-    private readonly IBranchRepository _branchRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJobs _jobs;
     private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IRoleRepository _roleRepository;
 
     public CreateUserCommandHandler(
         IJWTManager jwtManager,
@@ -28,7 +28,7 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
         IJobs jobs,
         IWorkerRepository workerRepository,
         ICustomerRepository customerRepository,
-        IBranchRepository branchRepository
+        IRoleRepository roleRepository
     )
     {
         _jwtManager = jwtManager;
@@ -37,7 +37,7 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
         _jobs = jobs;
         _workerRepository = workerRepository;
         _customerRepository = customerRepository;
-        _branchRepository = branchRepository;
+        _roleRepository = roleRepository;
     }
 
     public async Task<Response> Handle(
@@ -45,62 +45,67 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
         CancellationToken cancellationToken
     )
     {
-        using var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
-
+        await using var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
         var verificationCode = await _jwtManager.GenerateCodeAsync();
 
-        switch (request.UserType)
+        try
         {
-            case UserType.Worker:
-                await CreateWorkerAsync(request, verificationCode, cancellationToken);
-                break;
-
-            case UserType.Customer:
-                await CreateCustomerAsync(request, verificationCode, cancellationToken);
-                break;
-
-            case UserType.Agent:
-                throw new NotSupportedException("Agent user type is not yet supported.");
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(request.UserType));
-        }
-
-        var changes = await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        if (changes > 0)
-        {
-            await transaction.CommitAsync(cancellationToken);
-
-            await _jobs.SendEmailByJobAsync(
-                request.email,
-                $"To Confirm Email Code: <h3>{verificationCode}</h3>"
-            );
-
-            return new Response
+            switch (request.UserType)
             {
-                Message = ValidationMessages.Success,
-                Success = true,
-                StatusCode = (int)HttpStatusCode.OK,
-            };
-        }
+                case UserType.Worker:
+                    await HandleWorkerCreationAsync(request, verificationCode, cancellationToken);
+                    break;
 
-        await transaction.RollbackAsync();
-        throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                case UserType.Customer:
+                    await HandleCustomerCreationAsync(request, verificationCode, cancellationToken);
+                    break;
+
+                case UserType.Admin:
+                    throw new NotSupportedException("Admin user type is not yet supported.");
+
+                default:
+                    throw new ArgumentOutOfRangeException(
+                        nameof(request.UserType),
+                        "Invalid user type."
+                    );
+            }
+
+            var saved = await _unitOfWork.SaveChangesAsync(cancellationToken);
+            if (saved > 0)
+            {
+                await transaction.CommitAsync(cancellationToken);
+
+                await _jobs.SendEmailByJobAsync(
+                    request.email,
+                    $"To Confirm Email Code: <h3>{verificationCode}</h3>"
+                );
+
+                return new Response
+                {
+                    Message = ValidationMessages.Success,
+                    Success = true,
+                    StatusCode = (int)HttpStatusCode.OK,
+                };
+            }
+
+            await transaction.RollbackAsync();
+            throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    private async Task CreateWorkerAsync(
+    private async Task HandleWorkerCreationAsync(
         CreateUserCommand request,
         string code,
         CancellationToken cancellationToken
     )
     {
         var worker = (Worker)request;
-
-        HashCredentials(worker.User, request.password, code);
-
-        worker.User.Branch = CreateBranch(request.Latitude, request.Longitude);
-
+        InitializeUser(worker.User, request.password, code, request.Latitude, request.Longitude);
         worker.WorkerServices.Add(
             new WorkerService
             {
@@ -110,34 +115,40 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
             }
         );
 
+        await AssignRoleAsync(worker.User, UserType.Worker);
+        worker.User.Token = await _jwtManager.GenerateTokenAsync(worker.User);
         await _workerRepository.CreateAsync(worker, cancellationToken);
-        worker.User.Token = await GetToken(worker.User);
     }
 
-    private async Task CreateCustomerAsync(
+    private async Task HandleCustomerCreationAsync(
         CreateUserCommand request,
         string code,
         CancellationToken cancellationToken
     )
     {
         var customer = (Customer)request;
-
-        HashCredentials(customer.User, request.password, code);
-
-        customer.User.Branch = CreateBranch(request.Latitude, request.Longitude);
-
+        InitializeUser(customer.User, request.password, code, request.Latitude, request.Longitude);
+        await AssignRoleAsync(customer.User, UserType.Customer);
+        customer.User.Token = await _jwtManager.GenerateTokenAsync(customer.User);
         await _customerRepository.CreateAsync(customer, cancellationToken);
-        customer.User.Token = await GetToken(customer.User);
     }
 
-    private static Branch CreateBranch(double? lat, double? lng) =>
-        new() { Latitude = lng ?? 0, Langitude = lat ?? 0 };
-
-    private void HashCredentials(User user, string password, string code)
+    private void InitializeUser(
+        User user,
+        string password,
+        string code,
+        double? latitude,
+        double? longitude
+    )
     {
         user.HashPassword(_passwordHasher, password);
         user.HashedCode(_passwordHasher, code);
+        user.Branch = new Branch { Latitude = longitude ?? 0, Langitude = latitude ?? 0 };
     }
 
-    private async Task<Token> GetToken(User user) => await _jwtManager.GenerateTokenAsync(user);
+    private async Task AssignRoleAsync(User user, UserType userType)
+    {
+        var roleId = await _roleRepository.GetRoleIdByNameAsync(userType.ToString());
+        user.UserRoles.Add(new UserRole { RoleId = roleId });
+    }
 }

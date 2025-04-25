@@ -1,4 +1,9 @@
-﻿namespace Services.Domain.Repositories
+﻿using Services.Domain.Models;
+
+namespace Services.Domain.Repositories
 {
-    public interface IRoleRepository { }
+    public interface IRoleRepository : IRepository<Role>
+    {
+        Task<Guid> GetRoleIdByNameAsync(string Name);
+    }
 }

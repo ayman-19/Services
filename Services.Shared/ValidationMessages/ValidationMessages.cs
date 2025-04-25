@@ -33,6 +33,12 @@
             public const string MinLength = "Password must be at least 8 characters long.";
             public const string MaxLength = "Password must be at most 20 characters long.";
             public const string NotFount = "Email or Password not correct.";
+            public const string RoleIdIsRequired = "Role Id Is Required.";
+            public const string PermissionIdIsRequired = "Permission Id Is Required.";
+            public static string RoleNotExist = "Role Is Not Exist.";
+            public static string PermissionNotExist = "Permission Is Not Exist.";
+            public static string PermissionAlreadyAssignToRole =
+                "Permission Already Assign To Role.";
         }
 
         public static class Database
@@ -65,7 +71,7 @@
             public const string NotFound = "Not Found Workers.";
         }
 
-        public static class Branch
+        public static class Branchs
         {
             public const string NameIsRequired = "Name Is Required.";
             public const string IdIsRequired = "Id Is Required";

@@ -1,18 +1,18 @@
-﻿using Services.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Services.Domain.Models;
 using Services.Domain.Repositories;
 using Services.Persistence.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Persistence.Repositories
 {
     public class RoleRepository : Repository<Role>, IRoleRepository
     {
-        public RoleRepository(ServiceDbContext context) : base(context)
-        {
-        }
+        private readonly ServiceDbContext _context;
+
+        public RoleRepository(ServiceDbContext context)
+            : base(context) => _context = context;
+
+        public async Task<Guid> GetRoleIdByNameAsync(string Name) =>
+            await _context.Set<Role>().Where(r => r.Name == Name).Select(r => r.Id).FirstAsync();
     }
 }

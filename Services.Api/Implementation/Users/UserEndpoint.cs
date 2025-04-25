@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Services.Api.Abstraction;
+using Services.Application.Features.Users.Commands.AddPermissionToRole;
 using Services.Application.Features.Users.Commands.Confirm;
 using Services.Application.Features.Users.Commands.Create;
 using Services.Application.Features.Users.Commands.Delete;
@@ -87,7 +88,15 @@ namespace Services.Api.Implementation.Users
             group.MapPut(
                 "/ResetPasswordAsync",
                 async (
-                    [FromBody] ResetPasswordUserCommand command,
+                    ResetPasswordUserCommand command,
+                    ISender _sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await _sender.Send(command, cancellationToken))
+            );
+            group.MapPost(
+                "/AddPermissionToRoleAsync",
+                async (
+                    AddPermissionToRoleCommand command,
                     ISender _sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await _sender.Send(command, cancellationToken))

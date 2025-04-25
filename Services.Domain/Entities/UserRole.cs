@@ -6,6 +6,8 @@ namespace Services.Domain.Entities
 {
     public sealed record UserRole : Entity<Guid>, ITrackableCreate, ITrackableUpdate
     {
+        public UserRole() { }
+
         private UserRole(Guid userId, Guid roleId)
         {
             UserId = userId;
