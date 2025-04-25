@@ -11,7 +11,7 @@ namespace Services.Domain.Entities
         public double Price { get; set; }
         public double? Discount { get; set; }
         public Worker Worker { get; set; }
-        public Service? Service { get; set; }
+        public Service Service { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
 

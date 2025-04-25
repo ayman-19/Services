@@ -22,7 +22,7 @@ namespace Services.Application.Features.Bookings.Command.Create
 
         private void ValidateRequest(IBookingRepository bookingRepository)
         {
-            RuleFor(s => s.Location)
+            RuleFor(s => s.LocationType)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Booking.LocationIsRequired)
                 .NotNull()

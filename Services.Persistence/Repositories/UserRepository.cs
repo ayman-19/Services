@@ -65,13 +65,23 @@ namespace Services.Persistence.Repositories
                 .Where(u => u.Id == Id)
                 .ExecuteUpdateAsync(p => p.SetProperty(p => p.Code, code));
 
-        public async Task UpdateBranchAsync(Guid userId, double Latitude, double Longitude) =>
-            await _context
+        public async Task UpdateBranchAsync(Guid userId, double latitude, double longitude)
+        {
+            if (userId == Guid.Empty)
+                throw new ArgumentException("Invalid user ID", nameof(userId));
+
+            var affectedRows = await _context
                 .Set<Branch>()
                 .Where(b => b.UserId == userId)
                 .ExecuteUpdateAsync(b =>
-                    b.SetProperty(lat => lat.Langitude, Latitude)
-                        .SetProperty(lon => lon.Langitude, Longitude)
+                    b.SetProperty(branch => branch.Latitude, latitude)
+                        .SetProperty(branch => branch.Langitude, longitude)
                 );
+
+            if (affectedRows == 0)
+            {
+                throw new InvalidOperationException("Branch not found or no updates were applied.");
+            }
+        }
     }
 }

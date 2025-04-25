@@ -21,7 +21,7 @@ namespace Services.Application.Features.Users.Commands.Login
 
         private void ValidateRequest(IUserRepository userRepository)
         {
-            RuleFor(x => x.emailOrPhone)
+            RuleFor(x => x.email)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Users.EmailOrPhoneIsRequired)
                 .NotNull()
@@ -33,12 +33,12 @@ namespace Services.Application.Features.Users.Commands.Login
                 .NotNull()
                 .WithMessage(ValidationMessages.Users.PasswordIsRequired);
 
-            RuleFor(x => x)
+            RuleFor(x => x.email)
                 .MustAsync(
-                    async (eOp, CancellationToken) =>
-                        await userRepository.EmailOrPhoneIsExist(eOp.type, eOp.emailOrPhone)
+                    async (e, CancellationToken) =>
+                        await userRepository.IsAnyExistAsync(email => email.Email == e)
                 )
-                .WithMessage(ValidationMessages.Users.EmailOrPhoneNumberNotExist);
+                .WithMessage(ValidationMessages.Users.EmailIsNotExist);
         }
     }
 }

@@ -6,7 +6,6 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAv
     public sealed record UpdateWorkerOnServiceAvailabiltyCommand(
         Guid WorkerId,
         Guid ServiceId,
-        Guid BranchId,
         bool Availabilty
     ) : IRequest<Response>;
 }

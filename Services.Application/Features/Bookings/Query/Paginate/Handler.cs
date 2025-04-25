@@ -29,7 +29,6 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                 int pagesize = request.pageSize <= 0 ? 10 : request.pageSize;
 
                 var userType = userContext.UserType.Value;
-                var userId = userContext.UserId.Value;
 
                 Expression<Func<Booking, BookingsResult>> selector = s => new BookingsResult(
                     s.Id,
@@ -53,11 +52,9 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                 Expression<Func<Booking, bool>> predicate = userType switch
                 {
                     var t when t == UserType.Customer.ToString() => b =>
-                        (request.Id == null || b.Id == request.Id)
-                        && b.CustomerId == Guid.Parse(userId),
+                        (request.Id != null || b.CustomerId == request.Id),
                     var t when t == UserType.Worker.ToString() => b =>
-                        (request.Id == null || b.Id == request.Id)
-                        && b.WorkerId == Guid.Parse(userId),
+                        (request.Id != null || b.WorkerId == request.Id),
                     var t when t == UserType.Agent.ToString() => b =>
                         request.Id == null || b.Id == request.Id,
                     _ => throw new InvalidOperationException("Unknown user type."),

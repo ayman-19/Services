@@ -35,6 +35,7 @@ namespace Services.Application.Features.Services.Commands.Update
                         request.categoryId,
                         request.DiscountId
                     );
+                    // job if discount not null update discount from worker service
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync();
                     return new()

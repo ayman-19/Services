@@ -32,6 +32,7 @@
             public const string MakeSureInformation = "Make Sure Information.";
             public const string MinLength = "Password must be at least 8 characters long.";
             public const string MaxLength = "Password must be at most 20 characters long.";
+            public const string NotFount = "Email or Password not correct.";
         }
 
         public static class Database
@@ -61,6 +62,7 @@
             public const string AssignWorkerToService = "Assign Worker To Service Exist.";
             public const string WorkerNotAssignToService = "Worker Not Assign To Service.";
             public const string BranchNotExist = "Branch Not Exist.";
+            public const string NotFound = "Not Found Workers.";
         }
 
         public static class Branch

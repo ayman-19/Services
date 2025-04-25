@@ -1,5 +1,6 @@
 ﻿using Services.Domain.Entities;
 using Services.Domain.Enums;
+
 namespace Services.Application.Features.Bookings.Command.Create
 {
     public sealed record CreateBookingResult(
@@ -8,7 +9,8 @@ namespace Services.Application.Features.Bookings.Command.Create
         BookingStatus Status,
         LocationType Location,
         Guid CustomerId,
-        Guid WorkerId
+        Guid WorkerId,
+        double Total
     )
     {
         public static implicit operator CreateBookingResult(Booking booking) =>
@@ -18,7 +20,8 @@ namespace Services.Application.Features.Bookings.Command.Create
                 booking.Status,
                 booking.Location,
                 booking.CustomerId,
-                booking.WorkerId
+                booking.WorkerId,
+                booking.Total
             );
     }
 }

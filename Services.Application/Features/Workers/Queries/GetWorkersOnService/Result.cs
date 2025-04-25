@@ -12,6 +12,7 @@
         double Rate,
         double Price,
         double Distance,
+        Guid LocationId,
         double Latitude,
         double Longitude
     );

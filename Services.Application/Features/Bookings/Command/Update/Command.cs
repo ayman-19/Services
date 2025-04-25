@@ -11,8 +11,7 @@ namespace Services.Application.Features.Bookings.Command.Update
         LocationType Location,
         Guid CustomerId,
         Guid WorkerId,
-        BookingStatus Status
-        ) : IRequest<ResponseOf<UpdateBookingResult>>;
-    
+        BookingStatus Status,
+        double Total
+    ) : IRequest<ResponseOf<UpdateBookingResult>>;
 }
-   

@@ -1,21 +1,15 @@
-﻿using MediatR;
-using Services.Application.Features.Branchs.Comands.Update;
+﻿using System.Net;
+using MediatR;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Application.Features.Bookings.Command.Update
 {
     public sealed record UpdateBookingHandler
-         : IRequestHandler<UpdateBookingCommand, ResponseOf<UpdateBookingResult>>
+        : IRequestHandler<UpdateBookingCommand, ResponseOf<UpdateBookingResult>>
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -43,7 +37,8 @@ namespace Services.Application.Features.Bookings.Command.Update
                         request.CreateOn,
                         request.Location,
                         request.CustomerId,
-                        request.WorkerId
+                        request.WorkerId,
+                        request.Total
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
@@ -62,7 +57,5 @@ namespace Services.Application.Features.Bookings.Command.Update
                 }
             }
         }
-
     }
-
 }

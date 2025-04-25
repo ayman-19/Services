@@ -2,7 +2,7 @@
 
 namespace Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus
 {
-    public sealed record GetWorkerStatusPaginateResult(
+    public sealed record GetWorkersBasedOnStatusResult(
         int Page,
         int PageSize,
         int TotalPage,

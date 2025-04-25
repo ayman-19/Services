@@ -9,6 +9,7 @@ namespace Services.Domain.Entities
         public DateTime CreateOn { get; set; }
         public BookingStatus Status { get; set; }
         public LocationType Location { get; set; }
+        public double Total { get; set; }
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
         public Guid WorkerId { get; set; }
@@ -18,13 +19,15 @@ namespace Services.Domain.Entities
             DateTime createOn,
             LocationType location,
             Guid customerId,
-            Guid workerId
+            Guid workerId,
+            double total
         )
         {
             CreateOn = createOn;
             Location = location;
             CustomerId = customerId;
             WorkerId = workerId;
+            Total = total;
         }
 
         public void SetCreateOn()

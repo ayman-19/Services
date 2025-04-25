@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Services.Domain.Enums;
 using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
@@ -7,6 +8,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
         Guid ServiceId,
         Guid? WorkerId,
         double Latitude,
-        double Longitude
+        double Longitude,
+        Status? Status
     ) : IRequest<ResponseOf<GetWorkersOnServiceResult>>;
 }

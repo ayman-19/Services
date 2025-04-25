@@ -102,15 +102,18 @@ namespace Services.Api.Implementation.Workers
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
-            group.MapGet(
+            group.MapPost(
                 "/GetAllWorkerAsync",
-                async (ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(await sender.Send(new GetAllWorkerQuery(), cancellationToken))
+                async (
+                    GetAllWorkerQuery query,
+                    ISender sender,
+                    CancellationToken cancellationToken
+                ) => Results.Ok(await sender.Send(query, cancellationToken))
             );
             group.MapPost(
                 "/GetWorkersBasedOnStatus",
                 async (
-                    GetWorkerStatusPaginateQuery query,
+                    GetWorkersBasedOnStatusQuery query,
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(query, cancellationToken))

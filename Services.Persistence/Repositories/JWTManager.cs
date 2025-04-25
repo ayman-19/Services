@@ -78,18 +78,31 @@ namespace Services.Persistence.Repositories
 
         private IReadOnlyCollection<Claim> GetClaims(User user)
         {
-            List<Claim> claims = new();
+            var claims = new List<Claim>();
 
-            if (user.UserRoles.Any())
+            var roleIds = user.UserRoles.Select(r => r.RoleId).ToList();
+
+            if (roleIds.Any())
+            {
+                var permissions = _context
+                    .Set<Permission>()
+                    .Include(p => p.RolePermissions)
+                    .Where(p => p.RolePermissions.Any(rp => roleIds.Contains(rp.RoleId)))
+                    .Select(p => p.Name)
+                    .Distinct()
+                    .ToList();
+
                 claims.AddRange(
-                    user.UserRoles.Select(x => new Claim(
-                        nameof(RoleClaims.Roles),
-                        x.RoleId.ToString()
-                    ))
+                    permissions.Select(p => new Claim(nameof(RoleClaims.Permissions), p))
                 );
+            }
+
             claims.AddRange(
-                new Claim(nameof(RoleClaims.UserId), user.Id.ToString()),
-                new Claim(nameof(RoleClaims.UserType), user.UserType.ToString())
+                new[]
+                {
+                    new Claim(nameof(RoleClaims.UserId), user.Id.ToString()),
+                    new Claim(nameof(RoleClaims.UserType), user.UserType.ToString()),
+                }
             );
 
             return claims;

@@ -4,10 +4,10 @@ using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus
 {
-    public sealed record GetWorkerStatusPaginateQuery(
+    public sealed record GetWorkersBasedOnStatusQuery(
         Guid? WorkerId,
         Status status,
         int page,
         int pagesize
-    ) : IRequest<ResponseOf<GetWorkerStatusPaginateResult>>;
+    ) : IRequest<ResponseOf<GetWorkersBasedOnStatusResult>>;
 }
