@@ -4,6 +4,7 @@ using Services.Domain.Entities;
 using Services.Domain.Enums;
 using Services.Domain.Models;
 using Services.Persistence.Data;
+using Services.Shared.Enums;
 
 namespace Services.Persistence.Context.Seeding
 {
@@ -40,12 +41,14 @@ namespace Services.Persistence.Context.Seeding
                 await context.Set<User>().AddAsync(admin);
             }
 
-            //if (!context.Set<Permission>().Any())
-            //{
-            //    context
-            //        .Set<Permission>()
-            //        .AddRange(new Permission { Name = "Read" }, new Permission { Name = "Write" });
-            //}
+            if (!context.Set<Permission>().Any())
+            {
+                var permissions = Enum.GetValues(typeof(Permissions))
+                    .Cast<Permissions>()
+                    .Select(value => Permission.Create(value.ToString()))
+                    .ToList();
+                context.Set<Permission>().AddRange(permissions);
+            }
 
             await context.SaveChangesAsync();
         }

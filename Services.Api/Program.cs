@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 using Services.Api.Middlewares;
 using Services.Application;
 using Services.Persistence;
+using Services.Persistence.Context.Seeding;
+using Services.Persistence.Data;
 using Services.Shared;
 using Services.Shared.Settings;
 
@@ -13,7 +15,7 @@ namespace Services.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Services.AddSwaggerGen(options =>
@@ -117,6 +119,12 @@ namespace Services.Api
             app.MapControllers();
 
             app.RegisterAllEndpoints();
+
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var dbContext = scope.ServiceProvider.GetRequiredService<ServiceDbContext>();
+            //    await Seed.SeedAsync(dbContext, builder.Configuration);
+            //}
 
             app.Run();
         }
