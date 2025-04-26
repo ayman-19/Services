@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Services.Api.Abstraction;
 using Services.Application.Features.Bookings.Command.Create;
 using Services.Application.Features.Bookings.Command.Delete;
 using Services.Application.Features.Bookings.Command.Update;
 using Services.Application.Features.Bookings.Query.GetById;
 using Services.Application.Features.Bookings.Query.Paginate;
+using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Bookings
 {
@@ -14,14 +16,16 @@ namespace Services.Api.Implementation.Bookings
         {
             RouteGroupBuilder group = endpoints.MapGroup("/Bookings").WithTags("Bookings");
 
-            group.MapPost(
-                "CreateAsync/",
-                async (
-                    CreateBookingCommand Command,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            );
+            group
+                .MapPost(
+                    "CreateAsync/",
+                    async (
+                        CreateBookingCommand Command,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(Command, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.CreateBooking));
 
             group.MapPut(
                 "UpdateAsync/",
