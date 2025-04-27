@@ -7,6 +7,7 @@ using Services.Application.Features.Branchs.Comands.Update;
 using Services.Application.Features.Branchs.Queries.GetAll;
 using Services.Application.Features.Branchs.Queries.GetById;
 using Services.Application.Features.Branchs.Queries.Paginate;
+using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Branchs
 {
@@ -22,7 +23,7 @@ namespace Services.Api.Implementation.Branchs
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.CreateBranch));
 
             group.MapPut(
                 "UpdateAsync/",
@@ -31,19 +32,19 @@ namespace Services.Api.Implementation.Branchs
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.UpdateBranch));
 
             group.MapDelete(
                 "DeleteAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new DeleteBranchCommand(id), cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.DeleteBranch));
 
             group.MapGet(
                 "GetByIdAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new GetBranchQuery(id), cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.GetBranch));
 
             group.MapPost(
                 "PaginateAsync",
@@ -52,13 +53,13 @@ namespace Services.Api.Implementation.Branchs
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(query, cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.PaginateBranch));
 
             group.MapGet(
                 "GetAllAsync",
                 async (ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new GetAllBranchsQuery(), cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.GetAllBranchs));
         }
     }
 }
