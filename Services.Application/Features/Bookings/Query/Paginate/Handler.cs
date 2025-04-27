@@ -87,9 +87,9 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     ),
                 };
             }
-            catch
+            catch (Exception ex)
             {
-                throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                throw new Exception(ex.Message, ex);
             }
         }
     }
