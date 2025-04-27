@@ -7,6 +7,7 @@ using Services.Application.Features.Services.Commands.Update;
 using Services.Application.Features.Services.Queries.GetAll;
 using Services.Application.Features.Services.Queries.GetById;
 using Services.Application.Features.Services.Queries.Paginate;
+using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Services
 {
@@ -24,7 +25,7 @@ namespace Services.Api.Implementation.Services
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .DisableAntiforgery();
+                .DisableAntiforgery().RequireAuthorization(nameof(Permissions.CreateService));
 
             group.MapPut(
                 "UpdateAsync/",
@@ -33,19 +34,19 @@ namespace Services.Api.Implementation.Services
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.UpdateService));
 
             group.MapDelete(
                 "DeleteAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new DeleteServiceCommand(id), cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.DeleteService));
 
             group.MapGet(
                 "GetByIdAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new GetServiceQuery(id), cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.GetService));
 
             group.MapPost(
                 "PaginateAsync",
@@ -54,14 +55,14 @@ namespace Services.Api.Implementation.Services
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(query, cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.PaginateService));
             group.MapGet(
                 "GetAllAsync/{categoryId}",
                 async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(
                         await sender.Send(new GetAllServicesQuery(categoryId), cancellationToken)
                     )
-            );
+            ).RequireAuthorization(nameof(Permissions.GetAllServices));
         }
     }
 }

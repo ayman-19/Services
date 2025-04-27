@@ -33,19 +33,20 @@ namespace Services.Api.Implementation.Bookings
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.UpdateBooking)); 
+                
 
             group.MapDelete(
                 "DeleteAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new DeleteBookingCommand(id), cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.DeleteBooking)); ;
 
             group.MapGet(
                 "GetByIdAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new GetBookingByIdQuery(id), cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.GetBookingById));
 
             group.MapPost(
                 "PaginateAsync",
@@ -54,7 +55,7 @@ namespace Services.Api.Implementation.Bookings
                     ISender sender,
                     CancellationToken cancellationToken
                 ) => Results.Ok(await sender.Send(query, cancellationToken))
-            );
+            ).RequireAuthorization(nameof(Permissions.PaginateBookings));
         }
     }
 }
