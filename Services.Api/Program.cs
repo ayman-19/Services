@@ -110,6 +110,7 @@ namespace Services.Api
             app.UseMiddleware<ExceptionHandler>();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<TokenValidation>();
             app.UseRouting();
             app.UseStaticFiles();
 
@@ -120,11 +121,11 @@ namespace Services.Api
 
             app.RegisterAllEndpoints();
 
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    var dbContext = scope.ServiceProvider.GetRequiredService<ServiceDbContext>();
-            //    await Seed.SeedAsync(dbContext, builder.Configuration);
-            //}
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ServiceDbContext>();
+                await Seed.SeedAsync(dbContext, builder.Configuration);
+            }
 
             app.Run();
         }

@@ -11,6 +11,7 @@ using Services.Application.Features.Users.Commands.Logout;
 using Services.Application.Features.Users.Commands.ResetPassword;
 using Services.Application.Features.Users.Commands.Update;
 using Services.Application.Features.Users.Queries.GetById;
+using Services.Application.Features.Users.Queries.GetPermissions;
 using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Users
@@ -75,6 +76,11 @@ namespace Services.Api.Implementation.Users
                 "/GetAsync/{id}",
                 async (Guid id, ISender _sender, CancellationToken cancellationToken) =>
                     Results.Ok(await _sender.Send(new GetUserQuery(id), cancellationToken))
+            );
+            group.MapGet(
+                "/GetPermissionsAsync",
+                async (ISender _sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await _sender.Send(new GetPermissionsQuery(), cancellationToken))
             );
 
             group.MapGet(

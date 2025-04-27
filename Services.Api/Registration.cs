@@ -9,7 +9,10 @@ namespace Services.Api
     {
         public static IServiceCollection RegisterMiddlewares(this IServiceCollection services)
         {
-            services.AddScoped<ExceptionHandler>().AddScoped<IFileService, FileService>();
+            services
+                .AddScoped<ExceptionHandler>()
+                .AddScoped<IFileService, FileService>()
+                .AddScoped<TokenValidation>();
             return services;
         }
 
