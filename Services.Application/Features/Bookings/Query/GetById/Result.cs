@@ -10,6 +10,9 @@ namespace Services.Application.Features.Bookings.Query.GetById
         Guid CustomerId,
         string CustomerName,
         Guid WorkerId,
-        string WorkerName
+        string WorkerName,
+        Guid ServiceId,
+        string ServiceName,
+        double Total
     );
 }

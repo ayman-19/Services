@@ -46,7 +46,15 @@
             public const string Error = "Occur Exception By Transaction.";
         }
 
-        public static class Workers { }
+        public static class Workers
+        {
+            public const string WorkereNotExist = "Worker Not Exist.";
+        }
+
+        public static class Customers
+        {
+            public const string CustomerNotExist = "Customer Not Exist.";
+        }
 
         public static class Service
         {

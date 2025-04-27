@@ -28,13 +28,17 @@ namespace Services.Application.Features.Bookings.Query.GetById
                         s.CustomerId,
                         s.Customer!.User.Name,
                         s.WorkerId,
-                        s.Worker!.User!.Name
+                        s.Worker!.User!.Name,
+                        s.ServiceId,
+                        s.Service.Name,
+                        s.Total
                     ),
                     c =>
                         c.Include(cust => cust.Customer)
                             .ThenInclude(user => user!.User)
                             .Include(work => work.Worker)
-                            .ThenInclude(user => user!.User),
+                            .ThenInclude(user => user!.User)
+                            .Include(s => s.Service),
                     false,
                     cancellationToken
                 );

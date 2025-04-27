@@ -18,6 +18,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
         string CustomerName,
         Guid WorkerId,
         string WorkerName,
+        Guid ServiceId,
+        string ServiceName,
         double Total
     );
 }

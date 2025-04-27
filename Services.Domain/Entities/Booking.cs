@@ -14,12 +14,15 @@ namespace Services.Domain.Entities
         public Customer Customer { get; set; }
         public Guid WorkerId { get; set; }
         public Worker Worker { get; set; }
+        public Guid ServiceId { get; set; }
+        public Service Service { get; set; }
 
         public void UpdateBooking(
             DateTime createOn,
             LocationType location,
             Guid customerId,
             Guid workerId,
+            Guid serviceId,
             double total
         )
         {
@@ -28,6 +31,7 @@ namespace Services.Domain.Entities
             CustomerId = customerId;
             WorkerId = workerId;
             Total = total;
+            ServiceId = serviceId;
         }
 
         public void SetCreateOn()

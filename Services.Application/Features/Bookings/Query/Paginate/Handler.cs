@@ -39,6 +39,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     s.Customer!.User.Name,
                     s.WorkerId,
                     s.Worker!.User!.Name,
+                    s.ServiceId,
+                    s.Service.Name,
                     s.Total
                 );
 
@@ -46,7 +48,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     c.Include(b => b.Customer)
                         .ThenInclude(u => u!.User)
                         .Include(b => b.Worker)
-                        .ThenInclude(u => u!.User);
+                        .ThenInclude(u => u!.User)
+                        .Include(s => s.Service);
 
                 Expression<Func<Booking, object>> orderBy = b => b.CreateOn;
 

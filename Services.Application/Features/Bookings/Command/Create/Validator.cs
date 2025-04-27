@@ -17,10 +17,20 @@ namespace Services.Application.Features.Bookings.Command.Create
 
             _serviceProvider = serviceProvider;
             var scope = _serviceProvider.CreateScope();
-            ValidateRequest(scope.ServiceProvider.GetRequiredService<IBookingRepository>());
+            ValidateRequest(
+                scope.ServiceProvider.GetRequiredService<IBookingRepository>(),
+                scope.ServiceProvider.GetRequiredService<ICustomerRepository>(),
+                scope.ServiceProvider.GetRequiredService<IWorkerRepository>(),
+                scope.ServiceProvider.GetRequiredService<IServiceRepository>()
+            );
         }
 
-        private void ValidateRequest(IBookingRepository bookingRepository)
+        private void ValidateRequest(
+            IBookingRepository bookingRepository,
+            ICustomerRepository customerRepository,
+            IWorkerRepository workerRepository,
+            IServiceRepository serviceRepository
+        )
         {
             RuleFor(s => s.LocationType)
                 .NotEmpty()
@@ -39,6 +49,27 @@ namespace Services.Application.Features.Bookings.Command.Create
                 .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired);
+
+            RuleFor(b => b.ServiceId)
+                .MustAsync(
+                    async (id, cancellationToken) =>
+                        await serviceRepository.IsAnyExistAsync(s => s.Id == id)
+                )
+                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+
+            RuleFor(b => b.WorkerId)
+                .MustAsync(
+                    async (id, cancellationToken) =>
+                        await workerRepository.IsAnyExistAsync(s => s.UserId == id)
+                )
+                .WithMessage(ValidationMessages.Workers.WorkereNotExist);
+
+            RuleFor(b => b.CustomerId)
+                .MustAsync(
+                    async (id, cancellationToken) =>
+                        await customerRepository.IsAnyExistAsync(s => s.UserId == id)
+                )
+                .WithMessage(ValidationMessages.Customers.CustomerNotExist);
         }
     }
 }

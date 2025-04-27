@@ -38,6 +38,7 @@ namespace Services.Application.Features.Bookings.Command.Update
                         request.Location,
                         request.CustomerId,
                         request.WorkerId,
+                        request.ServiceId,
                         request.Total
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

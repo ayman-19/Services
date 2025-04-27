@@ -9,6 +9,7 @@ namespace Services.Application.Features.Bookings.Command.Create
         LocationType LocationType,
         Guid CustomerId,
         Guid WorkerId,
+        Guid ServiceId,
         double Total
     ) : IRequest<ResponseOf<CreateBookingResult>>
     {
@@ -19,6 +20,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 CustomerId = bookingCommand.CustomerId,
                 WorkerId = bookingCommand.WorkerId,
                 Total = bookingCommand.Total,
+                ServiceId = bookingCommand.ServiceId,
                 Status = BookingStatus.Pending,
             };
     }
