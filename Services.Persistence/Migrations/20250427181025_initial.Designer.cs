@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Services.Persistence.Data;
 
 #nullable disable
 
-namespace Services.Persistence.Context.Migrations
+namespace Services.Persistence.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    partial class ServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250427181025_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -579,8 +582,14 @@ namespace Services.Persistence.Context.Migrations
                     b.Property<int>("Location")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("WorkerId")
                         .HasColumnType("uniqueidentifier");
@@ -591,6 +600,8 @@ namespace Services.Persistence.Context.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
+
+                    b.HasIndex("ServiceId");
 
                     b.HasIndex("WorkerId");
 
@@ -1022,6 +1033,12 @@ namespace Services.Persistence.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Services.Domain.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Services.Domain.Entities.Worker", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId")
@@ -1029,6 +1046,8 @@ namespace Services.Persistence.Context.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Service");
 
                     b.Navigation("Worker");
                 });

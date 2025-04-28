@@ -8,7 +8,15 @@ public sealed class TokenValidation(ITokenRepository tokenRepository) : IMiddlew
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        if (context.User.Identity?.IsAuthenticated == true)
+        var path = context.Request?.Path.Value?.ToLower() ?? string.Empty;
+
+        if (
+            !path.EndsWith("loginasync")
+            && !path.EndsWith("forgetpasswordasync")
+            && !path.EndsWith("resetpasswordasync")
+            && !path.EndsWith("registerasync")
+            && context.User.Identity?.IsAuthenticated == true
+        )
         {
             try
             {

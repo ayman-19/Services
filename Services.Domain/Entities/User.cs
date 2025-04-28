@@ -17,7 +17,7 @@ namespace Services.Domain.Models
             Email = email;
             Phone = phone;
             UserType = userType;
-            UserRoles = new HashSet<UserRole>();
+            UserRoles = new List<UserRole>();
         }
 
         public string Name { get; set; }

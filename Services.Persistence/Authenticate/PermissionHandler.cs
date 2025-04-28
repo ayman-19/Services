@@ -21,6 +21,8 @@ namespace Services.Persistence.Authenticate
 
             if (canAccess)
                 context.Succeed(requirement);
+            else
+                throw new UnauthorizedAccessException("UnAuthorize.");
         }
     }
 }

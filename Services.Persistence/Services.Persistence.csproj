@@ -35,8 +35,4 @@
     <ProjectReference Include="..\Services.Shared\Services.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Context\Migrations\" />
-  </ItemGroup>
-
 </Project>

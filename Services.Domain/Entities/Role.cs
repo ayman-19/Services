@@ -10,11 +10,20 @@ namespace Services.Domain.Models
 
         private Role(string name) => Name = name;
 
+        private Role(Guid id, string name)
+        {
+            Name = name;
+            Id = id;
+            CreateOn = DateTime.UtcNow;
+        }
+
         public string Name { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
 
         public static Role Create(string name) => new(name);
+
+        public static Role Create(Guid id, string name) => new(id, name);
 
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;
 

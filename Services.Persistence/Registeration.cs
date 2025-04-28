@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Services.Domain.Abstraction;
 using Services.Domain.Repositories;
+using Services.Persistence.Authenticate;
 using Services.Persistence.Context.Interceptor;
 using Services.Persistence.Data;
 using Services.Persistence.Repositories;
@@ -56,6 +58,8 @@ namespace Services.Persistence
                 })
                 .AddQuartzHostedService(h => h.WaitForJobsToComplete = true);
             services.AddAuthentication();
+            services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             return services;
         }
     }

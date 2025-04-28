@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Services.Application.Features.Users.Commands.Create;
 using Services.Domain.Abstraction;
 using Services.Domain.Repositories;
 using Services.Shared.ValidationMessages;

@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Services.Persistence.Data;
 
 #nullable disable
 
-namespace Services.Persistence.Context.Migrations
+namespace Services.Persistence.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    [Migration("20250419211041_DeleteColumn")]
-    partial class DeleteColumn
+    partial class ServiceDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -582,8 +579,14 @@ namespace Services.Persistence.Context.Migrations
                     b.Property<int>("Location")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("WorkerId")
                         .HasColumnType("uniqueidentifier");
@@ -594,6 +597,8 @@ namespace Services.Persistence.Context.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
+
+                    b.HasIndex("ServiceId");
 
                     b.HasIndex("WorkerId");
 
@@ -884,6 +889,26 @@ namespace Services.Persistence.Context.Migrations
                         .IsUnique();
 
                     b.ToTable("Role", "Identity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d9d07e43-cfc7-4592-8282-c2f422bf0872"),
+                            CreateOn = new DateTime(2025, 4, 27, 18, 29, 8, 0, DateTimeKind.Unspecified),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("36d69680-e3b2-4153-b3de-b5b3a537e822"),
+                            CreateOn = new DateTime(2025, 4, 27, 18, 29, 8, 0, DateTimeKind.Unspecified),
+                            Name = "Worker"
+                        },
+                        new
+                        {
+                            Id = new Guid("ae53d444-f81d-490c-b6f6-e5d45baf6619"),
+                            CreateOn = new DateTime(2025, 4, 27, 18, 29, 8, 0, DateTimeKind.Unspecified),
+                            Name = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("Services.Domain.Models.RolePermission", b =>
@@ -1025,6 +1050,12 @@ namespace Services.Persistence.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Services.Domain.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Services.Domain.Entities.Worker", "Worker")
                         .WithMany()
                         .HasForeignKey("WorkerId")
@@ -1032,6 +1063,8 @@ namespace Services.Persistence.Context.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Service");
 
                     b.Navigation("Worker");
                 });

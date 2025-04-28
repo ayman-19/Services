@@ -12,6 +12,7 @@ using Services.Application.Features.Users.Commands.ResetPassword;
 using Services.Application.Features.Users.Commands.Update;
 using Services.Application.Features.Users.Queries.GetById;
 using Services.Application.Features.Users.Queries.GetPermissions;
+using Services.Application.Features.Users.Queries.GetRoles;
 using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Users
@@ -82,6 +83,11 @@ namespace Services.Api.Implementation.Users
                 async (ISender _sender, CancellationToken cancellationToken) =>
                     Results.Ok(await _sender.Send(new GetPermissionsQuery(), cancellationToken))
             );
+            group.MapGet(
+                "/GetRolesAsync",
+                async (ISender _sender, CancellationToken cancellationToken) =>
+                    Results.Ok(await _sender.Send(new GetRolesQuery(), cancellationToken))
+            );
 
             group.MapGet(
                 "/ForgetPasswordAsync/{email}",
@@ -99,14 +105,16 @@ namespace Services.Api.Implementation.Users
                     CancellationToken cancellationToken
                 ) => Results.Ok(await _sender.Send(command, cancellationToken))
             );
-            group.MapPost(
-                "/AddPermissionToRoleAsync",
-                async (
-                    AddPermissionToRoleCommand command,
-                    ISender _sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await _sender.Send(command, cancellationToken))
-            );
+            group
+                .MapPost(
+                    "/AddPermissionToRoleAsync",
+                    async (
+                        AddPermissionToRoleCommand command,
+                        ISender _sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await _sender.Send(command, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.AddPermissionToRole));
         }
     }
 }

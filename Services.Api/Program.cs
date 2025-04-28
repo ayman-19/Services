@@ -1,10 +1,12 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Api.Middlewares;
 using Services.Application;
+using Services.Domain.Models;
 using Services.Persistence;
 using Services.Persistence.Context.Seeding;
 using Services.Persistence.Data;
@@ -105,13 +107,13 @@ namespace Services.Api
                 });
 
             WebApplication app = builder.Build();
+            app.UseMiddleware<ExceptionHandler>();
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.UseMiddleware<ExceptionHandler>();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseMiddleware<TokenValidation>();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseMiddleware<TokenValidation>();
+            app.UseAuthorization();
             app.UseStaticFiles();
 
             app.UseCors(_cors);
@@ -124,7 +126,11 @@ namespace Services.Api
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ServiceDbContext>();
-                await Seed.SeedAsync(dbContext, builder.Configuration);
+                await Seed.SeedAsync(
+                    dbContext,
+                    builder.Configuration,
+                    scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>()
+                );
             }
 
             app.Run();

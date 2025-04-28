@@ -43,6 +43,7 @@ namespace Services.Persistence.Repositories
                 .Set<User>()
                 .AsTracking()
                 .Include(user => user.Token)
+                .Include(user => user.UserRoles)
                 .FirstAsync(user => user.Email == email);
 
         public async Task<User> GetByEmailWithTrackinAsync(string email) =>

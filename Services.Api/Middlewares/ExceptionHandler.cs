@@ -35,6 +35,8 @@ namespace Services.Api.Middlewares
                 ValidationException => ((int)HttpStatusCode.BadRequest, ex.Message),
                 InvalidException => ((int)HttpStatusCode.BadRequest, ex.Message),
                 DatabaseTransactionException => ((int)HttpStatusCode.Conflict, ex.Message),
+                NotSupportedException => (501, ex.Message),
+                UnauthorizedAccessException => ((int)HttpStatusCode.Unauthorized, ex.Message),
                 _ => ((int)HttpStatusCode.InternalServerError, ex.Message),
             };
     }

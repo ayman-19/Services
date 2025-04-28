@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Services.Persistence.Context.Migrations
+namespace Services.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class initial : Migration
@@ -584,7 +584,6 @@ namespace Services.Persistence.Context.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Experience = table.Column<double>(type: "float", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
@@ -844,8 +843,10 @@ namespace Services.Persistence.Context.Migrations
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Location = table.Column<int>(type: "int", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WorkerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -856,6 +857,14 @@ namespace Services.Persistence.Context.Migrations
                         principalSchema: "Service",
                         principalTable: "Customer",
                         principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict
+                    );
+                    table.ForeignKey(
+                        name: "FK_Booking_Service_ServiceId",
+                        column: x => x.ServiceId,
+                        principalSchema: "Service",
+                        principalTable: "Service",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
@@ -918,6 +927,13 @@ namespace Services.Persistence.Context.Migrations
                 table: "Booking",
                 column: "Id",
                 unique: true
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Booking_ServiceId",
+                schema: "Service",
+                table: "Booking",
+                column: "ServiceId"
             );
 
             migrationBuilder.CreateIndex(

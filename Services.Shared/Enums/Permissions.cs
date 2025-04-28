@@ -41,7 +41,8 @@
         GetWorkerOnService,
         GetWorkersBasedOnStatus,
         GetWorkersOnService,
-        GetWorkerPaginate
-
+        GetWorkerPaginate,
+        AddPermissionToRole,
+        AssignToRole,
     }
 }

@@ -13,6 +13,8 @@ namespace Services.Persistence.Context.Configuration
             builder.HasKey(t => t.Id);
             builder.HasIndex(t => t.Id).IsUnique();
             builder.HasIndex(t => t.WorkerId);
+            builder.HasIndex(t => t.CustomerId);
+            builder.HasIndex(t => t.ServiceId);
         }
     }
 }
