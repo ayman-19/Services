@@ -128,9 +128,9 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
     {
         var customer = (Customer)request;
         InitializeUser(customer.User, request.password, code, request.Latitude, request.Longitude);
+        await _customerRepository.CreateAsync(customer, cancellationToken);
         await AssignRoleAsync(customer.User, UserType.Customer);
         customer.User.Token = await _jwtManager.GenerateTokenAsync(customer.User);
-        await _customerRepository.CreateAsync(customer, cancellationToken);
     }
 
     private void InitializeUser(
@@ -149,6 +149,6 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
     private async Task AssignRoleAsync(User user, UserType userType)
     {
         var roleId = await _roleRepository.GetRoleIdByNameAsync(userType.ToString());
-        user.UserRoles.Add(new UserRole { RoleId = roleId });
+        user.UserRoles.Add(new UserRole { RoleId = roleId, UserId = user.Id });
     }
 }

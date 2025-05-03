@@ -85,7 +85,7 @@ namespace Services.Persistence.Repositories
             CancellationToken cancellationToken = default
         ) => await _entities.AnyAsync(pridecate, cancellationToken);
 
-        public async Task<IReadOnlyCollection<TSelctor>> PaginateAsync<TSelctor>(
+        public async Task<(IReadOnlyCollection<TSelctor>, int count)> PaginateAsync<TSelctor>(
             int page,
             int pageSize,
             Expression<Func<TEntity, TSelctor>> Selctor,
@@ -103,12 +103,14 @@ namespace Services.Persistence.Repositories
             if (includes != null)
                 query = includes(query);
 
+            int count = query.Count();
+
             query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
             if (ordering != null)
                 query = query.OrderByDescending(ordering);
 
-            return await query.Select(Selctor).ToListAsync(cancellationToken);
+            return (await query.Select(Selctor).ToListAsync(cancellationToken), count);
         }
 
         public ValueTask<EntityEntry<TEntity>> UpdateAsync(

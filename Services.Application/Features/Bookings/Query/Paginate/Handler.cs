@@ -7,7 +7,6 @@ using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Domain.Enums;
 using Services.Shared.Context;
-using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
@@ -82,8 +81,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     Result = new(
                         page,
                         pagesize,
-                        (int)Math.Ceiling(result.Count() / (double)pagesize),
-                        result
+                        (int)Math.Ceiling(result.count / (double)pagesize),
+                        result.Item1
                     ),
                 };
             }

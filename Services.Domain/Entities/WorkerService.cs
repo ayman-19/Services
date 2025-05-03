@@ -10,6 +10,7 @@ namespace Services.Domain.Entities
         public bool Availabilty { get; set; }
         public double Price { get; set; }
         public double? Discount { get; set; }
+        public int Rate { get; set; }
         public Worker Worker { get; set; }
         public Service Service { get; set; }
         public DateTime CreateOn { get; set; }

@@ -64,6 +64,7 @@
             public const string ImageIsRequired = "Image Is Required.";
             public const string IdIsRequired = "Id Is Required.";
             public const string ServiceNotExist = "Service Not Exist.";
+            public const string RateIsRequired = "Rate Is Required.";
         }
 
         public static class WorkereService

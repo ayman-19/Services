@@ -39,7 +39,8 @@ namespace Services.Application.Features.Bookings.Command.Update
                         request.CustomerId,
                         request.WorkerId,
                         request.ServiceId,
-                        request.Total
+                        request.Total,
+                        request.Rate
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);

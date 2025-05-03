@@ -42,7 +42,7 @@ namespace Services.Domain.Repositories
             TEntity entity,
             CancellationToken cancellationToken = default
         );
-        Task<IReadOnlyCollection<TSelctor>> PaginateAsync<TSelctor>(
+        Task<(IReadOnlyCollection<TSelctor>, int count)> PaginateAsync<TSelctor>(
             int page,
             int pageSize,
             Expression<Func<TEntity, TSelctor>> Selctor,

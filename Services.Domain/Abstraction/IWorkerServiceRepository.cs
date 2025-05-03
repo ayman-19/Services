@@ -16,5 +16,6 @@ namespace Services.Domain.Abstraction
             Guid ServiceId,
             CancellationToken cancellationToken
         );
+        Task RateWorkersAsync(Guid WorkerId, Guid ServiceId);
     }
 }

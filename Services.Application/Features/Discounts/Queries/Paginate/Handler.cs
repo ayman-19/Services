@@ -19,16 +19,15 @@ namespace Services.Application.Features.Discounts.Queries.Paginate
             {
                 int page = request.page == 0 ? 1 : request.page;
                 int pagesize = request.pageSize == 0 ? 10 : request.pageSize;
-                IReadOnlyCollection<DiscountsResult> result =
-                    await discountRepository.PaginateAsync(
-                        page,
-                        pagesize,
-                        s => new DiscountsResult(s.Id, s.Percentage, s.CreateOn),
-                        s => s.Id == request.Id || request.Id == null,
-                        null!,
-                        null!,
-                        cancellationToken
-                    );
+                var result = await discountRepository.PaginateAsync(
+                    page,
+                    pagesize,
+                    s => new DiscountsResult(s.Id, s.Percentage, s.CreateOn),
+                    s => s.Id == request.Id || request.Id == null,
+                    null!,
+                    null!,
+                    cancellationToken
+                );
                 return new()
                 {
                     Message = ValidationMessages.Success,
@@ -37,8 +36,8 @@ namespace Services.Application.Features.Discounts.Queries.Paginate
                     Result = new(
                         page,
                         pagesize,
-                        (int)Math.Ceiling(result.Count() / (double)pagesize),
-                        result
+                        (int)Math.Ceiling(result.count / (double)pagesize),
+                        result.Item1
                     ),
                 };
             }

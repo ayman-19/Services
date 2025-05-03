@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
+using Services.Domain.Enums;
 using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Bookings.Command.Update
@@ -60,6 +56,16 @@ namespace Services.Application.Features.Bookings.Command.Update
                 .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired);
+
+            RuleFor(b => b)
+                .Must(b =>
+                    b.Status == BookingStatus.Completed
+                        ? b.Rate > 0
+                            ? true
+                            : false
+                        : true
+                )
+                .WithMessage(ValidationMessages.Service.RateIsRequired);
 
             RuleFor(b => b.ServiceId)
                 .MustAsync(

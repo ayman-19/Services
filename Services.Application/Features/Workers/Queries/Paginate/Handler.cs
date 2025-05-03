@@ -51,16 +51,15 @@ namespace Services.Application.Features.Workers.Queries.GetAll
                         .ThenInclude(w => w.User)
                         .ThenInclude(u => u.Branch);
 
-            IReadOnlyCollection<GetAllWorkerPaginateResult> result =
-                await _WorkerserviceRepository.PaginateAsync(
-                    page,
-                    pagesize,
-                    selector,
-                    predicate,
-                    includes,
-                    ordering: null!,
-                    cancellationToken
-                );
+            var result = await _WorkerserviceRepository.PaginateAsync(
+                page,
+                pagesize,
+                selector,
+                predicate,
+                includes,
+                ordering: null!,
+                cancellationToken
+            );
 
             return new()
             {
@@ -70,8 +69,8 @@ namespace Services.Application.Features.Workers.Queries.GetAll
                 Result = new(
                     page,
                     pagesize,
-                    (int)Math.Ceiling(result.Count / (double)pagesize),
-                    result
+                    (int)Math.Ceiling(result.count / (double)pagesize),
+                    result.Item1
                 ),
             };
         }

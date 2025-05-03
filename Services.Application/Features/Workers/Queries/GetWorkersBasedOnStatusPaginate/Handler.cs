@@ -26,7 +26,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus
                 int page = request.page == 0 ? 1 : request.page;
                 int pagesize = request.pagesize == 0 ? 10 : request.pagesize;
 
-                IReadOnlyCollection<GetWorkers>? result = await _workerRepository.PaginateAsync(
+                var result = await _workerRepository.PaginateAsync(
                     page,
                     pagesize,
                     w => new GetWorkers(w.UserId, w.User.Name, w.Status),
@@ -44,8 +44,8 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus
                     Result = new(
                         page,
                         pagesize,
-                        (int)Math.Ceiling(result.Count / (double)pagesize),
-                        result
+                        (int)Math.Ceiling(result.count / (double)pagesize),
+                        result.Item1
                     ),
                 };
             }

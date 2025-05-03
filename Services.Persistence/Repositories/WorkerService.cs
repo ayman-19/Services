@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
+using Services.Domain.Enums;
 using Services.Persistence.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -37,5 +38,27 @@ namespace Services.Persistence.Repositories
                 .Set<WorkerService>()
                 .AsTracking()
                 .FirstAsync(ws => ws.WorkerId == WorkerId && ws.ServiceId == ServiceId);
+
+        public async Task RateWorkersAsync(Guid workerId, Guid serviceId)
+        {
+            var averageRate = await _context
+                .Set<Booking>()
+                .Where(b =>
+                    b.Status == BookingStatus.Completed
+                    && b.WorkerId == workerId
+                    && b.ServiceId == serviceId
+                )
+                .AverageAsync(b => (double?)b.Rate);
+
+            if (averageRate == null)
+                return;
+
+            var ceilingRate = Math.Ceiling(averageRate.Value);
+
+            await _context
+                .Set<WorkerService>()
+                .Where(ws => ws.WorkerId == workerId && ws.ServiceId == serviceId)
+                .ExecuteUpdateAsync(setters => setters.SetProperty(ws => ws.Rate, ceilingRate));
+        }
     }
 }

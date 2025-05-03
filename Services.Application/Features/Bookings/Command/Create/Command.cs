@@ -10,7 +10,7 @@ namespace Services.Application.Features.Bookings.Command.Create
         Guid CustomerId,
         Guid WorkerId,
         Guid ServiceId,
-        double Total
+        double Price
     ) : IRequest<ResponseOf<CreateBookingResult>>
     {
         public static implicit operator Booking(CreateBookingCommand bookingCommand) =>
@@ -19,7 +19,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 Location = bookingCommand.LocationType,
                 CustomerId = bookingCommand.CustomerId,
                 WorkerId = bookingCommand.WorkerId,
-                Total = bookingCommand.Total,
+                Price = bookingCommand.Price,
                 ServiceId = bookingCommand.ServiceId,
                 Status = BookingStatus.Pending,
             };

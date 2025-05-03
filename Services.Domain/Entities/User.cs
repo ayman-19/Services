@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Services.Domain.Abstraction;
 using Services.Domain.Base;
 using Services.Domain.Entities;
@@ -17,7 +16,6 @@ namespace Services.Domain.Models
             Email = email;
             Phone = phone;
             UserType = userType;
-            UserRoles = new List<UserRole>();
         }
 
         public string Name { get; set; }
@@ -34,7 +32,7 @@ namespace Services.Domain.Models
         public Worker Worker { get; set; }
         public Customer Customer { get; set; }
         public Branch Branch { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
         public void HashPassword(IPasswordHasher<User> passwordHasher, string password) =>
             HashedPassword = passwordHasher.HashPassword(this, password);

@@ -18,8 +18,8 @@ namespace Services.Domain.Entities
         public Guid RoleId { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime? UpdateOn { get; set; }
-        public User User { get; set; } = new();
-        public Role Role { get; set; } = new();
+        public User User { get; set; }
+        public Role Role { get; set; }
 
         public static UserRole Create(Guid userId, Guid roleId) => new UserRole(userId, roleId);
 

@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using MediatR;
-using Services.Application.Features.Services.Queries.Paginate;
 using Services.Domain.Abstraction;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
@@ -26,22 +25,21 @@ namespace Services.Application.Features.Branchs.Queries.Paginate
         {
             try
             {
-                IReadOnlyCollection<PaginateBranchResult>? result =
-                    await _branchRepository.PaginateAsync(
-                        request.page == 0 ? 1 : request.page,
-                        request.pageSize == 0 ? 10 : request.pageSize,
-                        b => new PaginateBranchResult(b.Id, b.Langitude, b.Latitude),
-                        b => b.Id == request.Id || request.Id == null,
-                        null!,
-                        null!,
-                        cancellationToken
-                    );
+                var result = await _branchRepository.PaginateAsync(
+                    request.page == 0 ? 1 : request.page,
+                    request.pageSize == 0 ? 10 : request.pageSize,
+                    b => new PaginateBranchResult(b.Id, b.Langitude, b.Latitude),
+                    b => b.Id == request.Id || request.Id == null,
+                    null!,
+                    null!,
+                    cancellationToken
+                );
                 return new()
                 {
                     Message = ValidationMessages.Success,
                     Success = true,
                     StatusCode = (int)HttpStatusCode.OK,
-                    Result = result,
+                    Result = result.Item1,
                 };
             }
             catch
