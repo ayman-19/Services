@@ -1,4 +1,6 @@
-﻿namespace Services.Shared.ValidationMessages
+﻿using static Services.Shared.ValidationMessages.ValidationMessages;
+
+namespace Services.Shared.ValidationMessages
 {
     public class ValidationMessages
     {
@@ -110,6 +112,8 @@
             public const string LocationIsRequired = "Location Is Required.";
             public const string BookingNotExist = "Booking Not Exist.";
             public const string UserNotFound = "User Not Found.";
+            public const string RateNotExist =
+                "You can’t book a new service until you rate the last one.";
         }
 
         public static class Discount

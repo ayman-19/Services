@@ -5,7 +5,6 @@
         string WorkerName,
         Guid ServiceId,
         string ServiceName,
-        Guid BranchId,
-        string BranchName
+        Guid BranchId
     );
 }

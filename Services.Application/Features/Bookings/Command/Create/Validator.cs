@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
+using Services.Domain.Enums;
 using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Bookings.Command.Create
@@ -70,6 +71,15 @@ namespace Services.Application.Features.Bookings.Command.Create
                         await customerRepository.IsAnyExistAsync(s => s.UserId == id)
                 )
                 .WithMessage(ValidationMessages.Customers.CustomerNotExist);
+
+            RuleFor(b => b.CustomerId)
+                .MustAsync(
+                    async (id, cancellationToken) =>
+                        !await bookingRepository.IsAnyExistAsync(s =>
+                            s.CustomerId == id && s.Status == BookingStatus.Completed && s.Rate == 0
+                        )
+                )
+                .WithMessage(ValidationMessages.Booking.RateNotExist);
         }
     }
 }

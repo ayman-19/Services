@@ -2,6 +2,7 @@
 using MediatR;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
+using Services.Domain.Enums;
 using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
@@ -13,11 +14,17 @@ namespace Services.Application.Features.Bookings.Command.Update
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJobs _jobs;
 
-        public UpdateBookingHandler(IBookingRepository bookingRepository, IUnitOfWork unitOfWork)
+        public UpdateBookingHandler(
+            IBookingRepository bookingRepository,
+            IUnitOfWork unitOfWork,
+            IJobs jobs
+        )
         {
             _bookingRepository = bookingRepository;
             _unitOfWork = unitOfWork;
+            _jobs = jobs;
         }
 
         public async Task<ResponseOf<UpdateBookingResult>> Handle(
@@ -44,6 +51,10 @@ namespace Services.Application.Features.Bookings.Command.Update
                     );
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
+
+                    if (book.Status == BookingStatus.Completed)
+                        await _jobs.RateWorkersAsync(book.WorkerId, book.ServiceId);
+
                     return new()
                     {
                         Message = ValidationMessages.Success,
@@ -52,10 +63,10 @@ namespace Services.Application.Features.Bookings.Command.Update
                         Result = book,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
                     await transaction.RollbackAsync(cancellationToken);
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    throw new Exception(ex.Message, ex);
                 }
             }
         }

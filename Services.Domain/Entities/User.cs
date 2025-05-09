@@ -24,7 +24,7 @@ namespace Services.Domain.Models
         public string Phone { get; set; }
         public UserType UserType { get; set; }
         public DateTime CreateOn { get; set; }
-        public DateTime DeleteOn { get; set; }
+        public DateTime? DeleteOn { get; set; }
         public DateTime? UpdateOn { get; set; }
         public bool ConfirmAccount { get; set; }
         public string HashedPassword { get; set; }

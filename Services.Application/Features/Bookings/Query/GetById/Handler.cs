@@ -31,7 +31,8 @@ namespace Services.Application.Features.Bookings.Query.GetById
                         s.Worker!.User!.Name,
                         s.ServiceId,
                         s.Service.Name,
-                        s.Total
+                        s.Total,
+                        s.Rate ?? 0
                     ),
                     c =>
                         c.Include(cust => cust.Customer)

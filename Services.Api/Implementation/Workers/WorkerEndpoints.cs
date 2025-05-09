@@ -19,106 +19,120 @@ namespace Services.Api.Implementation.Workers
         {
             RouteGroupBuilder group = endpoints.MapGroup("/Workers").WithTags("Workers");
 
-            group.MapPost(
-                "AssignWorkerToServiceAsync/",
-                async (
-                    AssignWorkerToServiceCommand command,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(command, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.AssignWorkerToService));
+            group
+                .MapPost(
+                    "AssignWorkerToServiceAsync/",
+                    async (
+                        AssignWorkerToServiceCommand command,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(command, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.AssignWorkerToService));
 
-            group.MapDelete(
-                "RemoveWorkerFromService/{workerId}/{serviceId}",
-                async (
-                    Guid workerId,
-                    Guid serviceId,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new RemoveWorkerFromServiceCommand(workerId, serviceId),
-                            cancellationToken
+            group
+                .MapDelete(
+                    "RemoveWorkerFromService/{workerId}/{serviceId}",
+                    async (
+                        Guid workerId,
+                        Guid serviceId,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) =>
+                        Results.Ok(
+                            await sender.Send(
+                                new RemoveWorkerFromServiceCommand(workerId, serviceId),
+                                cancellationToken
+                            )
                         )
-                    )
-            ).RequireAuthorization(nameof(Permissions.RemoveWorkerFromService));
+                )
+                .RequireAuthorization(nameof(Permissions.RemoveWorkerFromService));
 
-            group.MapPut(
-                "UpdateWorkerOnServiceAvailabiltyAsync/",
-                async (
-                    UpdateWorkerOnServiceAvailabiltyCommand command,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(command, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.UpdateWorkerOnService));
-            group.MapPut(
-                "UpdateWorkerStatusAsync/",
-                async (
-                    UpdateWorkerStatusCommand command,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(command, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.UpdateWorkerStatus));
+            group
+                .MapPut(
+                    "UpdateWorkerOnServiceAvailabiltyAsync/",
+                    async (
+                        UpdateWorkerOnServiceAvailabiltyCommand command,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(command, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.UpdateWorkerOnService));
+            group
+                .MapPut(
+                    "UpdateWorkerStatusAsync/",
+                    async (
+                        UpdateWorkerStatusCommand command,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(command, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.UpdateWorkerStatus));
 
-            group.MapPost(
-                "GetWorkersOnServiceAsync",
-                async (
-                    GetWorkersOnServiceQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.GetWorkerOnService));
+            group
+                .MapPost(
+                    "GetWorkersOnServiceAsync",
+                    async (
+                        GetWorkersOnServiceQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.GetWorkerOnService));
 
-            group.MapGet(
-                "GetWorkerOnServiceAsync/{workerId}/{serviceId}/{branchId}",
-                async (
-                    Guid workerId,
-                    Guid serviceId,
-                    Guid branchId,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) =>
-                    Results.Ok(
-                        await sender.Send(
-                            new GetWorkerOnServiceQuery(workerId, serviceId, branchId),
-                            cancellationToken
+            group
+                .MapGet(
+                    "GetServiceOnWorkerAsync/{workerId}",
+                    async (Guid workerId, ISender sender, CancellationToken cancellationToken) =>
+                        Results.Ok(
+                            await sender.Send(
+                                new GetWorkerOnServiceQuery(workerId),
+                                cancellationToken
+                            )
                         )
-                    )
-            ).RequireAuthorization(nameof(Permissions.GetWorkerOnService));
+                )
+                .RequireAuthorization(nameof(Permissions.GetWorkerOnService));
 
-            group.MapPost(
-                "GetAllServicesOnWorker",
-                async (
-                    GetAllServicesWithWorkersQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.GetAllServicesWithWorkers));
-            group.MapPost(
-                "/GetWorkersPaginateAsync",
-                async (
-                    GetWorkerPaginateQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.GetWorkerPaginate));
-            group.MapPost(
-                "/GetAllWorkerAsync",
-                async (
-                    GetAllWorkerQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.GetAllWorker));
-            group.MapPost(
-                "/GetWorkersBasedOnStatus",
-                async (
-                    GetWorkersBasedOnStatusQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.GetWorkersBasedOnStatus));
+            group
+                .MapPost(
+                    "GetAllServicesOnWorker",
+                    async (
+                        GetAllServicesWithWorkersQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.GetAllServicesWithWorkers));
+            group
+                .MapPost(
+                    "/GetWorkersPaginateAsync",
+                    async (
+                        GetWorkerPaginateQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.GetWorkerPaginate));
+            group
+                .MapPost(
+                    "/GetAllWorkerAsync",
+                    async (
+                        GetAllWorkerQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.GetAllWorker));
+            group
+                .MapPost(
+                    "/GetWorkersBasedOnStatus",
+                    async (
+                        GetWorkersBasedOnStatusQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.GetWorkersBasedOnStatus));
         }
     }
 }

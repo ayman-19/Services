@@ -1,7 +1,6 @@
 ﻿using Quartz;
 using Services.Domain.Abstraction;
 using Services.Persistence.BackgroundJobs;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace Services.Persistence.Repositories
 {

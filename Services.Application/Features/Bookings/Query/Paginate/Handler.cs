@@ -40,7 +40,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     s.Worker!.User!.Name,
                     s.ServiceId,
                     s.Service.Name,
-                    s.Total
+                    s.Total,
+                    s.Rate ?? 0
                 );
 
                 Func<IQueryable<Booking>, IIncludableQueryable<Booking, object>> includes = c =>

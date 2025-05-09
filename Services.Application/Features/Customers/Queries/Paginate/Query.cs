@@ -1,4 +1,8 @@
-﻿namespace Services.Application.Features.Customers.Queries.Paginate
+﻿using MediatR;
+using Services.Shared.Responses;
+
+namespace Services.Application.Features.Customers.Queries.Paginate
 {
-    internal class Query { }
+    public sealed record PaginateCustomersQuery(Guid? customerId, int page, int pagesize)
+        : IRequest<ResponseOf<PaginateCustomersResult>>;
 }

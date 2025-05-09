@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Query;
 using Services.Application.Features.Workers.Queries.Paginate;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
-using Services.Domain.Enums;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 

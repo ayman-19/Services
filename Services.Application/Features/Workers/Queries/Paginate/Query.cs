@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Services.Application.Features.Workers.Queries.Paginate;
-using Services.Domain.Enums;
 using Services.Shared.Responses;
 
 namespace Services.Application.Features.Workers.Queries.GetAll
