@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Services.Domain.Entities;
@@ -48,12 +49,28 @@ namespace Services.Persistence.Context.Seeding
                 admin.HashPassword(passwordHasher, configuration["Admin:password"]);
                 admin.ConfirmAccount = true;
                 admin.Branch = new() { Langitude = 0, Latitude = 0 };
-                //var role = await context
-                //    .Set<Role>()
-                //    .AsNoTracking()
-                //    .FirstOrDefaultAsync(r => r.Name == nameof(UserType.Admin));
-                //if (role != null)
-                //    admin.UserRoles.Add(new UserRole { RoleId = role.Id });
+
+                var roleId = await context
+                    .Set<Role>()
+                    .AsNoTracking()
+                    .Where(r => r.Name == nameof(UserType.Admin))
+                    .Select(r => r.Id)
+                    .FirstAsync();
+                if (roleId != Guid.Empty)
+                    admin.UserRoles.Add(new UserRole { RoleId = roleId });
+
+                var permissionIds = context
+                    .Set<Permission>()
+                    .Where(p =>
+                        p.Name == nameof(Permissions.AddPermissionToRole)
+                        || p.Name == nameof(Permissions.AssignToRole)
+                    )
+                    .Select(p => p.Id);
+
+                await context
+                    .Set<RolePermission>()
+                    .AddRangeAsync(permissionIds.Select(p => RolePermission.Create(roleId, p)));
+
                 await context.Set<User>().AddAsync(admin);
             }
             await context.SaveChangesAsync();
