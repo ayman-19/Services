@@ -37,6 +37,7 @@ namespace Services.Api.Middlewares
                 DatabaseTransactionException => ((int)HttpStatusCode.Conflict, ex.Message),
                 NotSupportedException => (501, ex.Message),
                 UnauthorizedAccessException => ((int)HttpStatusCode.Unauthorized, ex.Message),
+                NotConfirmEmail => (499, ex.Message),
                 _ => ((int)HttpStatusCode.InternalServerError, ex.Message),
             };
     }

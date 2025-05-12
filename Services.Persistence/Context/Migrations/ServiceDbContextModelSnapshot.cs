@@ -8,7 +8,7 @@ using Services.Persistence.Data;
 
 #nullable disable
 
-namespace Services.Persistence.Migrations
+namespace Services.Persistence.Context.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
     partial class ServiceDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace Services.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -579,14 +579,17 @@ namespace Services.Persistence.Migrations
                     b.Property<int>("Location")
                         .HasColumnType("int");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("Rate")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
 
                     b.Property<Guid>("WorkerId")
                         .HasColumnType("uniqueidentifier");
@@ -824,6 +827,9 @@ namespace Services.Persistence.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
@@ -889,26 +895,6 @@ namespace Services.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Role", "Identity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d9d07e43-cfc7-4592-8282-c2f422bf0872"),
-                            CreateOn = new DateTime(2025, 4, 27, 18, 29, 8, 0, DateTimeKind.Unspecified),
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("36d69680-e3b2-4153-b3de-b5b3a537e822"),
-                            CreateOn = new DateTime(2025, 4, 27, 18, 29, 8, 0, DateTimeKind.Unspecified),
-                            Name = "Worker"
-                        },
-                        new
-                        {
-                            Id = new Guid("ae53d444-f81d-490c-b6f6-e5d45baf6619"),
-                            CreateOn = new DateTime(2025, 4, 27, 18, 29, 8, 0, DateTimeKind.Unspecified),
-                            Name = "Customer"
-                        });
                 });
 
             modelBuilder.Entity("Services.Domain.Models.RolePermission", b =>
@@ -954,7 +940,7 @@ namespace Services.Persistence.Migrations
                     b.Property<DateTime>("CreateOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeleteOn")
+                    b.Property<DateTime?>("DeleteOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")

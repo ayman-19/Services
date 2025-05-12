@@ -81,7 +81,14 @@ namespace Services.Persistence.Repositories
 
             if (affectedRows == 0)
             {
-                throw new InvalidOperationException("Branch not found or no updates were applied.");
+                var newBranch = new Branch
+                {
+                    UserId = userId,
+                    Latitude = latitude,
+                    Langitude = longitude,
+                };
+                _context.Set<Branch>().Add(newBranch);
+                await _context.SaveChangesAsync();
             }
         }
     }

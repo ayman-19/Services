@@ -16,9 +16,7 @@ namespace Services.Application.Features.Users.Commands.Create
         Guid? CategoryId,
         Guid? ServiceId,
         double? Experience,
-        double? Price,
-        double Latitude,
-        double Longitude
+        double? Price
     ) : IRequest<Response>
     {
         public static implicit operator Customer(CreateUserCommand command) =>

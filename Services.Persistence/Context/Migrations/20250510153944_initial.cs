@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Services.Persistence.Migrations
+namespace Services.Persistence.Context.Migrations
 {
     /// <inheritdoc />
     public partial class initial : Migration
@@ -307,7 +307,7 @@ namespace Services.Persistence.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeleteOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ConfirmAccount = table.Column<bool>(type: "bit", nullable: false),
                     HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -843,7 +843,8 @@ namespace Services.Persistence.Migrations
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Location = table.Column<int>(type: "int", nullable: false),
-                    Total = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Rate = table.Column<int>(type: "int", nullable: true),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WorkerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -889,6 +890,7 @@ namespace Services.Persistence.Migrations
                     Availabilty = table.Column<bool>(type: "bit", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Discount = table.Column<double>(type: "float", nullable: true),
+                    Rate = table.Column<int>(type: "int", nullable: false),
                     CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                 },

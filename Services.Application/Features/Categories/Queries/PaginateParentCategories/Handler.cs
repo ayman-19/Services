@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;

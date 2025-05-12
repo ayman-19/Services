@@ -12,11 +12,6 @@ namespace Services.Persistence.Context.Configuration
             builder.ToTable(nameof(Table.Role), nameof(Schema.Identity));
             builder.HasKey(k => k.Id);
             builder.HasIndex(ind => ind.Name).IsUnique(true);
-            builder.HasData(
-                Role.Create(Guid.NewGuid(), nameof(UserType.Admin)),
-                Role.Create(Guid.NewGuid(), nameof(UserType.Worker)),
-                Role.Create(Guid.NewGuid(), nameof(UserType.Customer))
-            );
         }
     }
 }

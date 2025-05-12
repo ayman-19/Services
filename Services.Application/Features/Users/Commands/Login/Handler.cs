@@ -34,12 +34,7 @@ public sealed class LoginUserHandler(
             if (!user.ConfirmAccount)
             {
                 await HandleUnconfirmedAccount(user, cancellationToken);
-                return new ResponseOf<LoginUserResult>
-                {
-                    Message = ValidationMessages.Users.EmailNotConfirmed,
-                    StatusCode = 499,
-                    Success = false,
-                };
+                throw new NotConfirmEmail(ValidationMessages.Users.EmailNotConfirmed);
             }
 
             if (!VerifyPassword(user, request.password))

@@ -32,9 +32,9 @@ namespace Services.Persistence.Context.Seeding
                 context
                     .Set<Role>()
                     .AddRange(
-                        Role.Create(Guid.NewGuid(), nameof(UserType.Admin)),
-                        Role.Create(Guid.NewGuid(), nameof(UserType.Worker)),
-                        Role.Create(Guid.NewGuid(), nameof(UserType.Customer))
+                        Role.Create(nameof(UserType.Admin)),
+                        Role.Create(nameof(UserType.Worker)),
+                        Role.Create(nameof(UserType.Customer))
                     );
             }
 

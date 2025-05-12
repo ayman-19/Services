@@ -105,7 +105,7 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
     )
     {
         var worker = (Worker)request;
-        InitializeUser(worker.User, request.password, code, request.Latitude, request.Longitude);
+        InitializeUser(worker.User, request.password, code);
         worker.WorkerServices.Add(
             new WorkerService
             {
@@ -127,23 +127,16 @@ public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand
     )
     {
         var customer = (Customer)request;
-        InitializeUser(customer.User, request.password, code, request.Latitude, request.Longitude);
+        InitializeUser(customer.User, request.password, code);
         await _customerRepository.CreateAsync(customer, cancellationToken);
         await AssignRoleAsync(customer.User, UserType.Customer);
         customer.User.Token = await _jwtManager.GenerateTokenAsync(customer.User);
     }
 
-    private void InitializeUser(
-        User user,
-        string password,
-        string code,
-        double? latitude,
-        double? longitude
-    )
+    private void InitializeUser(User user, string password, string code)
     {
         user.HashPassword(_passwordHasher, password);
         user.HashedCode(_passwordHasher, code);
-        user.Branch = new Branch { Latitude = longitude ?? 0, Langitude = latitude ?? 0 };
     }
 
     private async Task AssignRoleAsync(User user, UserType userType)
