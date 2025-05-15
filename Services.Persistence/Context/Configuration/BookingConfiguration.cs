@@ -11,10 +11,10 @@ namespace Services.Persistence.Context.Configuration
         {
             builder.ToTable(nameof(Table.Booking), nameof(Schema.Service));
             builder.HasKey(t => t.Id);
-            builder.HasIndex(t => t.Id).IsUnique();
             builder.HasIndex(t => t.WorkerId);
             builder.HasIndex(t => t.CustomerId);
             builder.HasIndex(t => t.ServiceId);
+            builder.HasIndex(t => t.CreateOn);
         }
     }
 }

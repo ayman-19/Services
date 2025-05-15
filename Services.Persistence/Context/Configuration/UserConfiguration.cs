@@ -12,6 +12,7 @@ namespace Services.Persistence.Context.Configuration
             builder.ToTable(nameof(Table.User), nameof(Schema.Identity));
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Email).IsUnique(true);
+            builder.HasIndex(x => x.Name);
             builder.Navigation(User => User.Token);
             builder.Navigation(User => User.UserRoles);
         }
