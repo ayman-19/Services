@@ -22,7 +22,11 @@ namespace Services.Application.Features.Categories.Queries.PaginateParentCategor
                 c.ParentId
             ));
 
-            var categoriesHierarchy = GetAllCategoriesHierarchy(categories, request.Id);
+            var categoriesHierarchy = GetAllCategoriesHierarchy(
+                categories,
+                request.Id,
+                request.searchName
+            );
 
             var result = categoriesHierarchy
                 .OrderBy(c => c.Id)
@@ -45,10 +49,13 @@ namespace Services.Application.Features.Categories.Queries.PaginateParentCategor
 
         public IQueryable<CategoriesResult> GetAllCategoriesHierarchy(
             IReadOnlyCollection<CategoriesFliter> categories,
-            Guid? id
+            Guid? id,
+            string searchName
         ) =>
             categories
-                .Where(c => c.ParentId == null && (c.Id == id || id == null))
+                .Where(c =>
+                    c.ParentId == null && (c.Id == id || id == null) && c.Name.Contains(searchName)
+                )
                 .Select(c => new CategoriesResult(
                     c.Id,
                     c.Name,

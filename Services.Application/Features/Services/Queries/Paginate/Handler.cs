@@ -33,7 +33,8 @@ namespace Services.Application.Features.Services.Queries.Paginate
                     ),
                     s =>
                         (s.CategoryId == request.categoryId || request.categoryId == null)
-                        && (s.Id == request.Id || request.Id == null),
+                        && (request.Id == null || s.Id == request.Id)
+                        && (request.searchName == null || s.Name.Contains(request.searchName)),
                     null!,
                     null!,
                     cancellationToken

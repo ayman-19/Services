@@ -32,7 +32,8 @@ namespace Services.Application.Features.Customers.Queries.Paginate
                     ),
                     c =>
                         c.User.DeleteOn == null
-                        && (request.customerId == null || c.UserId == request.customerId),
+                        && (request.customerId == null || c.UserId == request.customerId)
+                        && (request.searchName == null || c.User.Name.Contains(request.searchName)),
                     c => c.Include(u => u.User),
                     null!,
                     cancellationToken

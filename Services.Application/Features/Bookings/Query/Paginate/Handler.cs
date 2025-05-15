@@ -56,9 +56,11 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                 Expression<Func<Booking, bool>> predicate = userType switch
                 {
                     var t when t == UserType.Customer.ToString() => b =>
-                        (request.Id != null || b.CustomerId == request.Id),
+                        (request.Id != null || b.CustomerId == request.Id)
+                        && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Worker.ToString() => b =>
-                        (request.Id != null || b.WorkerId == request.Id),
+                        (request.Id != null || b.WorkerId == request.Id)
+                        && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Admin.ToString() => b =>
                         request.Id == null || b.Id == request.Id,
                     _ => throw new InvalidOperationException("Unknown user type."),
