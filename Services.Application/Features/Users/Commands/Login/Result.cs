@@ -3,9 +3,14 @@ using Services.Domain.Models;
 
 namespace Services.Application.Features.Users.Commands.Login
 {
-    public sealed record LoginUserResult(Guid userId, UserType type, string content)
+    public sealed record LoginUserResult(
+        Guid userId,
+        UserType type,
+        string content,
+        Guid? LocationId
+    )
     {
         public static implicit operator LoginUserResult(User user) =>
-            new(user.Id, user.UserType, user.Token.Content);
+            new(user.Id, user.UserType, user.Token.Content, user?.Branch?.Id);
     }
 }

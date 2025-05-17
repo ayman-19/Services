@@ -10,10 +10,20 @@ namespace Services.Application.Features.Bookings.Command.Update
         Guid CustomerId,
         Guid WorkerId,
         BookingStatus Status,
-        double Total
+        double Total,
+        double Rate
     )
     {
         public static implicit operator UpdateBookingResult(Booking b) =>
-            new(b.Id, b.CreateOn, b.Location, b.CustomerId, b.WorkerId, b.Status, b.Total);
+            new(
+                b.Id,
+                b.CreateOn,
+                b.Location,
+                b.CustomerId,
+                b.WorkerId,
+                b.Status,
+                b.Total,
+                b.Rate.GetValueOrDefault()
+            );
     }
 }

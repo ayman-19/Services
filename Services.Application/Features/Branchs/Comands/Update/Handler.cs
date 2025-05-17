@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Shared.Context;
@@ -15,17 +14,11 @@ namespace Services.Application.Features.Branchs.Comands.Update
     {
         private readonly IBranchRepository _branchRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserContext _userContext;
 
-        public UpdateBranchHandler(
-            IBranchRepository branchRepository,
-            IUnitOfWork unitOfWork,
-            IUserContext userContext
-        )
+        public UpdateBranchHandler(IBranchRepository branchRepository, IUnitOfWork unitOfWork)
         {
             _branchRepository = branchRepository;
             _unitOfWork = unitOfWork;
-            _userContext = userContext;
         }
 
         public async Task<ResponseOf<UpdateBranchResult>> Handle(
@@ -37,12 +30,8 @@ namespace Services.Application.Features.Branchs.Comands.Update
             {
                 try
                 {
-                    var userContext = _userContext.UserId;
-                    if (!userContext.Exist)
-                        throw new Exception("Not Authorized.");
-
                     Branch branch = await _branchRepository.GetByIdAsync(
-                        Guid.Parse(userContext.Value),
+                        request.Id,
                         cancellationToken
                     );
                     branch.UpdaeBranch(request.langtuide, request.latitude);

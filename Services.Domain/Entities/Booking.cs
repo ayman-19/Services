@@ -10,7 +10,7 @@ namespace Services.Domain.Entities
         public BookingStatus Status { get; set; }
         public LocationType Location { get; set; }
         public double Price { get; set; }
-        public int? Rate { get; set; }
+        public double? Rate { get; set; }
         public double Tax => Price * 0.14;
         public double Total => Price + Tax;
 
@@ -28,7 +28,7 @@ namespace Services.Domain.Entities
             Guid workerId,
             Guid serviceId,
             double total,
-            int rate
+            double rate
         )
         {
             CreateOn = createOn;

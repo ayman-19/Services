@@ -14,6 +14,6 @@ namespace Services.Application.Features.Bookings.Query.GetById
         Guid ServiceId,
         string ServiceName,
         double Total,
-        int Rate
+        double Rate
     );
 }

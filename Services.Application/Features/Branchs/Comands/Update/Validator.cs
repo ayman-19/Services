@@ -33,6 +33,17 @@ namespace Services.Application.Features.Branchs.Comands.Update
                 .WithMessage(ValidationMessages.Branchs.Latitude)
                 .NotNull()
                 .WithMessage(ValidationMessages.Branchs.Latitude);
+
+            RuleFor(branch => branch.Id)
+                .NotEmpty()
+                .WithMessage(ValidationMessages.Branchs.IdIsRequired)
+                .NotNull()
+                .WithMessage(ValidationMessages.Branchs.IdIsRequired)
+                .MustAsync(
+                    async (id, CancellationToken) =>
+                        await branchRepository.IsAnyExistAsync(branch => branch.Id == id)
+                )
+                .WithMessage(ValidationMessages.Branchs.BranchNotExist);
         }
     }
 }

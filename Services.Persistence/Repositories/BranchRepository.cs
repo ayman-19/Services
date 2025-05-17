@@ -25,6 +25,6 @@ namespace Services.Persistence.Repositories
             await _context
                 .Set<Branch>()
                 .AsTracking()
-                .FirstAsync(id => id.UserId == Id, cancellationToken);
+                .FirstAsync(id => id.Id == Id, cancellationToken);
     }
 }

@@ -40,7 +40,7 @@ public sealed class LoginUserHandler(
             if (!VerifyPassword(user, request.password))
                 throw new InvalidException(ValidationMessages.Users.IncorrectPassword);
 
-            await _userRepository.UpdateBranchAsync(user.Id, request.Latitude, request.Longitude);
+            //await _userRepository.UpdateBranchAsync(user.Id, request.Latitude, request.Longitude);
 
             var result = await _jwtManager.LoginAsync(user);
             await transaction.CommitAsync(cancellationToken);

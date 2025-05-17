@@ -57,9 +57,11 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                 {
                     var t when t == UserType.Customer.ToString() => b =>
                         (request.Id != null || b.CustomerId == request.Id)
+                        && (request.Status != null || b.Status == request.Status)
                         && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Worker.ToString() => b =>
                         (request.Id != null || b.WorkerId == request.Id)
+                        && (request.Status != null || b.Status == request.Status)
                         && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Admin.ToString() => b =>
                         request.Id == null || b.Id == request.Id,

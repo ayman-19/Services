@@ -12,7 +12,7 @@ namespace Services.Application.Features.Bookings.Command.Update
         Guid WorkerId,
         Guid ServiceId,
         BookingStatus Status,
-        int Rate,
+        double Rate,
         double Total
     ) : IRequest<ResponseOf<UpdateBookingResult>>;
 }
