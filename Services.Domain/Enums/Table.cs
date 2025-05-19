@@ -17,5 +17,7 @@
         Category,
         Discount,
         Booking,
+        DiscountRule,
+        Point,
     }
 }
