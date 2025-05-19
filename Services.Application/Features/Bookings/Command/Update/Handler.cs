@@ -3,7 +3,6 @@ using MediatR;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Domain.Enums;
-using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
@@ -53,7 +52,11 @@ namespace Services.Application.Features.Bookings.Command.Update
                     await transaction.CommitAsync(cancellationToken);
 
                     if (book.Status == BookingStatus.Completed)
-                        await _jobs.RateWorkersAsync(book.WorkerId, book.ServiceId);
+                        await _jobs.RateWorkersAsync(
+                            book.WorkerId,
+                            book.ServiceId,
+                            book.CustomerId
+                        );
 
                     return new()
                     {

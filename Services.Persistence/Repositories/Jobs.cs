@@ -10,7 +10,7 @@ namespace Services.Persistence.Repositories
 
         public Jobs(ISchedulerFactory schedulerFactory) => _schedulerFactory = schedulerFactory;
 
-        public async Task RateWorkersAsync(Guid WorkerId, Guid ServiceId)
+        public async Task RateWorkersAsync(Guid WorkerId, Guid ServiceId, Guid CustomerId)
         {
             var jobKey = new JobKey(nameof(RateJob));
             var scheduler = await _schedulerFactory.GetScheduler();
@@ -20,6 +20,7 @@ namespace Services.Persistence.Repositories
                 {
                     { "WorkerId", WorkerId },
                     { "ServiceId", ServiceId },
+                    { "CustomerId", CustomerId },
                 };
 
                 var jobDetail = JobBuilder
