@@ -5,11 +5,11 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Bookings.Query.GetById
 {
-    public sealed class GetBookingByIdValidator : AbstractValidator<GetBookingByIdQuery>
+    public sealed class GetBookingsValidator : AbstractValidator<GetBookingByIdQuery>
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public GetBookingByIdValidator(IServiceProvider serviceProvider)
+        public GetBookingsValidator(IServiceProvider serviceProvider)
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
             ClassLevelCascadeMode = CascadeMode.Stop;
