@@ -30,7 +30,7 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAv
                             n.WorkerId == command.WorkerId && n.ServiceId == command.ServiceId
                         )
                 )
-                .WithMessage(ValidationMessages.WorkereService.WorkerNotAssignToService);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerNotAssignedToService);
         }
     }
 }

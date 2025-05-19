@@ -53,7 +53,7 @@ namespace Services.Application.Features.Customers.Queries.Paginate
             {
                 return new ResponseOf<PaginateCustomersResult>
                 {
-                    Message = $"{ValidationMessages.Falier} - {ex.Message}",
+                    Message = $"{ValidationMessages.Failure} - {ex.Message}",
                     Success = false,
                     StatusCode = (int)HttpStatusCode.InternalServerError,
                     Result = null!,

@@ -24,15 +24,15 @@ namespace Services.Application.Features.Discounts.Commands.Update
         {
             RuleFor(d => d.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Discount.IdIsRequired)
+                .WithMessage(ValidationMessages.Discounts.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Discount.IdIsRequired);
+                .WithMessage(ValidationMessages.Discounts.IdIsRequired);
 
             RuleFor(d => d.Percentage)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Discount.PercentageIsRequired)
+                .WithMessage(ValidationMessages.Discounts.PercentageIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Discount.PercentageIsRequired);
+                .WithMessage(ValidationMessages.Discounts.PercentageIsRequired);
 
             RuleFor(b => b)
                 .MustAsync(
@@ -41,7 +41,7 @@ namespace Services.Application.Features.Discounts.Commands.Update
                             d.Percentage == request.Percentage && d.Id != request.Id
                         )
                 )
-                .WithMessage(ValidationMessages.Discount.DiscountIsExist);
+                .WithMessage(ValidationMessages.Discounts.DiscountExists);
         }
     }
 }

@@ -24,15 +24,15 @@ namespace Services.Application.Features.Discounts.Commands.Create
         {
             RuleFor(d => d.Percentage)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Discount.PercentageIsRequired)
+                .WithMessage(ValidationMessages.Discounts.PercentageIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Discount.PercentageIsRequired);
+                .WithMessage(ValidationMessages.Discounts.PercentageIsRequired);
 
             RuleFor(d => d.Expireon)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Discount.ExpireDateIsRequired)
+                .WithMessage(ValidationMessages.Discounts.ExpireDateIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Discount.ExpireDateIsRequired);
+                .WithMessage(ValidationMessages.Discounts.ExpireDateIsRequired);
 
             RuleFor(d => d)
                 .MustAsync(
@@ -41,7 +41,7 @@ namespace Services.Application.Features.Discounts.Commands.Create
                             n.Percentage == request.Percentage
                         )
                 )
-                .WithMessage(ValidationMessages.Discount.DiscountIsExist);
+                .WithMessage(ValidationMessages.Discounts.DiscountExists);
         }
     }
 }

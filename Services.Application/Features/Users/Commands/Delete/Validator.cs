@@ -22,14 +22,14 @@ namespace Services.Application.Features.Users.Commands.Delete
         {
             RuleFor(user => user.userId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.IdIsRequired)
+                .WithMessage(ValidationMessages.Services.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.IdIsRequired)
+                .WithMessage(ValidationMessages.Services.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await userRepository.IsAnyExistAsync(user => user.Id == id)
                 )
-                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+                .WithMessage(ValidationMessages.Services.ServiceDoesNotExist);
         }
     }
 }

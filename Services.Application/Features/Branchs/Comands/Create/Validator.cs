@@ -36,14 +36,14 @@ namespace Services.Application.Features.Branchs.Comands.Create
 
             RuleFor(s => s.langtuide)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branchs.Langtuide)
+                .WithMessage(ValidationMessages.Branchs.LongitudeIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branchs.Langtuide);
+                .WithMessage(ValidationMessages.Branchs.LongitudeIsRequired);
             RuleFor(s => s.latitude)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branchs.Latitude)
+                .WithMessage(ValidationMessages.Branchs.LatitudeIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branchs.Latitude);
+                .WithMessage(ValidationMessages.Branchs.LatitudeIsRequired);
         }
     }
 }

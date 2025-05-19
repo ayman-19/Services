@@ -29,7 +29,7 @@ public sealed class LoginUserHandler(
         {
             var user =
                 await _userRepository.GetByEmailAsync(request.email)
-                ?? throw new InvalidException(ValidationMessages.Users.NotFount);
+                ?? throw new InvalidException(ValidationMessages.Users.NotFound);
 
             if (!user.ConfirmAccount)
             {

@@ -35,42 +35,53 @@ namespace Services.Application.Features.Bookings.Command.Create
         {
             RuleFor(s => s.LocationType)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.LocationIsRequired)
+                .WithMessage(ValidationMessages.Bookings.LocationIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.LocationIsRequired);
+                .WithMessage(ValidationMessages.Bookings.LocationIsRequired);
 
             RuleFor(s => s.CustomerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.CustomerIdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.CustomerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.CustomerIdIsRequired);
+                .WithMessage(ValidationMessages.Bookings.CustomerIdIsRequired);
 
             RuleFor(s => s.WorkerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.WorkerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired);
+                .WithMessage(ValidationMessages.Bookings.WorkerIdIsRequired);
 
             RuleFor(b => b.ServiceId)
                 .MustAsync(
                     async (id, cancellationToken) =>
                         await serviceRepository.IsAnyExistAsync(s => s.Id == id)
                 )
-                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+                .WithMessage(ValidationMessages.Services.ServiceDoesNotExist);
 
             RuleFor(b => b.WorkerId)
                 .MustAsync(
                     async (id, cancellationToken) =>
                         await workerRepository.IsAnyExistAsync(s => s.UserId == id)
                 )
-                .WithMessage(ValidationMessages.Workers.WorkereNotExist);
+                .WithMessage(ValidationMessages.Workers.WorkerDoesNotExist);
 
             RuleFor(b => b.CustomerId)
                 .MustAsync(
                     async (id, cancellationToken) =>
                         await customerRepository.IsAnyExistAsync(s => s.UserId == id)
                 )
-                .WithMessage(ValidationMessages.Customers.CustomerNotExist);
+                .WithMessage(ValidationMessages.Customers.CustomerDoesNotExist);
+
+            RuleFor(b => b.CustomerId)
+                .MustAsync(
+                    async (id, cancellationToken) =>
+                        !await bookingRepository.IsAnyExistAsync(s =>
+                            s.CustomerId == id
+                            && s.Status == BookingStatus.Completed
+                            && s.IsPaid == false
+                        )
+                )
+                .WithMessage(ValidationMessages.Bookings.UnpaidPreviousBooking);
 
             RuleFor(b => b.CustomerId)
                 .MustAsync(
@@ -79,7 +90,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                             s.CustomerId == id && s.Status == BookingStatus.Completed && s.Rate == 0
                         )
                 )
-                .WithMessage(ValidationMessages.Booking.RateNotExist);
+                .WithMessage(ValidationMessages.Bookings.RateNotProvided);
         }
     }
 }

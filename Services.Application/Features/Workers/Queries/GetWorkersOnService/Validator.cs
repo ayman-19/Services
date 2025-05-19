@@ -32,16 +32,16 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
         {
             RuleFor(s => s.ServiceId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.ServiceIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired);
+                .WithMessage(ValidationMessages.WorkerServices.ServiceIdIsRequired);
 
             RuleFor(query => query.ServiceId)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await serviceRepository.IsAnyExistAsync(n => n.Id == id)
                 )
-                .WithMessage(ValidationMessages.WorkereService.ServiceNotExist);
+                .WithMessage(ValidationMessages.WorkerServices.ServiceDoesNotExist);
 
             RuleFor(query => query.Status)
                 .MustAsync(
@@ -52,7 +52,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
                                 : ws.Worker.Status == status
                         )
                 )
-                .WithMessage(ValidationMessages.WorkereService.NotFound);
+                .WithMessage(ValidationMessages.WorkerServices.NotFound);
         }
     }
 }

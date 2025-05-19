@@ -45,6 +45,7 @@ namespace Services.Application.Features.Bookings.Command.Update
                         request.CustomerId,
                         request.WorkerId,
                         request.ServiceId,
+                        request.IsPaid,
                         request.Total,
                         request.Rate
                     );

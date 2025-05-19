@@ -24,16 +24,16 @@ namespace Services.Application.Features.Categories.Commands.Create
         {
             RuleFor(c => c.Name)
                 .NotNull()
-                .WithMessage(ValidationMessages.Category.NameIsRequired)
+                .WithMessage(ValidationMessages.Categories.NameIsRequired)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Category.NameIsRequired);
+                .WithMessage(ValidationMessages.Categories.NameIsRequired);
 
             RuleFor(c => c.Name)
                 .MustAsync(
                     async (name, CancellationToken) =>
                         !await categoryRepository.IsAnyExistAsync(c => c.Name == name)
                 )
-                .WithMessage(ValidationMessages.Category.CategoryExist);
+                .WithMessage(ValidationMessages.Categories.CategoryExists);
 
             RuleFor(c => c.ParentId)
                 .MustAsync(
@@ -42,7 +42,7 @@ namespace Services.Application.Features.Categories.Commands.Create
                             ? true
                             : await categoryRepository.IsAnyExistAsync(c => c.Id == id)
                 )
-                .WithMessage(ValidationMessages.Category.CategoryNotExist);
+                .WithMessage(ValidationMessages.Categories.CategoryDoesNotExist);
         }
     }
 }

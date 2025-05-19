@@ -22,7 +22,7 @@ namespace Services.Application.Features.Users.Commands.ResetPassword
         {
             RuleFor(x => x.email)
                 .EmailAddress()
-                .WithMessage(ValidationMessages.Users.ValidMail)
+                .WithMessage(ValidationMessages.Users.ValidEmail)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Users.EmailIsRequired)
                 .NotNull()

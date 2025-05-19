@@ -46,14 +46,14 @@ namespace Services.Application.Features.Users.Commands.AddPermissionToRole
                     async (id, cancellationToken) =>
                         await roleRepository.IsAnyExistAsync(r => r.Id == id)
                 )
-                .WithMessage(ValidationMessages.Users.RoleNotExist);
+                .WithMessage(ValidationMessages.Users.RoleDoesNotExist);
 
             RuleFor(x => x.PermissionId)
                 .MustAsync(
                     async (id, cancellationToken) =>
                         await permissionRepository.IsAnyExistAsync(r => r.Id == id)
                 )
-                .WithMessage(ValidationMessages.Users.PermissionNotExist);
+                .WithMessage(ValidationMessages.Users.PermissionDoesNotExist);
 
             RuleFor(x => x)
                 .MustAsync(
@@ -62,7 +62,7 @@ namespace Services.Application.Features.Users.Commands.AddPermissionToRole
                             r.RoleId == ids.RoleId && r.PermissionId == ids.PermissionId
                         )
                 )
-                .WithMessage(ValidationMessages.Users.PermissionAlreadyAssignToRole);
+                .WithMessage(ValidationMessages.Users.PermissionAlreadyAssignedToRole);
         }
     }
 }

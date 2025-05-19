@@ -35,29 +35,29 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
         {
             RuleFor(s => s.WorkerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired);
 
             RuleFor(s => s.ServiceId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.ServiceIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired);
+                .WithMessage(ValidationMessages.WorkerServices.ServiceIdIsRequired);
 
             RuleFor(w => w.WorkerId)
                 .MustAsync(
                     async (workerId, CancellationToken) =>
                         await workerRepository.IsAnyExistAsync(n => n.UserId == workerId)
                 )
-                .WithMessage(ValidationMessages.WorkereService.WorkerNotExist);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerDoesNotExist);
 
             RuleFor(s => s.ServiceId)
                 .MustAsync(
                     async (serviceId, CancellationToken) =>
                         await serviceRepository.IsAnyExistAsync(n => n.Id == serviceId)
                 )
-                .WithMessage(ValidationMessages.WorkereService.ServiceNotExist);
+                .WithMessage(ValidationMessages.WorkerServices.ServiceDoesNotExist);
 
             RuleFor(command => command)
                 .MustAsync(
@@ -66,7 +66,7 @@ namespace Services.Application.Features.Workers.Commands.AssignWorkerToService
                             n.WorkerId == command.WorkerId && n.ServiceId == command.ServiceId
                         )
                 )
-                .WithMessage(ValidationMessages.WorkereService.AssignWorkerToService);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerAlreadyAssignedToService);
         }
     }
 }

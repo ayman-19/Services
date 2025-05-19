@@ -29,7 +29,7 @@ namespace Services.Application.Features.Branchs.Comands.Delete
                     async (id, CancellationToken) =>
                         await branchRepository.IsAnyExistAsync(branch => branch.Id == id)
                 )
-                .WithMessage(ValidationMessages.Branchs.BranchNotExist);
+                .WithMessage(ValidationMessages.Branchs.BranchDoesNotExist);
         }
     }
 }

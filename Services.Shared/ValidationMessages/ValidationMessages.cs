@@ -1,128 +1,131 @@
-﻿using static Services.Shared.ValidationMessages.ValidationMessages;
-
-namespace Services.Shared.ValidationMessages
+﻿namespace Services.Shared.ValidationMessages
 {
     public class ValidationMessages
     {
-        public const string Success = "operation done successfully";
-        public const string Falier = "operation not successfully";
+        public const string Success = "Operation completed successfully";
+        public const string Failure = "Operation was not successful";
 
         public static class Users
         {
-            public const string NameIsRequired = "Name Is Required.";
-            public const string UserTypeIsRequired = "Type Is Required.";
-            public const string PhoneIsRequired = "Phone Is Required.";
-            public const string IdIsRequired = "Id Is Required.";
-            public const string EmailIsRequired = "Email Is Required.";
-            public const string EmailOrPhoneIsRequired = "Email Or Phone Is Required.";
-            public const string PasswordIsRequired = "Password Is Required.";
-            public const string ConfirmPasswordIsRequired = "ConfirmPassword Is Required.";
-            public const string ComparePassword = "ConfirmPassword Not Equal Password.";
-            public const string EmailIsExist = "Email Is Exist.";
-            public const string EmailIsNotExist = "Email Is Not Exist.";
-            public const string ValidMail = "Make Sure This Email is Valid.";
-            public const string PhoneNumberNotValid = "Phone Number Not Valid.";
-            public const string UserNotExist = "User Not Exist.";
-            public const string ConfirmEmail = "Write this Code Correct that Confirm Email.";
-            public const string ValidatePhoneNumber = "Phone Number Invalid.";
-            public const string EmailOrPhoneNumberNotExist = "Email Or PhoneNumber Not Exist.";
-            public const string IncorrectPassword = "Incorrect Password.";
-            public const string LogoutError = "Invalid Token.";
-            public const string VerifyCode = "Code Incorrect.";
-            public const string ResetPassword = "Reset Password Code.";
-            public const string EmailNotConfirmed = "Email Not Confirmed.";
-            public const string MakeSureInformation = "Make Sure Information.";
-            public const string MinLength = "Password must be at least 8 characters long.";
-            public const string MaxLength = "Password must be at most 20 characters long.";
-            public const string NotFount = "Email or Password not correct.";
-            public const string RoleIdIsRequired = "Role Id Is Required.";
-            public const string PermissionIdIsRequired = "Permission Id Is Required.";
-            public static string RoleNotExist = "Role Is Not Exist.";
-            public static string PermissionNotExist = "Permission Is Not Exist.";
-            public static string PermissionAlreadyAssignToRole =
-                "Permission Already Assign To Role.";
+            public const string NameIsRequired = "Name is required";
+            public const string UserTypeIsRequired = "User type is required";
+            public const string PhoneIsRequired = "Phone number is required";
+            public const string IdIsRequired = "ID is required";
+            public const string EmailIsRequired = "Email is required";
+            public const string EmailOrPhoneIsRequired = "Email or phone number is required";
+            public const string PasswordIsRequired = "Password is required";
+            public const string ConfirmPasswordIsRequired = "Confirm password is required";
+            public const string ComparePassword = "Confirm password does not match password";
+            public const string EmailExists = "Email already exists";
+            public const string EmailDoesNotExist = "Email does not exist";
+            public const string ValidEmail = "Please enter a valid email address";
+            public const string PhoneNumberNotValid = "Phone number is not valid";
+            public const string UserDoesNotExist = "User does not exist";
+            public const string ConfirmEmail = "Please enter the correct email confirmation code";
+            public const string ValidatePhoneNumber = "Phone number is invalid";
+            public const string EmailOrPhoneNumberDoesNotExist =
+                "Email or phone number does not exist";
+            public const string IncorrectPassword = "Incorrect password";
+            public const string LogoutError = "Invalid token";
+            public const string VerifyCode = "Incorrect verification code";
+            public const string ResetPassword = "Reset password code";
+            public const string EmailNotConfirmed = "Email is not confirmed";
+            public const string VerifyInformation = "Please verify your information";
+            public const string MinPasswordLength = "Password must be at least 8 characters";
+            public const string MaxPasswordLength = "Password cannot exceed 20 characters";
+            public const string NotFound = "Email or password is incorrect";
+            public const string RoleIdIsRequired = "Role ID is required";
+            public const string PermissionIdIsRequired = "Permission ID is required";
+            public const string RoleDoesNotExist = "Role does not exist";
+            public const string PermissionDoesNotExist = "Permission does not exist";
+            public const string PermissionAlreadyAssignedToRole =
+                "Permission is already assigned to this role";
         }
 
         public static class Database
         {
-            public const string Error = "Occur Exception By Transaction.";
+            public const string Error = "Database transaction error occurred";
         }
 
         public static class Workers
         {
-            public const string WorkereNotExist = "Worker Not Exist.";
+            public const string WorkerDoesNotExist = "Worker does not exist";
         }
 
         public static class Customers
         {
-            public const string CustomerNotExist = "Customer Not Exist.";
+            public const string CustomerDoesNotExist = "Customer does not exist";
         }
 
-        public static class Service
+        public static class Services
         {
-            public const string NameIsRequired = "Name Is Required.";
-            public const string NameIsExist = "Name Is Exist.";
-            public const string DescriptionIsRequired = "Description Is Required.";
-            public const string ImageIsRequired = "Image Is Required.";
-            public const string IdIsRequired = "Id Is Required.";
-            public const string ServiceNotExist = "Service Not Exist.";
-            public const string RateIsRequired = "Rate Is Required.";
+            public const string NameIsRequired = "Service name is required";
+            public const string NameExists = "Service name already exists";
+            public const string DescriptionIsRequired = "Description is required";
+            public const string ImageIsRequired = "Image is required";
+            public const string IdIsRequired = "Service ID is required";
+            public const string ServiceDoesNotExist = "Service does not exist";
+            public const string RateIsRequired = "Rate is required";
         }
 
-        public static class WorkereService
+        public static class WorkerServices
         {
-            public const string WorkerIdIsRequired = "Worker Id Is Required.";
-            public const string BranchIdIsRequired = "Branch Id Is Required.";
-            public const string ServiceIdIsRequired = "Service Id Is Required.";
-            public const string ServiceNotExist = "Service Not Exist.";
-            public const string WorkerNotExist = "Worker Not Exist.";
-            public const string AssignWorkerToService = "Assign Worker To Service Exist.";
-            public const string WorkerNotAssignToService = "Worker Not Assign To Service.";
-            public const string BranchNotExist = "Branch Not Exist.";
-            public const string NotFound = "Not Found Workers.";
+            public const string WorkerIdIsRequired = "Worker ID is required";
+            public const string BranchIdIsRequired = "Branch ID is required";
+            public const string ServiceIdIsRequired = "Service ID is required";
+            public const string ServiceDoesNotExist = "Service does not exist";
+            public const string WorkerDoesNotExist = "Worker does not exist";
+            public const string WorkerAlreadyAssignedToService =
+                "Worker is already assigned to this service";
+            public const string WorkerNotAssignedToService =
+                "Worker is not assigned to this service";
+            public const string BranchDoesNotExist = "Branch does not exist";
+            public const string NotFound = "No workers found";
         }
 
         public static class Branchs
         {
-            public const string NameIsRequired = "Name Is Required.";
-            public const string IdIsRequired = "Id Is Required";
-            public const string IdIsNotFound = "Id Is Not Found";
-            public const string Langtuide = "Langtuide is required";
-            public const string Latitude = "Latitude is required";
-            public const string NameIsExist = "Name Is Exist.";
-            public const string DescriptionIsRequired = "Description Is Required.";
-            public const string BranchNotExist = "Branch Not Exist.";
+            public const string NameIsRequired = "Branch name is required";
+            public const string IdIsRequired = "Branch ID is required";
+            public const string IdNotFound = "Branch ID not found";
+            public const string LongitudeIsRequired = "Longitude is required";
+            public const string LatitudeIsRequired = "Latitude is required";
+            public const string NameExists = "Branch name already exists";
+            public const string DescriptionIsRequired = "Description is required";
+            public const string BranchDoesNotExist = "Branch does not exist";
         }
 
-        public static class Category
+        public static class Categories
         {
-            public const string IdIsRequired = "Id Is Required";
-            public const string CategoryNotExist = "Category Not Exist.";
-            public const string CategoryExist = "Category Is Exist.";
-            public const string CategoryIdIsRequired = "Category Id Is Required.";
-            public const string NameIsRequired = "Name Is Required.";
-            public const string DescriptionIsRequired = "Description Is Required.";
+            public const string IdIsRequired = "Category ID is required";
+            public const string CategoryDoesNotExist = "Category does not exist";
+            public const string CategoryExists = "Category already exists";
+            public const string CategoryIdIsRequired = "Category ID is required";
+            public const string NameIsRequired = "Category name is required";
+            public const string DescriptionIsRequired = "Description is required";
         }
 
-        public static class Booking
+        public static class Bookings
         {
-            public const string IdIsRequired = "Id Is Required";
-            public const string WorkerIdIsRequired = "Worker Id Is Required.";
-            public const string CustomerIdIsRequired = "Customer Id Is Required.";
-            public const string LocationIsRequired = "Location Is Required.";
-            public const string BookingNotExist = "Booking Not Exist.";
-            public const string UserNotFound = "User Not Found.";
-            public const string RateNotExist =
-                "You can’t book a new service until you rate the last one.";
+            public const string IdIsRequired = "Booking ID is required";
+            public const string WorkerIdIsRequired = "Worker ID is required";
+            public const string CustomerIdIsRequired = "Customer ID is required";
+            public const string LocationIsRequired = "Location is required";
+            public const string BookingDoesNotExist = "Booking does not exist";
+            public const string UserNotFound = "User not found";
+            public const string RateNotProvided =
+                "You must rate your previous service before booking a new one";
+            public const string UnpaidPreviousBooking =
+                "Unpaid previous booking - Please complete payment before submitting a new booking request";
         }
 
-        public static class Discount
+        public static class Discounts
         {
-            public const string IdIsRequired = "Id Is Required.";
-            public const string PercentageIsRequired = "Percentage Is Required.";
-            public const string ExpireDateIsRequired = "Expire Date IsRequired.";
-            public const string DiscountIsExist = "Discount Is Exist.";
-            public const string DiscountNotExist = "Discount Not Exist.";
+            public const string IdIsRequired = "Discount ID is required";
+            public const string PercentageIsRequired = "Percentage is required";
+            public const string ExpireDateIsRequired = "Expiration date is required";
+            public const string DiscountExists = "Discount already exists";
+            public const string DiscountDoesNotExist = "Discount does not exist";
         }
     }
 }

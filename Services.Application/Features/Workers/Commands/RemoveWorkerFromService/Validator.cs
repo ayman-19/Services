@@ -25,15 +25,15 @@ namespace Services.Application.Features.Workers.Commands.RemoveWorkerFromService
         {
             RuleFor(s => s.WorkerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired);
 
             RuleFor(s => s.ServiceId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.ServiceIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.ServiceIdIsRequired);
+                .WithMessage(ValidationMessages.WorkerServices.ServiceIdIsRequired);
 
             RuleFor(command => command)
                 .MustAsync(
@@ -42,7 +42,7 @@ namespace Services.Application.Features.Workers.Commands.RemoveWorkerFromService
                             n.WorkerId == command.WorkerId && n.ServiceId == command.ServiceId
                         )
                 )
-                .WithMessage(ValidationMessages.WorkereService.WorkerNotAssignToService);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerNotAssignedToService);
         }
     }
 }

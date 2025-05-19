@@ -22,14 +22,14 @@ namespace Services.Application.Features.Bookings.Query.GetById
         {
             RuleFor(bo => bo.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.IdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.IdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await bookingRepository.IsAnyExistAsync(bo => bo.Id == id)
                 )
-                .WithMessage(ValidationMessages.Booking.BookingNotExist);
+                .WithMessage(ValidationMessages.Bookings.BookingDoesNotExist);
         }
     }
 }

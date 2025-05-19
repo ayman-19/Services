@@ -20,6 +20,7 @@ namespace Services.Application.Features.Bookings.Query.Paginate
         string WorkerName,
         Guid ServiceId,
         string ServiceName,
+        bool Ispaid,
         double Total,
         double Rate
     );

@@ -25,9 +25,9 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
         {
             RuleFor(s => s.WorkerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired);
 
             RuleFor(query => query)
                 .MustAsync(
@@ -36,7 +36,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
                             n.WorkerId == query.WorkerId
                         )
                 )
-                .WithMessage(ValidationMessages.WorkereService.WorkerNotAssignToService);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerNotAssignedToService);
         }
     }
 }

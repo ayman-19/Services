@@ -22,14 +22,14 @@ namespace Services.Application.Features.Categories.Commands.Delete
         {
             RuleFor(category => category.id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Category.IdIsRequired)
+                .WithMessage(ValidationMessages.Categories.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Category.IdIsRequired)
+                .WithMessage(ValidationMessages.Categories.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await categoryRepository.IsAnyExistAsync(category => category.Id == id)
                 )
-                .WithMessage(ValidationMessages.Category.CategoryNotExist);
+                .WithMessage(ValidationMessages.Categories.CategoryDoesNotExist);
         }
     }
 }

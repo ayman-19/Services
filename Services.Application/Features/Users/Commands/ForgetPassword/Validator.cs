@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Repositories;
 using Services.Shared.ValidationMessages;
@@ -27,7 +22,7 @@ namespace Services.Application.Features.Users.Commands.ForgetPassword
         {
             RuleFor(x => x.email)
                 .EmailAddress()
-                .WithMessage(ValidationMessages.Users.ValidMail)
+                .WithMessage(ValidationMessages.Users.ValidEmail)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Users.EmailIsRequired)
                 .NotNull()
@@ -41,7 +36,7 @@ namespace Services.Application.Features.Users.Commands.ForgetPassword
                             cancellationToken
                         )
                 )
-                .WithMessage(ValidationMessages.Users.EmailIsNotExist);
+                .WithMessage(ValidationMessages.Users.EmailDoesNotExist);
         }
     }
 }

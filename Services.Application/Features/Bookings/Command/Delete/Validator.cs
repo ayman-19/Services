@@ -28,14 +28,14 @@ namespace Services.Application.Features.Bookings.Command.Delete
         {
             RuleFor(book => book.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.IdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.IdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await bookRepository.IsAnyExistAsync(book => book.Id == id)
                 )
-                .WithMessage(ValidationMessages.Booking.BookingNotExist);
+                .WithMessage(ValidationMessages.Bookings.BookingDoesNotExist);
         }
     }
 }

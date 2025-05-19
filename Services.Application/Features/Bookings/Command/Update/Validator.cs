@@ -35,27 +35,27 @@ namespace Services.Application.Features.Bookings.Command.Update
         {
             RuleFor(b => b.Location)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.LocationIsRequired)
+                .WithMessage(ValidationMessages.Bookings.LocationIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.LocationIsRequired);
+                .WithMessage(ValidationMessages.Bookings.LocationIsRequired);
 
             RuleFor(b => b.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.IdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.IdIsRequired);
+                .WithMessage(ValidationMessages.Bookings.IdIsRequired);
 
             RuleFor(b => b.CustomerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.CustomerIdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.CustomerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.CustomerIdIsRequired);
+                .WithMessage(ValidationMessages.Bookings.CustomerIdIsRequired);
 
             RuleFor(b => b.WorkerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired)
+                .WithMessage(ValidationMessages.Bookings.WorkerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Booking.WorkerIdIsRequired);
+                .WithMessage(ValidationMessages.Bookings.WorkerIdIsRequired);
 
             RuleFor(b => b)
                 .Must(b =>
@@ -65,35 +65,35 @@ namespace Services.Application.Features.Bookings.Command.Update
                             : false
                         : true
                 )
-                .WithMessage(ValidationMessages.Service.RateIsRequired);
+                .WithMessage(ValidationMessages.Services.RateIsRequired);
 
             RuleFor(b => b.ServiceId)
                 .MustAsync(
                     async (id, cancellationToken) =>
                         await serviceRepository.IsAnyExistAsync(s => s.Id == id)
                 )
-                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+                .WithMessage(ValidationMessages.Services.ServiceDoesNotExist);
 
             RuleFor(b => b.WorkerId)
                 .MustAsync(
                     async (id, cancellationToken) =>
                         await workerRepository.IsAnyExistAsync(s => s.UserId == id)
                 )
-                .WithMessage(ValidationMessages.Workers.WorkereNotExist);
+                .WithMessage(ValidationMessages.Workers.WorkerDoesNotExist);
 
             RuleFor(b => b.CustomerId)
                 .MustAsync(
                     async (id, cancellationToken) =>
                         await customerRepository.IsAnyExistAsync(s => s.UserId == id)
                 )
-                .WithMessage(ValidationMessages.Customers.CustomerNotExist);
+                .WithMessage(ValidationMessages.Customers.CustomerDoesNotExist);
 
             RuleFor(b => b.Id)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await bookingRepository.IsAnyExistAsync(b => b.Id == id)
                 )
-                .WithMessage(ValidationMessages.Booking.BookingNotExist);
+                .WithMessage(ValidationMessages.Bookings.BookingDoesNotExist);
         }
     }
 }

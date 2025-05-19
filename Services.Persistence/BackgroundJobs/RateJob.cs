@@ -18,7 +18,10 @@ namespace Services.Persistence.BackgroundJobs
                 Guid.Parse(workerId),
                 Guid.Parse(serviceId)
             );
-            await PointRepository.UpdateForCustomerAsync(Guid.Parse(customerId));
+            await PointRepository.UpdateForCustomerAsync(
+                Guid.Parse(customerId),
+                CancellationToken.None
+            );
         }
     }
 }

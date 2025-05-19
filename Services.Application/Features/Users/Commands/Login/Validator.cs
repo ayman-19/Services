@@ -38,7 +38,7 @@ namespace Services.Application.Features.Users.Commands.Login
                     async (e, CancellationToken) =>
                         await userRepository.IsAnyExistAsync(email => email.Email == e)
                 )
-                .WithMessage(ValidationMessages.Users.EmailIsNotExist);
+                .WithMessage(ValidationMessages.Users.EmailDoesNotExist);
         }
     }
 }

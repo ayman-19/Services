@@ -48,7 +48,7 @@ namespace Services.Application.Features.Users.Commands.Create
 
             RuleFor(x => x.email)
                 .EmailAddress()
-                .WithMessage(ValidationMessages.Users.ValidMail)
+                .WithMessage(ValidationMessages.Users.ValidEmail)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.Users.EmailIsRequired)
                 .NotNull()
@@ -60,9 +60,9 @@ namespace Services.Application.Features.Users.Commands.Create
                 .NotNull()
                 .WithMessage(ValidationMessages.Users.PasswordIsRequired)
                 .MinimumLength(8)
-                .WithMessage(ValidationMessages.Users.MinLength)
+                .WithMessage(ValidationMessages.Users.MinPasswordLength)
                 .MaximumLength(20)
-                .WithMessage(ValidationMessages.Users.MaxLength)
+                .WithMessage(ValidationMessages.Users.MaxPasswordLength)
                 .Matches(@"[A-Z]")
                 .WithMessage("Password must contain at least one uppercase letter.")
                 .Matches(@"[a-z]")
@@ -92,7 +92,7 @@ namespace Services.Application.Features.Users.Commands.Create
                             cancellationToken
                         )
                 )
-                .WithMessage(ValidationMessages.Users.EmailIsExist);
+                .WithMessage(ValidationMessages.Users.EmailExists);
 
             //RuleFor(x => x.ServiceId)
             //    .MustAsync(

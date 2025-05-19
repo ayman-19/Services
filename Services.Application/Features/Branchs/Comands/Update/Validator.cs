@@ -24,15 +24,15 @@ namespace Services.Application.Features.Branchs.Comands.Update
         {
             RuleFor(s => s.langtuide)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branchs.Langtuide)
+                .WithMessage(ValidationMessages.Branchs.LongitudeIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branchs.Langtuide);
+                .WithMessage(ValidationMessages.Branchs.LongitudeIsRequired);
 
             RuleFor(s => s.latitude)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Branchs.Latitude)
+                .WithMessage(ValidationMessages.Branchs.LatitudeIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Branchs.Latitude);
+                .WithMessage(ValidationMessages.Branchs.LatitudeIsRequired);
 
             RuleFor(branch => branch.Id)
                 .NotEmpty()
@@ -43,7 +43,7 @@ namespace Services.Application.Features.Branchs.Comands.Update
                     async (id, CancellationToken) =>
                         await branchRepository.IsAnyExistAsync(branch => branch.Id == id)
                 )
-                .WithMessage(ValidationMessages.Branchs.BranchNotExist);
+                .WithMessage(ValidationMessages.Branchs.BranchDoesNotExist);
         }
     }
 }

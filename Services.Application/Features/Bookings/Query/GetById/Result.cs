@@ -13,6 +13,7 @@ namespace Services.Application.Features.Bookings.Query.GetById
         string WorkerName,
         Guid ServiceId,
         string ServiceName,
+        bool Ispaid,
         double Total,
         double Rate
     );

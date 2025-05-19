@@ -22,6 +22,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 Price = bookingCommand.Price,
                 ServiceId = bookingCommand.ServiceId,
                 Status = BookingStatus.Pending,
+                IsPaid = false,
             };
     }
 }

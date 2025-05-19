@@ -22,14 +22,14 @@ namespace Services.Application.Features.Discounts.Queries.GetById
         {
             RuleFor(dis => dis.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Discount.IdIsRequired)
+                .WithMessage(ValidationMessages.Discounts.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Discount.IdIsRequired)
+                .WithMessage(ValidationMessages.Discounts.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await discountRepository.IsAnyExistAsync(dis => dis.Id == id)
                 )
-                .WithMessage(ValidationMessages.Discount.DiscountNotExist);
+                .WithMessage(ValidationMessages.Discounts.DiscountDoesNotExist);
         }
     }
 }

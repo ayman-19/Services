@@ -24,28 +24,28 @@ namespace Services.Application.Features.Services.Commands.Update
         {
             RuleFor(s => s.name)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.NameIsRequired)
+                .WithMessage(ValidationMessages.Services.NameIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.NameIsRequired);
+                .WithMessage(ValidationMessages.Services.NameIsRequired);
 
             RuleFor(s => s.id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.IdIsRequired)
+                .WithMessage(ValidationMessages.Services.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.IdIsRequired);
+                .WithMessage(ValidationMessages.Services.IdIsRequired);
 
             RuleFor(s => s.description)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.DescriptionIsRequired)
+                .WithMessage(ValidationMessages.Services.DescriptionIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.DescriptionIsRequired);
+                .WithMessage(ValidationMessages.Services.DescriptionIsRequired);
 
             RuleFor(s => s.id)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await serviceRepository.IsAnyExistAsync(n => n.Id == id)
                 )
-                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+                .WithMessage(ValidationMessages.Services.ServiceDoesNotExist);
 
             RuleFor(s => s)
                 .MustAsync(
@@ -54,7 +54,7 @@ namespace Services.Application.Features.Services.Commands.Update
                             n.Name == request.name && n.Id != request.id
                         )
                 )
-                .WithMessage(ValidationMessages.Service.NameIsExist);
+                .WithMessage(ValidationMessages.Services.NameExists);
         }
     }
 }

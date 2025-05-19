@@ -35,7 +35,7 @@ namespace Services.Application.Features.Users.Queries.GetById
                     async (id, CancellationToken) =>
                         await userRepository.IsAnyExistAsync(user => user.Id == id)
                 )
-                .WithMessage(ValidationMessages.Users.UserNotExist);
+                .WithMessage(ValidationMessages.Users.UserDoesNotExist);
         }
     }
 }

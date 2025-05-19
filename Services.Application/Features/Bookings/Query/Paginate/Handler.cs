@@ -40,6 +40,7 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     s.Worker!.User!.Name,
                     s.ServiceId,
                     s.Service.Name,
+                    s.IsPaid,
                     s.Total,
                     s.Rate ?? 0
                 );

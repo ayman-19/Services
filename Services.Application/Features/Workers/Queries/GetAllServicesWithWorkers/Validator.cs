@@ -23,16 +23,16 @@ namespace Services.Application.Features.Workers.Queries.GetAllServicesWithWorker
         {
             RuleFor(worker => worker.WorkerId)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.WorkereService.WorkerIdIsRequired)
+                .WithMessage(ValidationMessages.WorkerServices.WorkerIdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await workerServiceRepository.IsAnyExistAsync(worker =>
                             worker.WorkerId == id
                         )
                 )
-                .WithMessage(ValidationMessages.WorkereService.WorkerNotExist);
+                .WithMessage(ValidationMessages.WorkerServices.WorkerDoesNotExist);
         }
     }
 }

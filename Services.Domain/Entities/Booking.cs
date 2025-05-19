@@ -11,6 +11,7 @@ namespace Services.Domain.Entities
         public LocationType Location { get; set; }
         public double Price { get; set; }
         public double? Rate { get; set; }
+        public bool IsPaid { get; set; }
         public double Tax => Price * 0.14;
         public double Total => Price + Tax;
 
@@ -27,6 +28,7 @@ namespace Services.Domain.Entities
             Guid customerId,
             Guid workerId,
             Guid serviceId,
+            bool isPaid,
             double total,
             double rate
         )
@@ -38,6 +40,7 @@ namespace Services.Domain.Entities
             Price = total;
             ServiceId = serviceId;
             Rate = rate;
+            IsPaid = isPaid;
         }
 
         public void SetCreateOn()

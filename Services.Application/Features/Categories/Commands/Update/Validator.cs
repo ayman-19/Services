@@ -24,22 +24,22 @@ namespace Services.Application.Features.Categories.Commands.Update
         {
             RuleFor(c => c.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Category.IdIsRequired)
+                .WithMessage(ValidationMessages.Categories.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Category.IdIsRequired);
+                .WithMessage(ValidationMessages.Categories.IdIsRequired);
 
             RuleFor(c => c.Name)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Category.NameIsRequired)
+                .WithMessage(ValidationMessages.Categories.NameIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Category.NameIsRequired);
+                .WithMessage(ValidationMessages.Categories.NameIsRequired);
 
             RuleFor(b => b.Id)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await categoryRepository.IsAnyExistAsync(c => c.Id == id)
                 )
-                .WithMessage(ValidationMessages.Category.CategoryNotExist);
+                .WithMessage(ValidationMessages.Categories.CategoryDoesNotExist);
 
             RuleFor(c => c.ParentId)
                 .MustAsync(
@@ -48,7 +48,7 @@ namespace Services.Application.Features.Categories.Commands.Update
                             ? true
                             : await categoryRepository.IsAnyExistAsync(c => c.Id == id)
                 )
-                .WithMessage(ValidationMessages.Category.CategoryNotExist);
+                .WithMessage(ValidationMessages.Categories.CategoryDoesNotExist);
 
             RuleFor(b => b)
                 .MustAsync(
@@ -57,7 +57,7 @@ namespace Services.Application.Features.Categories.Commands.Update
                             n.Name == request.Name && n.Id != request.Id
                         )
                 )
-                .WithMessage(ValidationMessages.Category.CategoryExist);
+                .WithMessage(ValidationMessages.Categories.CategoryExists);
         }
     }
 }

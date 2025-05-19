@@ -24,29 +24,29 @@ namespace Services.Application.Features.Services.Commands.Create
         {
             RuleFor(s => s.name)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.NameIsRequired)
+                .WithMessage(ValidationMessages.Services.NameIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.NameIsRequired);
+                .WithMessage(ValidationMessages.Services.NameIsRequired);
             RuleFor(s => s.description)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.DescriptionIsRequired)
+                .WithMessage(ValidationMessages.Services.DescriptionIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.DescriptionIsRequired);
+                .WithMessage(ValidationMessages.Services.DescriptionIsRequired);
 
             RuleFor(s => s.File)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.ImageIsRequired)
+                .WithMessage(ValidationMessages.Services.ImageIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.ImageIsRequired)
+                .WithMessage(ValidationMessages.Services.ImageIsRequired)
                 .Must((file) => file.Length == 0 ? false : true)
-                .WithMessage(ValidationMessages.Service.ImageIsRequired);
+                .WithMessage(ValidationMessages.Services.ImageIsRequired);
 
             RuleFor(s => s.name)
                 .MustAsync(
                     async (name, CancellationToken) =>
                         !await serviceRepository.IsAnyExistAsync(n => n.Name == name)
                 )
-                .WithMessage(ValidationMessages.Service.NameIsExist);
+                .WithMessage(ValidationMessages.Services.NameExists);
         }
     }
 }

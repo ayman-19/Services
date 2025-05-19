@@ -22,14 +22,14 @@ namespace Services.Application.Features.Services.Commands.Delete
         {
             RuleFor(service => service.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.Service.IdIsRequired)
+                .WithMessage(ValidationMessages.Services.IdIsRequired)
                 .NotNull()
-                .WithMessage(ValidationMessages.Service.IdIsRequired)
+                .WithMessage(ValidationMessages.Services.IdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
                         await serviceRepository.IsAnyExistAsync(service => service.Id == id)
                 )
-                .WithMessage(ValidationMessages.Service.ServiceNotExist);
+                .WithMessage(ValidationMessages.Services.ServiceDoesNotExist);
         }
     }
 }

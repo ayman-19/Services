@@ -29,7 +29,7 @@ namespace Services.Application.Features.Branchs.Queries.GetById
                     async (id, CancellationToken) =>
                         await branchRepository.IsAnyExistAsync(branch => branch.Id == id)
                 )
-                .WithMessage(ValidationMessages.Branchs.IdIsNotFound);
+                .WithMessage(ValidationMessages.Branchs.BranchDoesNotExist);
         }
     }
 }

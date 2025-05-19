@@ -81,7 +81,7 @@ namespace Services.Application.Features.Users.Commands.Update
                 }
                 return new ResponseOf<UpdateUserResult>
                 {
-                    Message = ValidationMessages.Falier,
+                    Message = ValidationMessages.Failure,
                     StatusCode = (int)HttpStatusCode.ExpectationFailed,
                     Result = null!,
                 };
