@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Services.Domain.Entities;
 
 namespace Services.Application.Features.DiscountRules.Command.Create
 {
-	internal class Result
+	public sealed record CreateDiscountRuleResult(
+		Guid Id,
+        Guid DiscountId,
+		int MainPoints
+        )
 	{
-	}
+		public static implicit operator CreateDiscountRuleResult(DiscountRule discountRule) =>
+			new(discountRule.Id,
+				discountRule.DiscountId,
+				discountRule.MainPoints)
+			;
+			
+			
+    }
 }

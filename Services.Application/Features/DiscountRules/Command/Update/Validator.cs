@@ -3,13 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.DiscountRules.Command.Create
+namespace Services.Application.Features.DiscountRules.Command.Update
 {
-    public sealed class CreateDiscountRulesValidator : AbstractValidator<CreateDiscountRulesCommand>
+    public sealed class UpdateDiscountRuleValidator : AbstractValidator<UpdateDiscountRulesCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public CreateDiscountRulesValidator(IServiceProvider serviceProvider)
+        public UpdateDiscountRuleValidator(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             RuleLevelCascadeMode = CascadeMode.Stop;
@@ -24,26 +24,28 @@ namespace Services.Application.Features.DiscountRules.Command.Create
         }
 
         private void ValidateRequest(
-            IDiscountRuleRepository discountRuleRepository,
+            IDiscountRuleRepository discountruleRepository,
             IDiscountRepository discountRepository
         )
         {
-            RuleFor(D => D.DiscountId)
+            RuleFor(d => d.DiscountId)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.DiscountRule.DiscountIdIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.DiscountRule.DiscountIdIsRequired);
 
-            RuleFor(D => D.MainPoints)
+            RuleFor(d => d.MainPoints)
                 .NotEmpty()
                 .WithMessage(ValidationMessages.DiscountRule.MainPointIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.DiscountRule.MainPointIsRequired);
 
-            RuleFor(D => D.MainPoints)
+            RuleFor(D => D)
                 .MustAsync(
-                    async (point, cancellationToken) =>
-                        !await discountRuleRepository.IsAnyExistAsync(d => d.MainPoints == point)
+                    async (mainpoint, cancellationToken) =>
+                        !await discountruleRepository.IsAnyExistAsync(d =>
+                            d.MainPoints == mainpoint.MainPoints && d.Id != mainpoint.Id
+                        )
                 )
                 .WithMessage(ValidationMessages.DiscountRule.MainPointIsExist);
 

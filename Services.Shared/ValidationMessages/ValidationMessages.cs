@@ -124,5 +124,13 @@ namespace Services.Shared.ValidationMessages
             public const string DiscountIsExist = "Discount Is Exist.";
             public const string DiscountNotExist = "Discount Not Exist.";
         }
+
+        public static class DiscountRule
+        {
+            public const string DiscountIdIsRequired = "DiscountIdId Is Required.";
+            public const string MainPointIsRequired = "MainPoint Is Required.";
+            public const string MainPointIsExist = "MainPoint Is Already Exist.";
+            public const string IdIsNotIsExist = "ID Is Not Exist.";
+        }
     }
 }
