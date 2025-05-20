@@ -46,6 +46,7 @@ namespace Services.Persistence
                 .AddScoped<IRolePermissionRepository, RolePermissionRepository>()
                 .AddScoped<IRoleRepository, RoleRepository>()
                 .AddScoped<IPermissionRepository, PermissionRepository>()
+                .AddScoped<IDiscountRuleRepository, DiscountRuleRepository>()
                 .AddQuartz(q =>
                 {
                     q.UsePersistentStore(op =>

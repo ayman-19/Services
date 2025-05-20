@@ -127,5 +127,13 @@
             public const string DiscountExists = "Discount already exists";
             public const string DiscountDoesNotExist = "Discount does not exist";
         }
+
+        public static class DiscountRule
+        {
+            public const string DiscountIdIsRequired = "DiscountIdId Is Required.";
+            public const string MainPointIsRequired = "MainPoint Is Required.";
+            public const string MainPointIsExist = "MainPoint Is Already Exist.";
+            public const string IdIsNotIsExist = "ID Is Not Exist.";
+        }
     }
 }

@@ -1,15 +1,20 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.DiscountRules.Queries.GetById
+namespace Services.Application.Features.DiscountRules.Command.Delete
 {
-    public sealed class GetDiscountRuleByIdValidator : AbstractValidator<GetDiscountRuleQuery>
+    public sealed class DeleteDiscountRulesValidator : AbstractValidator<DeleteDiscountRulesCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public GetDiscountRuleByIdValidator(IServiceProvider serviceProvider)
+        public DeleteDiscountRulesValidator(IServiceProvider serviceProvider)
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
             ClassLevelCascadeMode = CascadeMode.Stop;
@@ -18,7 +23,7 @@ namespace Services.Application.Features.DiscountRules.Queries.GetById
             ValidateRequest(scope.ServiceProvider.GetRequiredService<IDiscountRuleRepository>());
         }
 
-        private void ValidateRequest(IDiscountRuleRepository discountRuleRepository)
+        private void ValidateRequest(IDiscountRuleRepository discountruleRepository)
         {
             RuleFor(d => d.Id)
                 .NotEmpty()
@@ -27,7 +32,7 @@ namespace Services.Application.Features.DiscountRules.Queries.GetById
                 .WithMessage(ValidationMessages.DiscountRule.DiscountIdIsRequired)
                 .MustAsync(
                     async (id, CancellationToken) =>
-                        await discountRuleRepository.IsAnyExistAsync(d => d.Id == id)
+                        await discountruleRepository.IsAnyExistAsync(d => d.Id == id)
                 )
                 .WithMessage(ValidationMessages.DiscountRule.IdIsNotIsExist);
         }
