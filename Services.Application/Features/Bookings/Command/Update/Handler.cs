@@ -52,7 +52,7 @@ namespace Services.Application.Features.Bookings.Command.Update
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
 
-                    if (book.Status == BookingStatus.Completed)
+                    if (book.Status == BookingStatus.Completed && book.IsPaid)
                         await _jobs.RateWorkersAsync(
                             book.WorkerId,
                             book.ServiceId,
