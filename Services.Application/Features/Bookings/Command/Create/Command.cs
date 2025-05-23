@@ -19,7 +19,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 Location = bookingCommand.LocationType,
                 CustomerId = bookingCommand.CustomerId,
                 WorkerId = bookingCommand.WorkerId,
-                Price = bookingCommand.Price,
+                OldPrice = bookingCommand.Price,
                 ServiceId = bookingCommand.ServiceId,
                 Status = BookingStatus.Pending,
                 IsPaid = false,

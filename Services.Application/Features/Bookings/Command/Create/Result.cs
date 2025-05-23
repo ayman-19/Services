@@ -23,7 +23,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 booking.CustomerId,
                 booking.WorkerId,
                 booking.IsPaid,
-                booking.Total
+                booking.OldTotal
             );
     }
 }

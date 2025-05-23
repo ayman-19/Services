@@ -9,11 +9,14 @@ namespace Services.Domain.Entities
         public DateTime CreateOn { get; set; }
         public BookingStatus Status { get; set; }
         public LocationType Location { get; set; }
-        public double Price { get; set; }
+        public double OldPrice { get; set; }
+        public double UpdatedPrice { get; set; }
         public double? Rate { get; set; }
         public bool IsPaid { get; set; }
-        public double Tax => Price * 0.14;
-        public double Total => Price + Tax;
+        public double UpdatedTax => UpdatedPrice * 0.14;
+        public double UpdatedTotal => UpdatedPrice + UpdatedTax;
+        public double OldTax => OldPrice * 0.14;
+        public double OldTotal => OldPrice + OldTax;
 
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
@@ -29,7 +32,8 @@ namespace Services.Domain.Entities
             Guid workerId,
             Guid serviceId,
             bool isPaid,
-            double total,
+            double oldPrice,
+            double updatedPrice,
             double rate
         )
         {
@@ -37,7 +41,8 @@ namespace Services.Domain.Entities
             Location = location;
             CustomerId = customerId;
             WorkerId = workerId;
-            Price = total;
+            OldPrice = oldPrice;
+            UpdatedPrice = updatedPrice;
             ServiceId = serviceId;
             Rate = rate;
             IsPaid = isPaid;

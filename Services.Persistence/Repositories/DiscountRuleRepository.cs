@@ -26,5 +26,24 @@ namespace Services.Persistence.Repositories
                 .Set<DiscountRule>()
                 .AsTracking()
                 .FirstAsync(id => id.Id == Id, cancellationToken);
+
+        public async ValueTask<(int, double)> GetPercentageOfPoint(
+            int points,
+            CancellationToken cancellationToken
+        )
+        {
+            var applicableRule = await _context
+                .Set<DiscountRule>()
+                .AsNoTracking()
+                .Where(rule => rule.MainPoints <= points)
+                .OrderByDescending(rule => rule.MainPoints)
+                .Select(rule => new { rule.MainPoints, rule.Discount.Percentage })
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return applicableRule == null
+                ? (Points: 0, Percentage: 0)
+                : (Points: applicableRule.MainPoints, Percentage: applicableRule.Percentage);
+        }
     }
 }

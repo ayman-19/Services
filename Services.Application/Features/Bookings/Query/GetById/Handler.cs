@@ -32,7 +32,8 @@ namespace Services.Application.Features.Bookings.Query.GetById
                         s.ServiceId,
                         s.Service.Name,
                         s.IsPaid,
-                        s.Total,
+                        s.OldTotal,
+                        s.UpdatedTotal,
                         s.Rate ?? 0
                     ),
                     c =>

@@ -11,7 +11,8 @@ namespace Services.Application.Features.Bookings.Command.Update
         Guid WorkerId,
         BookingStatus Status,
         bool IsPaid,
-        double Total,
+        double OldTotal,
+        double UpdatedTotal,
         double Rate
     )
     {
@@ -24,7 +25,8 @@ namespace Services.Application.Features.Bookings.Command.Update
                 b.WorkerId,
                 b.Status,
                 b.IsPaid,
-                b.Total,
+                b.OldTotal,
+                b.UpdatedTotal,
                 b.Rate.GetValueOrDefault()
             );
     }

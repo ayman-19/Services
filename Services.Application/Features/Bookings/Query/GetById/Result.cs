@@ -14,7 +14,8 @@ namespace Services.Application.Features.Bookings.Query.GetById
         Guid ServiceId,
         string ServiceName,
         bool Ispaid,
-        double Total,
+        double OldTotal,
+        double UpdatedTotal,
         double Rate
     );
 }

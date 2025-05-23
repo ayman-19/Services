@@ -21,7 +21,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
         Guid ServiceId,
         string ServiceName,
         bool Ispaid,
-        double Total,
+        double OldTotal,
+        double UpdatedTotal,
         double Rate
     );
 }

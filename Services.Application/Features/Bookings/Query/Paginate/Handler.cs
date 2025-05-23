@@ -41,7 +41,8 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                     s.ServiceId,
                     s.Service.Name,
                     s.IsPaid,
-                    s.Total,
+                    s.OldTotal,
+                    s.UpdatedTotal,
                     s.Rate ?? 0
                 );
 

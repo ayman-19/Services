@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Domain.Enums;
@@ -8,71 +9,85 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Bookings.Command.Update
 {
-    public sealed record UpdateBookingHandler
-        : IRequestHandler<UpdateBookingCommand, ResponseOf<UpdateBookingResult>>
+    public sealed record UpdateBookingHandler(
+        IBookingRepository BookingRepository,
+        IUnitOfWork UnitOfWork,
+        IJobs Jobs,
+        IDiscountRuleRepository DiscountRuleRepository
+    ) : IRequestHandler<UpdateBookingCommand, ResponseOf<UpdateBookingResult>>
     {
-        private readonly IBookingRepository _bookingRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IJobs _jobs;
-
-        public UpdateBookingHandler(
-            IBookingRepository bookingRepository,
-            IUnitOfWork unitOfWork,
-            IJobs jobs
-        )
-        {
-            _bookingRepository = bookingRepository;
-            _unitOfWork = unitOfWork;
-            _jobs = jobs;
-        }
-
         public async Task<ResponseOf<UpdateBookingResult>> Handle(
             UpdateBookingCommand request,
             CancellationToken cancellationToken
         )
         {
-            using (var transaction = await _unitOfWork.BeginTransactionAsync())
+            using var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
+
+            try
             {
-                try
-                {
-                    Booking book = await _bookingRepository.GetByIdAsync(
-                        request.Id,
+                var booking = await BookingRepository.GetByIdAsync(request.Id, cancellationToken);
+
+                var (discountPoints, discountPercentage) =
+                    await DiscountRuleRepository.GetPercentageOfPoint(
+                        booking.Customer.Point.Number,
                         cancellationToken
                     );
-                    book.UpdateBooking(
-                        request.CreateOn,
-                        request.Location,
-                        request.CustomerId,
-                        request.WorkerId,
-                        request.ServiceId,
-                        request.IsPaid,
-                        request.Total,
-                        request.Rate
-                    );
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    await transaction.CommitAsync(cancellationToken);
 
-                    if (book.Status == BookingStatus.Completed && book.IsPaid)
-                        await _jobs.RateWorkersAsync(
-                            book.WorkerId,
-                            book.ServiceId,
-                            book.CustomerId
-                        );
+                var discountedPrice = CalculateDiscountedPrice(
+                    request.Total,
+                    discountPoints,
+                    discountPercentage
+                );
 
-                    return new()
-                    {
-                        Message = ValidationMessages.Success,
-                        Success = true,
-                        StatusCode = (int)HttpStatusCode.OK,
-                        Result = book,
-                    };
-                }
-                catch (Exception ex)
+                booking.UpdateBooking(
+                    request.CreateOn,
+                    request.Location,
+                    request.CustomerId,
+                    request.WorkerId,
+                    request.ServiceId,
+                    request.IsPaid,
+                    request.Total,
+                    discountedPrice,
+                    request.Rate
+                );
+
+                await UnitOfWork.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                if (booking.Status == BookingStatus.Completed && booking.IsPaid)
                 {
-                    await transaction.RollbackAsync(cancellationToken);
-                    throw new Exception(ex.Message, ex);
+                    await Jobs.RateWorkersAsync(
+                        booking.WorkerId,
+                        booking.ServiceId,
+                        booking.CustomerId
+                    );
                 }
+                return new()
+                {
+                    Message = ValidationMessages.Success,
+                    Success = true,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Result = booking,
+                };
             }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        private static double CalculateDiscountedPrice(
+            double totalPrice,
+            int discountPoints,
+            double discountPercentage
+        )
+        {
+            if (discountPoints == 0 || discountPercentage <= 0)
+                return totalPrice;
+
+            var discountAmount = totalPrice * (discountPercentage / 100);
+            return Math.Max(totalPrice - discountAmount, 0);
         }
     }
 }

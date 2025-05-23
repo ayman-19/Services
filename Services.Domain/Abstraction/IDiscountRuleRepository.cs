@@ -7,5 +7,9 @@ namespace Services.Domain.Abstraction
     {
         Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
         ValueTask<DiscountRule> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        ValueTask<(int, double)> GetPercentageOfPoint(
+            int points,
+            CancellationToken cancellationToken
+        );
     }
 }
