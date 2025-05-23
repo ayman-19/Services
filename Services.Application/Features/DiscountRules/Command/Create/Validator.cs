@@ -52,7 +52,7 @@ namespace Services.Application.Features.DiscountRules.Command.Create
                     async (id, cancellationToken) =>
                         await discountRepository.IsAnyExistAsync(d => d.Id == id)
                 )
-                .WithMessage(ValidationMessages.Discount.DiscountNotExist);
+                .WithMessage(ValidationMessages.Discounts.DiscountDoesNotExist);
         }
     }
 }

@@ -1,18 +1,14 @@
 ﻿using MediatR;
-using Services.Application.Features.Branchs.Comands.Delete;
-using Services.Application.Features.Branchs.Comands.Update;
-using Services.Application.Features.Branchs.Queries.GetById;
-using Services.Application.Features.Branchs.Queries.Paginate;
+using Services.Api.Abstraction;
 using Services.Application.Features.DiscountRules.Command.Create;
 using Services.Application.Features.DiscountRules.Command.Delete;
 using Services.Application.Features.DiscountRules.Command.Update;
 using Services.Application.Features.DiscountRules.Queries.GetById;
 using Services.Application.Features.DiscountRules.Queries.Paginate;
-using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.DiscountRules
 {
-    public class DiscountRuleEndpoints
+    public class Endpoints : IEndpoint
     {
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
