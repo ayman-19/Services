@@ -11,6 +11,7 @@ namespace Services.Persistence.Context.Configuration
         {
             builder.ToTable(nameof(Table.Point), nameof(Schema.Service));
             builder.HasKey(t => t.Id);
+            builder.HasIndex(t => t.CustomerId);
         }
     }
 }

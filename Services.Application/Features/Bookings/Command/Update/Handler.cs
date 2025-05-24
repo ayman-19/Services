@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Services.Domain.Abstraction;
-using Services.Domain.Entities;
 using Services.Domain.Enums;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
