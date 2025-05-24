@@ -1,32 +1,29 @@
 ﻿using System.Net;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Services.Domain.Abstraction;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.DiscountRules.Queries.GetById
+namespace Services.Application.Features.DiscountRules.Queries.GetNearestPoints
 {
-    public sealed record GetDiscountRulesHandler(IDiscountRuleRepository _discountruleRepository)
-        : IRequestHandler<GetDiscountRuleQuery, ResponseOf<GetDiscountRuleResult>>
+    public sealed record GetNearestPointsHandler(IDiscountRuleRepository _discountruleRepository)
+        : IRequestHandler<GetNearestPointsQuery, ResponseOf<GetNearestPointsResult>>
     {
-        public async Task<ResponseOf<GetDiscountRuleResult>> Handle(
-            GetDiscountRuleQuery request,
+        public async Task<ResponseOf<GetNearestPointsResult>> Handle(
+            GetNearestPointsQuery request,
             CancellationToken cancellationToken
         )
         {
             try
             {
-                var result = await _discountruleRepository.GetAsync(
-                    b => b.Id == request.Id,
-                    b => new GetDiscountRuleResult(
+                var result = await _discountruleRepository.GetNearestPointsAsync(
+                    request.points,
+                    b => new GetNearestPointsResult(
                         b.Id,
                         b.DiscountId,
                         b.MainPoints,
                         b.Discount.Percentage
                     ),
-                    b => b.Include(d => d.Discount),
-                    false,
                     cancellationToken
                 );
                 return new()

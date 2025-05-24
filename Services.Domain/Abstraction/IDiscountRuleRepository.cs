@@ -1,4 +1,5 @@
-﻿using Services.Domain.Entities;
+﻿using System.Linq.Expressions;
+using Services.Domain.Entities;
 using Services.Domain.Repositories;
 
 namespace Services.Domain.Abstraction
@@ -9,6 +10,11 @@ namespace Services.Domain.Abstraction
         ValueTask<DiscountRule> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         ValueTask<(int, double)> GetPercentageOfPoint(
             int points,
+            CancellationToken cancellationToken
+        );
+        ValueTask<TResult> GetNearestPointsAsync<TResult>(
+            int points,
+            Expression<Func<DiscountRule, TResult>> Selctor,
             CancellationToken cancellationToken
         );
     }

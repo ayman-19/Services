@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Services.Domain.Enums;
 using Services.Domain.Repositories;
 using Services.Shared.Responses;
@@ -22,39 +21,85 @@ namespace Services.Application.Features.Users.Queries.GetById
             CancellationToken cancellationToken
         )
         {
-            var user = await _userRepository.GetAsync(
-                user => user.Id == request.id,
-                user => user,
-                user =>
-                    user.Include(ur => ur.UserRoles)
-                        .ThenInclude(ur => ur.Role)
-                        .Include(w => w.Worker)
-                        .Include(c => c.Customer),
-                false,
-                cancellationToken
-            );
+            //    var user = await _userRepository.GetAsync(
+            //        user => user.Id == request.id,
+            //        user => user,
+            //        user =>
+            //            user.Include(ur => ur.UserRoles)
+            //                .ThenInclude(ur => ur.Role)
+            //                .Include(w => w.Worker)
+            //                .Include(c => c.Customer)
+            //                .ThenInclude(p => p.Point),
+            //        false,
+            //        cancellationToken
+            //    );
 
-            var roles = user.UserRoles.Select(role => role.Role.Name);
+            //    var roles = user.UserRoles.Select(role => role.Role.Name);
+
+            //    object result = user.UserType switch
+            //    {
+            //        UserType.Worker => new GetWorkerUserResult(
+            //            user.Id,
+            //            user.Name,
+            //            user.Email,
+            //            user.Phone,
+            //            user.CreateOn,
+            //            roles,
+            //            user.Worker.Experience,
+            //            user.Worker.Status
+            //        ),
+            //        UserType.Customer => new GetCustomerUserResult(
+            //            user.Id,
+            //            user.Name,
+            //            user.Email,
+            //            user.Phone,
+            //            user.CreateOn,
+            //            roles,
+            //            user.Customer.Point.Number
+            //        ),
+            //        _ => throw new NotSupportedException($"Unsupported user type: {user.UserType}"),
+            //    };
+
+
+            var user = await _userRepository.GetAsync(
+                predicate: user => user.Id == request.id,
+                user => new
+                {
+                    User = user,
+                    Roles = user.UserRoles.Select(ur => ur.Role.Name),
+                    Worker = user.UserType == UserType.Worker
+                        ? new { user.Worker.Experience, user.Worker.Status }
+                        : new { Experience = 0.0, Status = Status.InActive },
+                    Customer = user.UserType == UserType.Customer
+                        ? new { user.Customer.Point.Number }
+                        : new { Number = 0 },
+                    user.UserType,
+                },
+                null!,
+                false,
+                cancellationToken: cancellationToken
+            );
 
             object result = user.UserType switch
             {
                 UserType.Worker => new GetWorkerUserResult(
-                    user.Id,
-                    user.Name,
-                    user.Email,
-                    user.Phone,
-                    user.CreateOn,
-                    roles,
+                    user.User.Id,
+                    user.User.Name,
+                    user.User.Email,
+                    user.User.Phone,
+                    user.User.CreateOn,
+                    user.Roles,
                     user.Worker.Experience,
                     user.Worker.Status
                 ),
                 UserType.Customer => new GetCustomerUserResult(
-                    user.Id,
-                    user.Name,
-                    user.Email,
-                    user.Phone,
-                    user.CreateOn,
-                    roles
+                    user.User.Id,
+                    user.User.Name,
+                    user.User.Email,
+                    user.User.Phone,
+                    user.User.CreateOn,
+                    user.Roles,
+                    user.Customer.Number
                 ),
                 _ => throw new NotSupportedException($"Unsupported user type: {user.UserType}"),
             };

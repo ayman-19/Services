@@ -19,6 +19,7 @@ namespace Services.Application.Features.Users.Queries.GetById
         string Email,
         string Phone,
         DateTime CreatedOn,
-        IEnumerable<string> Roles
+        IEnumerable<string> Roles,
+        int Points
     );
 }

@@ -4,6 +4,7 @@ using Services.Application.Features.DiscountRules.Command.Create;
 using Services.Application.Features.DiscountRules.Command.Delete;
 using Services.Application.Features.DiscountRules.Command.Update;
 using Services.Application.Features.DiscountRules.Queries.GetById;
+using Services.Application.Features.DiscountRules.Queries.GetNearestPoints;
 using Services.Application.Features.DiscountRules.Queries.Paginate;
 
 namespace Services.Api.Implementation.DiscountRules
@@ -48,6 +49,13 @@ namespace Services.Api.Implementation.DiscountRules
                 "GetByIdAsync/{id}",
                 async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(await sender.Send(new GetDiscountRuleQuery(id), cancellationToken))
+            );
+            group.MapGet(
+                "GetNearestPointsAsync/{points}",
+                async (int points, ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(
+                        await sender.Send(new GetNearestPointsQuery(points), cancellationToken)
+                    )
             );
             //.RequireAuthorization(nameof(Permissions.GetBranch));
 
