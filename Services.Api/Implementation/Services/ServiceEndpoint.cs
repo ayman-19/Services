@@ -25,44 +25,56 @@ namespace Services.Api.Implementation.Services
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .DisableAntiforgery().RequireAuthorization(nameof(Permissions.CreateService));
+                .DisableAntiforgery()
+                .RequireAuthorization(nameof(Permissions.CreateService));
 
-            group.MapPut(
-                "UpdateAsync/",
-                async (
-                    [FromBody] UpdateServiceCommand Command,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(Command, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.UpdateService));
+            group
+                .MapPut(
+                    "UpdateAsync/",
+                    async (
+                        [FromBody] UpdateServiceCommand Command,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(Command, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.UpdateService));
 
-            group.MapDelete(
-                "DeleteAsync/{id}",
-                async (Guid id, ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(await sender.Send(new DeleteServiceCommand(id), cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.DeleteService));
+            group
+                .MapDelete(
+                    "DeleteAsync/{id}",
+                    async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+                        Results.Ok(
+                            await sender.Send(new DeleteServiceCommand(id), cancellationToken)
+                        )
+                )
+                .RequireAuthorization(nameof(Permissions.DeleteService));
 
-            group.MapGet(
-                "GetByIdAsync/{id}",
-                async (Guid id, ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(await sender.Send(new GetServiceQuery(id), cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.GetService));
+            group
+                .MapGet(
+                    "GetByIdAsync/{id}",
+                    async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+                        Results.Ok(await sender.Send(new GetServiceQuery(id), cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.GetService));
 
-            group.MapPost(
-                "PaginateAsync",
-                async (
-                    PaginateServiceQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
-            ).RequireAuthorization(nameof(Permissions.PaginateService));
+            group
+                .MapPost(
+                    "PaginateAsync",
+                    async (
+                        PaginateServiceQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization(nameof(Permissions.PaginateService));
             group.MapGet(
                 "GetAllAsync/{categoryId}",
                 async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
                     Results.Ok(
                         await sender.Send(new GetAllServicesQuery(categoryId), cancellationToken)
                     )
-            ).RequireAuthorization(nameof(Permissions.GetAllServices));
+            );
+            //.RequireAuthorization(nameof(Permissions.GetAllServices));
         }
     }
 }

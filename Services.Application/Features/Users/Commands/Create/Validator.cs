@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
+using Services.Domain.Enums;
 using Services.Domain.Repositories;
 using Services.Shared.Extentions;
 using Services.Shared.ValidationMessages;
@@ -19,13 +20,15 @@ namespace Services.Application.Features.Users.Commands.Create
             var scope = _serviceProvider.CreateScope();
             ValidateRequest(
                 scope.ServiceProvider.GetRequiredService<IUserRepository>(),
-                scope.ServiceProvider.GetRequiredService<IServiceRepository>()
+                scope.ServiceProvider.GetRequiredService<IServiceRepository>(),
+                scope.ServiceProvider.GetRequiredService<ICategoryRepository>()
             );
         }
 
         private void ValidateRequest(
             IUserRepository userRepository,
-            IServiceRepository serviceRepository
+            IServiceRepository serviceRepository,
+            ICategoryRepository categoryRepository
         )
         {
             RuleFor(x => x.name)
@@ -94,15 +97,41 @@ namespace Services.Application.Features.Users.Commands.Create
                 )
                 .WithMessage(ValidationMessages.Users.EmailExists);
 
-            //RuleFor(x => x.ServiceId)
-            //    .MustAsync(
-            //        async (id, cancellationToken) =>
-            //            await serviceRepository.IsAnyExistAsync(
-            //                s => id == null || s.Id == id,
-            //                cancellationToken
-            //            )
-            //    )
-            //    .WithMessage(ValidationMessages.Service.ServiceNotExist);
+            RuleFor(x => x)
+                .MustAsync(
+                    async (request, cancellationToken) =>
+                    {
+                        if (request.UserType != UserType.Worker || request.ServiceId == null)
+                        {
+                            return true;
+                        }
+
+                        return await serviceRepository.IsAnyExistAsync(
+                            s => s.Id == request.ServiceId,
+                            cancellationToken
+                        );
+                    }
+                )
+                .WithMessage(ValidationMessages.Services.ServiceDoesNotExist)
+                .When(x => x.UserType == UserType.Worker && x.ServiceId != null);
+
+            RuleFor(x => x)
+                .MustAsync(
+                    async (request, cancellationToken) =>
+                    {
+                        if (request.UserType != UserType.Worker || request.CategoryId == null)
+                        {
+                            return true;
+                        }
+
+                        return await categoryRepository.IsAnyExistAsync(
+                            s => s.Id == request.CategoryId,
+                            cancellationToken
+                        );
+                    }
+                )
+                .WithMessage(ValidationMessages.Categories.CategoryDoesNotExist)
+                .When(x => x.UserType == UserType.Worker && x.CategoryId != null);
 
             RuleFor(x => x)
                 .Must((e, cancellationToken) => e.phone.ValidatePhoneNumber())

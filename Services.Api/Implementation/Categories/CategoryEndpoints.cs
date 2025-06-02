@@ -25,13 +25,12 @@ namespace Services.Api.Implementation.Categories
                 )
                 .RequireAuthorization(nameof(Permissions.PaginateCategories));
 
-            group.MapPost(
-                "GetAllCategoriesAsync",
-                async (
-                    GetAllCategoriesQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
+            group.MapGet(
+                "GetAllCategoriesAsync/{searchName}",
+                async (string searchName, ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(
+                        await sender.Send(new GetAllCategoriesQuery(searchName), cancellationToken)
+                    )
             );
 
             group

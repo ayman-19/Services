@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Services.Domain.Enums;
 using Services.Domain.Repositories;
 using Services.Shared.Responses;
@@ -62,20 +63,30 @@ namespace Services.Application.Features.Users.Queries.GetById
 
 
             var user = await _userRepository.GetAsync(
-                predicate: user => user.Id == request.id,
+                user => user.Id == request.id,
                 user => new
                 {
                     User = user,
-                    Roles = user.UserRoles.Select(ur => ur.Role.Name),
-                    Worker = user.UserType == UserType.Worker
+                    Roles = user.UserRoles != null
+                        ? user.UserRoles.Select(ur => ur.Role != null ? ur.Role.Name : null)
+                        : Enumerable.Empty<string>(),
+                    Worker = user.UserType == UserType.Worker && user.Worker != null
                         ? new { user.Worker.Experience, user.Worker.Status }
                         : new { Experience = 0.0, Status = Status.InActive },
                     Customer = user.UserType == UserType.Customer
+                    && user.Customer != null
+                    && user.Customer.Point != null
                         ? new { user.Customer.Point.Number }
                         : new { Number = 0 },
                     user.UserType,
                 },
-                null!,
+                query =>
+                    query
+                        .Include(u => u.UserRoles)
+                        .ThenInclude(ur => ur.Role)
+                        .Include(u => u.Worker)
+                        .Include(u => u.Customer)
+                        .ThenInclude(c => c.Point),
                 false,
                 cancellationToken: cancellationToken
             );

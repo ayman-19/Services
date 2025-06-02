@@ -19,7 +19,9 @@ namespace Services.Application.Features.Categories.Queries.GetAll
         {
             var categories = await _categoryRepository.GetAllAsync(
                 c => new GetAllCategoriesResult(c.Id, c.Name),
-                c => c.Id == request.Id || request.Id == null,
+                c =>
+                    c.Name.Contains(request.searchName)
+                    || string.IsNullOrWhiteSpace(request.searchName),
                 cancellationToken: cancellationToken
             );
 
