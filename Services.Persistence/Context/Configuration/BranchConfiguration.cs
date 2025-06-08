@@ -11,6 +11,7 @@ namespace Services.Persistence.Context.Configuration
         {
             builder.ToTable(nameof(Table.Branch), nameof(Schema.Service));
             builder.HasKey(t => t.Id);
+            builder.HasIndex(t => t.UserId).IsUnique(false);
         }
     }
 }

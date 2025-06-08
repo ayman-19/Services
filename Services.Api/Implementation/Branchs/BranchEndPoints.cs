@@ -6,6 +6,7 @@ using Services.Application.Features.Branchs.Comands.Delete;
 using Services.Application.Features.Branchs.Comands.Update;
 using Services.Application.Features.Branchs.Queries.GetAll;
 using Services.Application.Features.Branchs.Queries.GetById;
+using Services.Application.Features.Branchs.Queries.GetByUserId;
 using Services.Application.Features.Branchs.Queries.Paginate;
 using Services.Shared.Enums;
 
@@ -25,7 +26,8 @@ namespace Services.Api.Implementation.Branchs
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.CreateBranch));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.CreateBranch));
 
             group
                 .MapPut(
@@ -36,7 +38,8 @@ namespace Services.Api.Implementation.Branchs
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.UpdateBranch));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.UpdateBranch));
 
             group
                 .MapDelete(
@@ -46,7 +49,8 @@ namespace Services.Api.Implementation.Branchs
                             await sender.Send(new DeleteBranchCommand(id), cancellationToken)
                         )
                 )
-                .RequireAuthorization(nameof(Permissions.DeleteBranch));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.DeleteBranch));
 
             group
                 .MapGet(
@@ -54,7 +58,18 @@ namespace Services.Api.Implementation.Branchs
                     async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                         Results.Ok(await sender.Send(new GetBranchQuery(id), cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetBranch));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetBranch));
+            group
+                .MapGet(
+                    "GetByUserIdAsync/{id}",
+                    async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+                        Results.Ok(
+                            await sender.Send(new GetBranchByUserIdQuery(id), cancellationToken)
+                        )
+                )
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetBranch));
 
             group
                 .MapPost(
@@ -65,7 +80,8 @@ namespace Services.Api.Implementation.Branchs
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.PaginateBranch));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.PaginateBranch));
 
             group
                 .MapGet(
@@ -73,7 +89,8 @@ namespace Services.Api.Implementation.Branchs
                     async (ISender sender, CancellationToken cancellationToken) =>
                         Results.Ok(await sender.Send(new GetAllBranchsQuery(), cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetAllBranchs));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetAllBranchs));
         }
     }
 }

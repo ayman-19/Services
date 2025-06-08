@@ -6,7 +6,7 @@ namespace Services.Application.Features.Bookings.Query.Paginate
         int Page,
         int PageSize,
         int TotalPage,
-        IReadOnlyCollection<BookingsResult> Discounts
+        IReadOnlyCollection<BookingsResult> Bookings
     );
 
     public sealed record BookingsResult(

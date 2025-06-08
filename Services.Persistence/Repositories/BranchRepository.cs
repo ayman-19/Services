@@ -26,5 +26,16 @@ namespace Services.Persistence.Repositories
                 .Set<Branch>()
                 .AsTracking()
                 .FirstAsync(id => id.Id == Id, cancellationToken);
+
+        public async ValueTask<Guid> GetLocationIdByUserIdAsync(
+            Guid Id,
+            CancellationToken cancellationToken
+        ) =>
+            await _context
+                .Set<Branch>()
+                .AsTracking()
+                .Where(id => id.UserId == Id)
+                .Select(b => b.Id)
+                .FirstAsync(cancellationToken);
     }
 }

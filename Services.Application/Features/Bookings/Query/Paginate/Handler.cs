@@ -49,8 +49,10 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                 Func<IQueryable<Booking>, IIncludableQueryable<Booking, object>> includes = c =>
                     c.Include(b => b.Customer)
                         .ThenInclude(u => u!.User)
+                        .ThenInclude(l => l.Branch)
                         .Include(b => b.Worker)
                         .ThenInclude(u => u!.User)
+                        .ThenInclude(l => l.Branch)
                         .Include(s => s.Service);
 
                 Expression<Func<Booking, object>> orderBy = b => b.CreateOn;
@@ -58,14 +60,14 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                 Expression<Func<Booking, bool>> predicate = userType switch
                 {
                     var t when t == UserType.Customer.ToString() => b =>
-                        (request.Id != null || b.CustomerId == request.Id)
-                        && (request.Status != null || b.Status == request.Status)
+                        (request.Id == null || b.CustomerId == request.Id)
+                        && (request.Status == null || b.Status == request.Status)
                         && (b.IsPaid == request.IsPaid)
                         && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Worker.ToString() => b =>
-                        (request.Id != null || b.WorkerId == request.Id)
+                        (request.Id == null || b.WorkerId == request.Id)
                         && (b.IsPaid == request.IsPaid)
-                        && (request.Status != null || b.Status == request.Status)
+                        && (request.Status == null || b.Status == request.Status)
                         && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Admin.ToString() => b =>
                         request.Id == null || b.Id == request.Id,
