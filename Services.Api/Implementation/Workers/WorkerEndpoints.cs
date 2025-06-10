@@ -28,7 +28,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.AssignWorkerToService));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.AssignWorkerToService));
 
             group
                 .MapDelete(
@@ -46,7 +47,8 @@ namespace Services.Api.Implementation.Workers
                             )
                         )
                 )
-                .RequireAuthorization(nameof(Permissions.RemoveWorkerFromService));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.RemoveWorkerFromService));
 
             group
                 .MapPut(
@@ -57,7 +59,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.UpdateWorkerOnService));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.UpdateWorkerOnService));
             group
                 .MapPut(
                     "UpdateWorkerStatusAsync/",
@@ -67,7 +70,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.UpdateWorkerStatus));
+                .RequireAuthorization();
+            ///.RequireAuthorization(nameof(Permissions.UpdateWorkerStatus));
 
             group
                 .MapPost(
@@ -78,7 +82,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetWorkerOnService));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetWorkerOnService));
 
             group
                 .MapGet(
@@ -91,7 +96,8 @@ namespace Services.Api.Implementation.Workers
                             )
                         )
                 )
-                .RequireAuthorization(nameof(Permissions.GetWorkerOnService));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetWorkerOnService));
 
             group
                 .MapPost(
@@ -102,7 +108,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetAllServicesWithWorkers));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetAllServicesWithWorkers));
             group
                 .MapPost(
                     "/GetWorkersPaginateAsync",
@@ -112,7 +119,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetWorkerPaginate));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetWorkerPaginate));
             group
                 .MapPost(
                     "/GetAllWorkerAsync",
@@ -122,7 +130,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetAllWorker));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetAllWorker));
             group
                 .MapPost(
                     "/GetWorkersBasedOnStatus",
@@ -132,7 +141,8 @@ namespace Services.Api.Implementation.Workers
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetWorkersBasedOnStatus));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetWorkersBasedOnStatus));
         }
     }
 }

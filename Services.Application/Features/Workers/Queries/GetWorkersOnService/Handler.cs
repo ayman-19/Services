@@ -53,7 +53,10 @@ public sealed class GetWorkersOnServiceHandler
 
             var filteredWorkers = serviceEntity
                 .WorkerServices.Where(ws =>
-                    (request.WorkerId == null || ws.WorkerId == request.WorkerId)
+                    (
+                        string.IsNullOrWhiteSpace(request.searchName)
+                        || ws.Worker.User.Name.Contains(request.searchName)
+                    )
                     && (
                         request.Status == null
                             ? ws.Worker.Status == Status.Active
@@ -66,7 +69,7 @@ public sealed class GetWorkersOnServiceHandler
                     return new GetWorkerResult(
                         ws.WorkerId,
                         ws.Worker.User.Name,
-                        0,
+                        ws.Worker.WorkerServices.Average(r => r.Rate),
                         ws.Price,
                         GetDistance(
                             request.Latitude,
@@ -88,51 +91,6 @@ public sealed class GetWorkersOnServiceHandler
                 serviceEntity.Name,
                 filteredWorkers
             );
-
-            //var service = await _serviceRepository.GetAsync(
-            //    s =>
-            //        s.Id == request.ServiceId
-            //        && s.WorkerServices.Any(ws => ws.Worker.Status == Status.Active),
-            //    s => new GetWorkersOnServiceResult(
-            //        s.Id,
-            //        s.Name,
-            //        s.WorkerServices.Where(ws =>
-            //                (request.WorkerId == null || ws.WorkerId == request.WorkerId)
-            //                && (
-            //                    request.Status == null
-            //                        ? ws.Worker.Status == Status.Active
-            //                        : ws.Worker.Status == request.Status
-            //                )
-            //            )
-            //            .Select(ws => new GetWorkerResult(
-            //                ws.WorkerId,
-            //                ws.Worker.User.Name,
-            //                0,
-            //                ws.Price,
-            //                GetDistance(
-            //                    request.Latitude,
-            //                    request.Longitude,
-            //                    ws.Worker.User.Branch.Latitude,
-            //                    ws.Worker.User.Branch.Langitude
-            //                ),
-            //                ws.Worker.User.Branch.Id,
-            //                ws.Worker.User.Branch.Latitude,
-            //                ws.Worker.User.Branch.Langitude
-            //            ))
-            //            .OrderBy(d => d.Distance)
-            //            .ThenBy(r => r.Rate)
-            //            .ToList()
-            //    ),
-            //    include =>
-            //        include
-            //            .Include(s => s.WorkerServices)
-            //            .ThenInclude(ws => ws.Worker)
-            //            .ThenInclude(w => w.User)
-            //            .ThenInclude(u => u.Branch),
-            //    false,
-            //    cancellationToken
-            //);
-
             return new ResponseOf<GetWorkersOnServiceResult>
             {
                 Message = ValidationMessages.Success,

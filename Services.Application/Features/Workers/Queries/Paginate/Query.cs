@@ -5,7 +5,7 @@ using Services.Shared.Responses;
 namespace Services.Application.Features.Workers.Queries.GetAll
 {
     public sealed record GetWorkerPaginateQuery(
-        Guid? WorkerId,
+        string? searchName,
         Guid? ServiceId,
         int page,
         int pagesize

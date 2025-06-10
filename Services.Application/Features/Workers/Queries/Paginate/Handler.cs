@@ -40,8 +40,10 @@ namespace Services.Application.Features.Workers.Queries.GetAll
                 );
 
             Expression<Func<WorkerService, bool>> predicate = w =>
-                (request.WorkerId == null || w.WorkerId == request.WorkerId)
-                && (request.ServiceId == null || w.ServiceId == request.ServiceId);
+                (
+                    string.IsNullOrWhiteSpace(request.searchName)
+                    || w.Worker.User.Name.Contains(request.searchName)
+                ) && (request.ServiceId == null || w.ServiceId == request.ServiceId);
 
             Func<IQueryable<WorkerService>, IIncludableQueryable<WorkerService, object>> includes =
                 q =>

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Abstraction;
 using Services.Domain.Enums;

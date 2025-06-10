@@ -6,7 +6,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
 {
     public sealed record GetWorkersOnServiceQuery(
         Guid ServiceId,
-        Guid? WorkerId,
+        string? searchName,
         double Latitude,
         double Longitude,
         Status? Status
