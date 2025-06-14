@@ -15,7 +15,7 @@ namespace Services.Application
             this IServiceCollection services,
             IConfiguration configuration
         )
-        {
+        { //
             services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
             );
