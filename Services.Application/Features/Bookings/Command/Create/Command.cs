@@ -10,6 +10,7 @@ namespace Services.Application.Features.Bookings.Command.Create
         Guid CustomerId,
         Guid WorkerId,
         Guid ServiceId,
+        string Description,
         double Price
     ) : IRequest<ResponseOf<CreateBookingResult>>
     {
@@ -23,6 +24,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 ServiceId = bookingCommand.ServiceId,
                 Status = BookingStatus.Pending,
                 IsPaid = false,
+                Description = bookingCommand.Description,
             };
     }
 }

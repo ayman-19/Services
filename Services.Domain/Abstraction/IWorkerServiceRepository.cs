@@ -11,6 +11,8 @@ namespace Services.Domain.Abstraction
             CancellationToken cancellationToken
         );
 
+        ValueTask<double> GetRateAsync(Guid workerId, CancellationToken cancellationToken);
+
         ValueTask<WorkerService> GetWorkerFromServiceAsync(
             Guid WorkerId,
             Guid ServiceId,

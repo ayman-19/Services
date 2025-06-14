@@ -22,46 +22,6 @@ namespace Services.Application.Features.Users.Queries.GetById
             CancellationToken cancellationToken
         )
         {
-            //    var user = await _userRepository.GetAsync(
-            //        user => user.Id == request.id,
-            //        user => user,
-            //        user =>
-            //            user.Include(ur => ur.UserRoles)
-            //                .ThenInclude(ur => ur.Role)
-            //                .Include(w => w.Worker)
-            //                .Include(c => c.Customer)
-            //                .ThenInclude(p => p.Point),
-            //        false,
-            //        cancellationToken
-            //    );
-
-            //    var roles = user.UserRoles.Select(role => role.Role.Name);
-
-            //    object result = user.UserType switch
-            //    {
-            //        UserType.Worker => new GetWorkerUserResult(
-            //            user.Id,
-            //            user.Name,
-            //            user.Email,
-            //            user.Phone,
-            //            user.CreateOn,
-            //            roles,
-            //            user.Worker.Experience,
-            //            user.Worker.Status
-            //        ),
-            //        UserType.Customer => new GetCustomerUserResult(
-            //            user.Id,
-            //            user.Name,
-            //            user.Email,
-            //            user.Phone,
-            //            user.CreateOn,
-            //            roles,
-            //            user.Customer.Point.Number
-            //        ),
-            //        _ => throw new NotSupportedException($"Unsupported user type: {user.UserType}"),
-            //    };
-
-
             var user = await _userRepository.GetAsync(
                 user => user.Id == request.id,
                 user => new

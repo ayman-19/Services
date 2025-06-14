@@ -27,7 +27,7 @@ namespace Services.Application.Features.Bookings.Command.Update
 
                 var (discountPoints, discountPercentage) =
                     await DiscountRuleRepository.GetPercentageOfPoint(
-                        booking.Customer.Point.Number,
+                        booking.Customer.Point == null ? 0 : booking.Customer.Point.Number,
                         cancellationToken
                     );
 
@@ -44,22 +44,22 @@ namespace Services.Application.Features.Bookings.Command.Update
                     request.WorkerId,
                     request.ServiceId,
                     request.IsPaid,
-                    request.Total,
-                    discountedPrice,
-                    request.Rate
+                    request.Rate,
+                    request.Status,
+                    request.Description
                 );
-
-                await UnitOfWork.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
 
                 if (booking.Status == BookingStatus.Completed && booking.IsPaid)
                 {
+                    booking.UpdateTax(request.Total, discountedPrice);
                     await Jobs.RateWorkersAsync(
                         booking.WorkerId,
                         booking.ServiceId,
                         booking.CustomerId
                     );
                 }
+                await UnitOfWork.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
                 return new()
                 {
                     Message = ValidationMessages.Success,

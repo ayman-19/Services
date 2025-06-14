@@ -4,12 +4,12 @@ using Services.Application.Features.Workers.Commands.AssignWorkerToService;
 using Services.Application.Features.Workers.Commands.RemoveWorkerFromService;
 using Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAvailabilty;
 using Services.Application.Features.Workers.Commands.UpdateWorkerStatus;
+using Services.Application.Features.Workers.Queries.CalculateRate;
 using Services.Application.Features.Workers.Queries.GetAll;
 using Services.Application.Features.Workers.Queries.GetAllServicesWithWorkers;
 using Services.Application.Features.Workers.Queries.GetWorkerOnService;
 using Services.Application.Features.Workers.Queries.GetWorkersBasedOnStatus;
 using Services.Application.Features.Workers.Queries.GetWorkersOnService;
-using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Workers
 {
@@ -140,6 +140,16 @@ namespace Services.Api.Implementation.Workers
                         ISender sender,
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetWorkersBasedOnStatus));
+            group
+                .MapGet(
+                    "/CalculateRateAsync/{workerId}",
+                    async (Guid workerId, ISender sender, CancellationToken cancellationToken) =>
+                        Results.Ok(
+                            await sender.Send(new CalculateRateQuery(workerId), cancellationToken)
+                        )
                 )
                 .RequireAuthorization();
             //.RequireAuthorization(nameof(Permissions.GetWorkersBasedOnStatus));

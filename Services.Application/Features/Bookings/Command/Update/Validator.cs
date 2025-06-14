@@ -34,9 +34,9 @@ namespace Services.Application.Features.Bookings.Command.Update
         )
         {
             RuleFor(b => b.Location)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.Bookings.LocationIsRequired)
                 .NotNull()
+                .WithMessage(ValidationMessages.Bookings.LocationIsRequired)
+                .IsInEnum()
                 .WithMessage(ValidationMessages.Bookings.LocationIsRequired);
 
             RuleFor(b => b.Id)
@@ -59,7 +59,7 @@ namespace Services.Application.Features.Bookings.Command.Update
 
             RuleFor(b => b)
                 .Must(b =>
-                    b.Status == BookingStatus.Completed
+                    b.Status == BookingStatus.Completed && b.IsPaid
                         ? b.Rate > 0
                             ? true
                             : false

@@ -3,7 +3,7 @@ using Services.Domain.Abstraction;
 using Services.Domain.Entities;
 using Services.Domain.Enums;
 using Services.Persistence.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using static Services.Shared.ValidationMessages.ValidationMessages;
 
 namespace Services.Persistence.Repositories
 {
@@ -28,6 +28,16 @@ namespace Services.Persistence.Repositories
                 .Set<WorkerService>()
                 .Where(ws => ws.WorkerId == WorkerId && ws.ServiceId == ServiceId)
                 .ExecuteDeleteAsync(cancellationToken);
+
+        public async ValueTask<double> GetRateAsync(
+            Guid workerId,
+            CancellationToken cancellationToken
+        ) =>
+            await _context
+                .Set<WorkerService>()
+                .Where(ws => ws.WorkerId == workerId)
+                .Select(rate => rate.Rate)
+                .AverageAsync(rate => rate, cancellationToken);
 
         public async ValueTask<WorkerService> GetWorkerFromServiceAsync(
             Guid WorkerId,

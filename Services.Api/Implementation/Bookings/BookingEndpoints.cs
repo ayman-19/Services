@@ -36,7 +36,8 @@ namespace Services.Api.Implementation.Bookings
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.UpdateBooking));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.UpdateBooking));
 
             group
                 .MapDelete(

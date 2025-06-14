@@ -10,6 +10,7 @@ namespace Services.Application.Features.Bookings.Command.Create
         LocationType Location,
         Guid CustomerId,
         Guid WorkerId,
+        string Description,
         bool Ispaid,
         double Total
     )
@@ -22,6 +23,7 @@ namespace Services.Application.Features.Bookings.Command.Create
                 booking.Location,
                 booking.CustomerId,
                 booking.WorkerId,
+                booking.Description,
                 booking.IsPaid,
                 booking.OldTotal
             );

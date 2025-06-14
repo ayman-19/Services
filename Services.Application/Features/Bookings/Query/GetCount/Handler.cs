@@ -28,10 +28,10 @@ namespace Services.Application.Features.Bookings.Query.GetCount
                 {
                     var t when t == UserType.Customer.ToString() => b =>
                         b.CustomerId == request.UserId
-                        && (request.Status != null || b.Status == request.Status),
+                        && (request.Status == null || b.Status == request.Status),
                     var t when t == UserType.Worker.ToString() => b =>
                         b.WorkerId == request.UserId
-                        && (request.Status != null || b.Status == request.Status),
+                        && (request.Status == null || b.Status == request.Status),
                     _ => throw new InvalidOperationException("Unknown user type."),
                 };
 

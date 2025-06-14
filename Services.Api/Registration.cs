@@ -10,6 +10,12 @@ namespace Services.Api
         public static IServiceCollection RegisterMiddlewares(this IServiceCollection services)
         {
             services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
+            services
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<IFileService, FileService>()
                 .AddScoped<TokenValidation>();

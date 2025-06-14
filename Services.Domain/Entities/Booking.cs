@@ -6,6 +6,7 @@ namespace Services.Domain.Entities
 {
     public sealed record Booking : Entity<Guid>, ITrackableCreate
     {
+        public string Description { get; set; }
         public DateTime CreateOn { get; set; }
         public BookingStatus Status { get; set; }
         public LocationType Location { get; set; }
@@ -32,20 +33,26 @@ namespace Services.Domain.Entities
             Guid workerId,
             Guid serviceId,
             bool isPaid,
-            double oldPrice,
-            double updatedPrice,
-            double rate
+            double rate,
+            BookingStatus status,
+            string description
         )
         {
             CreateOn = createOn;
             Location = location;
             CustomerId = customerId;
             WorkerId = workerId;
-            OldPrice = oldPrice;
-            UpdatedPrice = updatedPrice;
             ServiceId = serviceId;
             Rate = rate;
             IsPaid = isPaid;
+            Status = status;
+            Description = description;
+        }
+
+        public void UpdateTax(double oldPrice, double updatedPrice)
+        {
+            OldPrice = oldPrice;
+            UpdatedPrice = updatedPrice;
         }
 
         public void SetCreateOn()

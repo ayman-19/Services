@@ -11,7 +11,10 @@ namespace Services.Persistence.Repositories
         private readonly ServiceDbContext _context;
 
         public DiscountRuleRepository(ServiceDbContext context)
-            : base(context) { }
+            : base(context)
+        {
+            _context = context;
+        }
 
         public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken) =>
             await _context
@@ -69,7 +72,7 @@ namespace Services.Persistence.Repositories
             }
         }
 
-        public async ValueTask<(int, double)> GetPercentageOfPoint(
+        public async ValueTask<(int Points, double Percentage)> GetPercentageOfPoint(
             int points,
             CancellationToken cancellationToken
         )
@@ -77,15 +80,18 @@ namespace Services.Persistence.Repositories
             var applicableRule = await _context
                 .Set<DiscountRule>()
                 .AsNoTracking()
-                .Where(rule => rule.MainPoints <= points)
+                .Include(d => d.Discount)
+                .Where(rule => rule.MainPoints <= points && rule.Discount != null)
                 .OrderByDescending(rule => rule.MainPoints)
-                .Select(rule => new { rule.MainPoints, rule.Discount.Percentage })
-                .FirstOrDefaultAsync(cancellationToken)
-                .ConfigureAwait(false);
+                .FirstOrDefaultAsync(cancellationToken);
 
-            return applicableRule == null
-                ? (Points: 0, Percentage: 0)
-                : (Points: applicableRule.MainPoints, Percentage: applicableRule.Percentage);
+            if (applicableRule is null)
+                return (Points: 0, Percentage: 0);
+
+            return (
+                Points: applicableRule.MainPoints,
+                Percentage: applicableRule.Discount.Percentage
+            );
         }
     }
 }

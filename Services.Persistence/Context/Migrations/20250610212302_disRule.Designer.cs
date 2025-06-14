@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Services.Persistence.Data;
 
@@ -11,9 +12,11 @@ using Services.Persistence.Data;
 namespace Services.Persistence.Context.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    partial class ServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250610212302_disRule")]
+    partial class disRule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -576,10 +579,6 @@ namespace Services.Persistence.Context.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
@@ -880,8 +879,8 @@ namespace Services.Persistence.Context.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<double>("Rate")
-                        .HasColumnType("float");
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
