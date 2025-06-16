@@ -5,7 +5,7 @@ using Services.Application.Features.Supports.Contactus;
 
 namespace Services.Api.Implementation.Supports
 {
-    public sealed class Endpoints : IEndpoint
+    public sealed class SupportsEndpoints : IEndpoint
     {
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
