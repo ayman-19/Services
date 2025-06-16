@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Services.Api.Abstraction;
-using Services.Application.Features.Customers.Queries.Paginate;
 using Services.Application.Features.Supports.Contactus;
 
 namespace Services.Api.Implementation.Supports
