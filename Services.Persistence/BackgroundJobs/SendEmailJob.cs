@@ -15,11 +15,7 @@ namespace Services.Persistence.BackgroundJobs
             JobDataMap jobDate = context.JobDetail.JobDataMap;
             string email = jobDate.GetString("Email")!;
             string code = jobDate.GetString("Code")!;
-            await _emailSender.SendEmailAsync(
-                email,
-                ValidationMessages.Users.ConfirmEmail,
-                $"To Confirm Email Code: <h3>{code}</h3>"
-            );
+            await _emailSender.SendEmailAsync(email, ValidationMessages.Users.ConfirmEmail, code);
         }
     }
 }
