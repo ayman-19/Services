@@ -61,5 +61,10 @@ namespace Services.Shared.Context
                     return (string.Empty, false);
             }
         }
+
+        public HttpContext HttpContext
+        {
+            get { return _contextAccessor.HttpContext; }
+        }
     }
 }

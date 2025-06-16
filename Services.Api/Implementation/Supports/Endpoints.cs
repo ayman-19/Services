@@ -9,14 +9,16 @@ namespace Services.Api.Implementation.Supports
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
             RouteGroupBuilder group = endpoints.MapGroup("/Supports").WithTags("Supports");
-            group.MapPost(
-                "ContactusAsync",
-                async (
-                    ContactusCommand command,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(command, cancellationToken))
-            );
+            group
+                .MapPost(
+                    "ContactusAsync",
+                    async (
+                        ContactusCommand command,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(command, cancellationToken))
+                )
+                .RequireAuthorization();
         }
     }
 }
