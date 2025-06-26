@@ -39,15 +39,14 @@ namespace Services.Persistence.Repositories
                 .Select(rate => rate.Rate)
                 .AverageAsync(rate => rate, cancellationToken);
 
-        public async ValueTask<WorkerService> GetWorkerFromServiceAsync(
+        public async ValueTask UpdateAvailabiltyAsync(
             Guid WorkerId,
-            Guid ServiceId,
+            bool available,
             CancellationToken cancellationToken
         ) =>
             await _context
                 .Set<WorkerService>()
-                .AsTracking()
-                .FirstAsync(ws => ws.WorkerId == WorkerId && ws.ServiceId == ServiceId);
+                .ExecuteUpdateAsync(w => w.SetProperty(av => av.Availabilty, available));
 
         public async Task RateWorkersAsync(Guid workerId, Guid serviceId)
         {

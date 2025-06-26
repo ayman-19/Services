@@ -10,15 +10,15 @@ using Services.Shared.Context;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
-namespace Services.Application.Features.Bookings.Query.Paginate
+namespace Services.Application.Features.Bookings.Query.UnRatedBooking
 {
-    public sealed record PaginateBookingsHandler(
+    public sealed record PaginateUnRatedBookingHandler(
         IBookingRepository bookingRepository,
         IUserContext userContext
-    ) : IRequestHandler<PaginateBookingsQuery, ResponseOf<PaginateBookingsResults>>
+    ) : IRequestHandler<PaginateUnRatedBookingQuery, ResponseOf<PaginateUnRatedBookingResults>>
     {
-        public async Task<ResponseOf<PaginateBookingsResults>> Handle(
-            PaginateBookingsQuery request,
+        public async Task<ResponseOf<PaginateUnRatedBookingResults>> Handle(
+            PaginateUnRatedBookingQuery request,
             CancellationToken cancellationToken
         )
         {
@@ -29,23 +29,24 @@ namespace Services.Application.Features.Bookings.Query.Paginate
 
                 var userType = userContext.UserType.Value;
 
-                Expression<Func<Booking, BookingsResult>> selector = s => new BookingsResult(
-                    s.Id,
-                    s.CreateOn,
-                    s.Status,
-                    s.Location,
-                    s.CustomerId,
-                    s.Customer!.User.Name,
-                    s.WorkerId,
-                    s.Worker!.User!.Name,
-                    s.ServiceId,
-                    s.Service.Name,
-                    s.Description,
-                    s.IsPaid,
-                    s.OldTotal,
-                    s.UpdatedTotal,
-                    s.Rate ?? 0
-                );
+                Expression<Func<Booking, UnRatedBookingResult>> selector =
+                    s => new UnRatedBookingResult(
+                        s.Id,
+                        s.CreateOn,
+                        s.Status,
+                        s.Location,
+                        s.CustomerId,
+                        s.Customer!.User.Name,
+                        s.WorkerId,
+                        s.Worker!.User!.Name,
+                        s.ServiceId,
+                        s.Service.Name,
+                        s.Description,
+                        s.IsPaid,
+                        s.OldTotal,
+                        s.UpdatedTotal,
+                        s.Rate ?? 0
+                    );
 
                 Func<IQueryable<Booking>, IIncludableQueryable<Booking, object>> includes = c =>
                     c.Include(b => b.Customer)
@@ -62,13 +63,13 @@ namespace Services.Application.Features.Bookings.Query.Paginate
                 {
                     var t when t == UserType.Customer.ToString() => b =>
                         (request.Id == null || b.CustomerId == request.Id)
-                        && (request.Status == null || b.Status == request.Status)
-                        && (b.IsPaid == request.IsPaid)
+                        && (b.IsPaid == true)
+                        && (b.Rate == 0)
                         && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Worker.ToString() => b =>
                         (request.Id == null || b.WorkerId == request.Id)
-                        && (b.IsPaid == request.IsPaid)
-                        && (request.Status == null || b.Status == request.Status)
+                        && (b.IsPaid == true)
+                        && (b.Rate == 0)
                         && (request.Date == null || b.CreateOn.Date == request.Date),
                     var t when t == UserType.Admin.ToString() => b =>
                         request.Id == null || b.Id == request.Id,

@@ -6,6 +6,7 @@ using Services.Application.Features.Bookings.Command.Update;
 using Services.Application.Features.Bookings.Query.GetById;
 using Services.Application.Features.Bookings.Query.GetCount;
 using Services.Application.Features.Bookings.Query.Paginate;
+using Services.Application.Features.Bookings.Query.UnRatedBooking;
 using Services.Shared.Enums;
 
 namespace Services.Api.Implementation.Bookings
@@ -25,7 +26,8 @@ namespace Services.Api.Implementation.Bookings
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.CreateBooking));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.CreateBooking));
 
             group
                 .MapPut(
@@ -47,8 +49,8 @@ namespace Services.Api.Implementation.Bookings
                             await sender.Send(new DeleteBookingCommand(id), cancellationToken)
                         )
                 )
-                .RequireAuthorization(nameof(Permissions.DeleteBooking));
-            ;
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.DeleteBooking));
 
             group
                 .MapGet(
@@ -58,7 +60,8 @@ namespace Services.Api.Implementation.Bookings
                             await sender.Send(new GetBookingByIdQuery(id), cancellationToken)
                         )
                 )
-                .RequireAuthorization(nameof(Permissions.GetBookingById));
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetBookingById));
 
             group
                 .MapPost(
@@ -69,7 +72,18 @@ namespace Services.Api.Implementation.Bookings
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.PaginateBookings));
+                //.RequireAuthorization(nameof(Permissions.PaginateBookings));
+                .RequireAuthorization();
+            group
+                .MapPost(
+                    "PaginateUnRatedBookingAsync",
+                    async (
+                        PaginateUnRatedBookingQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization();
 
             //not Permission
             group.MapPost(

@@ -30,9 +30,23 @@ namespace Services.Application.Features.Users.Queries.GetById
                     Roles = user.UserRoles != null
                         ? user.UserRoles.Select(ur => ur.Role != null ? ur.Role.Name : null)
                         : Enumerable.Empty<string>(),
-                    Worker = user.UserType == UserType.Worker && user.Worker != null
-                        ? new { user.Worker.Experience, user.Worker.Status }
-                        : new { Experience = 0.0, Status = Status.InActive },
+                    Worker = user.UserType == UserType.Worker
+                    && user.Worker != null
+                    && user.Worker.WorkerServices.Any()
+                        ? new
+                        {
+                            Available = user
+                                .Worker.WorkerServices.Select(av => av.Availabilty)
+                                .First(),
+                            user.Worker.Experience,
+                            user.Worker.Status,
+                        }
+                        : new
+                        {
+                            Available = false,
+                            Experience = 0.0,
+                            Status = Status.InActive,
+                        },
                     Customer = user.UserType == UserType.Customer
                     && user.Customer != null
                     && user.Customer.Point != null
@@ -45,6 +59,7 @@ namespace Services.Application.Features.Users.Queries.GetById
                         .Include(u => u.UserRoles)
                         .ThenInclude(ur => ur.Role)
                         .Include(u => u.Worker)
+                        .ThenInclude(ws => ws.WorkerServices)
                         .Include(u => u.Customer)
                         .ThenInclude(c => c.Point),
                 false,
@@ -61,7 +76,8 @@ namespace Services.Application.Features.Users.Queries.GetById
                     user.User.CreateOn,
                     user.Roles,
                     user.Worker.Experience,
-                    user.Worker.Status
+                    user.Worker.Status,
+                    user.Worker.Available
                 ),
                 UserType.Customer => new GetCustomerUserResult(
                     user.User.Id,

@@ -32,14 +32,11 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAv
             {
                 try
                 {
-                    WorkerService workerService =
-                        await _workerServiceRepository.GetWorkerFromServiceAsync(
-                            request.WorkerId,
-                            request.ServiceId,
-                            cancellationToken
-                        );
-                    workerService.UpdateAvailabilty(request.Availabilty);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    await _workerServiceRepository.UpdateAvailabiltyAsync(
+                        request.WorkerId,
+                        request.Availabilty,
+                        cancellationToken
+                    );
                     await transaction.CommitAsync(cancellationToken);
                     return new()
                     {
@@ -48,10 +45,10 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAv
                         StatusCode = (int)HttpStatusCode.OK,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
                     await transaction.RollbackAsync(cancellationToken);
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    throw new Exception(ex.Message, ex);
                 }
             }
         }

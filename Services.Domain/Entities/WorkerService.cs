@@ -19,7 +19,5 @@ namespace Services.Domain.Entities
         public void SetCreateOn() => CreateOn = DateTime.UtcNow;
 
         public void SetUpdateOn() => UpdateOn = DateTime.UtcNow;
-
-        public void UpdateAvailabilty(bool availabilty) => Availabilty = availabilty;
     }
 }

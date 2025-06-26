@@ -37,10 +37,11 @@ namespace Services.Application.Features.Services.Commands.Create
                 try
                 {
                     Service service = request;
-                    service.Image = await _fileService.SaveImageAsync(
-                        request.File.OpenReadStream(),
-                        request.File.FileName
-                    );
+                    service.Image = "";
+                    //service.Image = await _fileService.SaveImageAsync(
+                    //    request.File.OpenReadStream(),
+                    //    request.File.FileName
+                    //);
                     await _serviceRepository.CreateAsync(service, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync();

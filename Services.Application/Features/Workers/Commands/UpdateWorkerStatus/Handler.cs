@@ -37,10 +37,10 @@ namespace Services.Application.Features.Workers.Commands.UpdateWorkerStatus
                         StatusCode = (int)HttpStatusCode.OK,
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
                     await transaction.RollbackAsync(cancellationToken);
-                    throw new DatabaseTransactionException(ValidationMessages.Database.Error);
+                    throw new Exception(ex.Message, ex);
                 }
             }
         }

@@ -33,13 +33,13 @@ namespace Services.Application.Features.Services.Commands.Create
                 .NotNull()
                 .WithMessage(ValidationMessages.Services.DescriptionIsRequired);
 
-            RuleFor(s => s.File)
-                .NotEmpty()
-                .WithMessage(ValidationMessages.Services.ImageIsRequired)
-                .NotNull()
-                .WithMessage(ValidationMessages.Services.ImageIsRequired)
-                .Must((file) => file.Length == 0 ? false : true)
-                .WithMessage(ValidationMessages.Services.ImageIsRequired);
+            //RuleFor(s => s.File)
+            //    .NotEmpty()
+            //    .WithMessage(ValidationMessages.Services.ImageIsRequired)
+            //    .NotNull()
+            //    .WithMessage(ValidationMessages.Services.ImageIsRequired)
+            //    .Must((file) => file.Length == 0 ? false : true)
+            //    .WithMessage(ValidationMessages.Services.ImageIsRequired);
 
             RuleFor(s => s.name)
                 .MustAsync(

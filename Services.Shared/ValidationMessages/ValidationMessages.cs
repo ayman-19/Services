@@ -107,9 +107,9 @@
 
         public static class Bookings
         {
-            public const string IdIsRequired = "Booking ID is required";
-            public const string WorkerIdIsRequired = "Worker ID is required";
-            public const string CustomerIdIsRequired = "Customer ID is required";
+            public const string IdIsRequired = "Booking Id is required";
+            public const string WorkerIdIsRequired = "Worker Id is required";
+            public const string CustomerIdIsRequired = "Customer Id is required";
             public const string LocationIsRequired = "Location is required";
             public const string BookingDoesNotExist = "Booking does not exist";
             public const string UserNotFound = "User not found";
@@ -117,6 +117,8 @@
                 "You must rate your previous service before booking a new one";
             public const string UnpaidPreviousBooking =
                 "Unpaid previous booking - Please complete payment before submitting a new booking request";
+            public const string NoBooking =
+                "You cannot submit a new request at the moment, as there is a previous request for the same service still in pending. Please wait until the previous request is confirm before submitting a new one.";
         }
 
         public static class Discounts

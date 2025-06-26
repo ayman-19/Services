@@ -58,7 +58,7 @@ namespace Services.Application.Features.Workers.Queries.GetAll
                 selector,
                 predicate,
                 includes,
-                ordering: null!,
+                null!,
                 cancellationToken
             );
 

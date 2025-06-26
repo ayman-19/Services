@@ -1,8 +1,9 @@
 ﻿namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
 {
     public sealed record GetWorkersOnServiceResult(
-        Guid ServiceId,
-        string ServiceName,
+        int Page,
+        int PageSize,
+        int TotalPage,
         IReadOnlyCollection<GetWorkerResult> WorkerResults
     );
 

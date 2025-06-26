@@ -10,7 +10,8 @@ namespace Services.Application.Features.Users.Queries.GetById
         DateTime CreatedOn,
         IEnumerable<string> Roles,
         double Experience,
-        Status Status
+        Status Status,
+        bool Available
     );
 
     public sealed record GetCustomerUserResult(

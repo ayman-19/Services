@@ -20,7 +20,7 @@ namespace Services.Api.Implementation.Services
                 .MapPost(
                     "CreateAsync/",
                     async (
-                        [FromForm] CreateServiceCommand Command,
+                        CreateServiceCommand Command,
                         ISender sender,
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))

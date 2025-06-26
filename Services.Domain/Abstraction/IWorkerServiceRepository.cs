@@ -13,9 +13,9 @@ namespace Services.Domain.Abstraction
 
         ValueTask<double> GetRateAsync(Guid workerId, CancellationToken cancellationToken);
 
-        ValueTask<WorkerService> GetWorkerFromServiceAsync(
+        ValueTask UpdateAvailabiltyAsync(
             Guid WorkerId,
-            Guid ServiceId,
+            bool available,
             CancellationToken cancellationToken
         );
         Task RateWorkersAsync(Guid WorkerId, Guid ServiceId);
