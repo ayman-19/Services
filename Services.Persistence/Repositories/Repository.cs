@@ -27,7 +27,7 @@ namespace Services.Persistence.Repositories
             if (pridecate == null)
                 return await _entities.CountAsync(cancellationToken);
 
-            return await _entities.CountAsync(pridecate, cancellationToken);
+            return await _entities.Where(pridecate).CountAsync(cancellationToken);
         }
 
         public ValueTask<EntityEntry<TEntity>> CreateAsync(

@@ -4,7 +4,7 @@
         int Page,
         int PageSize,
         int TotalPage,
-        IReadOnlyCollection<GetWorkerResult> WorkerResults
+        IQueryable<GetWorkerResult> WorkerResults
     );
 
     public sealed record GetWorkerResult(

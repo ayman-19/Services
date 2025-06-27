@@ -18,9 +18,9 @@ namespace Services.Persistence.Repositories
             {
                 var jobData = new JobDataMap
                 {
-                    { "WorkerId", WorkerId },
-                    { "ServiceId", ServiceId },
-                    { "CustomerId", CustomerId },
+                    { "WorkerId", WorkerId.ToString() },
+                    { "ServiceId", ServiceId.ToString() },
+                    { "CustomerId", CustomerId.ToString() },
                 };
 
                 var jobDetail = JobBuilder

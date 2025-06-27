@@ -86,14 +86,16 @@ namespace Services.Api.Implementation.Bookings
                 .RequireAuthorization();
 
             //not Permission
-            group.MapPost(
-                "GetCountAsync",
-                async (
-                    GetCountBookingsQuery query,
-                    ISender sender,
-                    CancellationToken cancellationToken
-                ) => Results.Ok(await sender.Send(query, cancellationToken))
-            );
+            group
+                .MapPost(
+                    "GetCountAsync",
+                    async (
+                        GetCountBookingsQuery query,
+                        ISender sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await sender.Send(query, cancellationToken))
+                )
+                .RequireAuthorization();
         }
     }
 }

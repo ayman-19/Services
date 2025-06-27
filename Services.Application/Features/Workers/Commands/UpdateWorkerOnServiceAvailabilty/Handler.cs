@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using MediatR;
 using Services.Domain.Abstraction;
-using Services.Domain.Entities;
-using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 

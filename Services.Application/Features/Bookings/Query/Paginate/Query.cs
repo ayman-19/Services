@@ -10,6 +10,6 @@ namespace Services.Application.Features.Bookings.Query.Paginate
         Guid? Id,
         DateTime? Date,
         BookingStatus? Status,
-        bool IsPaid
+        bool? IsPaid
     ) : IRequest<ResponseOf<PaginateBookingsResults>>;
 }

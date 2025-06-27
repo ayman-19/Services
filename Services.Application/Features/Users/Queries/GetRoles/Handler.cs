@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using MediatR;
-using Services.Application.Features.Users.Queries.GetPermissions;
 using Services.Domain.Repositories;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;

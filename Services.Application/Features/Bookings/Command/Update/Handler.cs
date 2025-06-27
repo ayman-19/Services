@@ -37,7 +37,7 @@ namespace Services.Application.Features.Bookings.Command.Update
                     discountPercentage
                 );
 
-                booking.UpdateBooking(
+                booking.UpdateBookingDetails(
                     request.CreateOn,
                     request.Location,
                     request.CustomerId,
@@ -48,10 +48,10 @@ namespace Services.Application.Features.Bookings.Command.Update
                     request.Status,
                     request.Description
                 );
+                booking.UpdatePricing(request.Total, discountedPrice);
 
                 if (booking.Status == BookingStatus.Completed && booking.IsPaid)
                 {
-                    booking.UpdateTax(request.Total, discountedPrice);
                     await Jobs.RateWorkersAsync(
                         booking.WorkerId,
                         booking.ServiceId,
