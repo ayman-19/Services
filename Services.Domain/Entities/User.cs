@@ -6,7 +6,10 @@ using Services.Domain.Enums;
 
 namespace Services.Domain.Models
 {
-    public sealed record User : Entity<Guid>, ITrackableCreate, ITrackableDelete, ITrackableUpdate
+    public sealed record User
+        : Entity<Guid>,
+            ITrackableCreate, /*ITrackableDelete,*/
+            ITrackableUpdate
     {
         public User() { }
 

@@ -54,7 +54,9 @@ namespace Services.Application.Features.Categories.Queries.PaginateParentCategor
         ) =>
             categories
                 .Where(c =>
-                    c.ParentId == null && (c.Id == id || id == null) && c.Name.Contains(searchName)
+                    c.ParentId == null
+                    && (c.Id == id || id == null)
+                    && (string.IsNullOrWhiteSpace(searchName) || c.Name.Contains(searchName))
                 )
                 .Select(c => new CategoriesResult(
                     c.Id,

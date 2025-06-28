@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PhoneNumbers;
+﻿using Microsoft.EntityFrameworkCore;
 using Services.Domain.Entities;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
 using Services.Persistence.Data;
 using Services.Shared.Enums;
-using Services.Shared.ValidationMessages;
 
 namespace Services.Persistence.Repositories
 {

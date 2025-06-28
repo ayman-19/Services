@@ -10,6 +10,7 @@ using Services.Application.Features.Users.Commands.Login;
 using Services.Application.Features.Users.Commands.Logout;
 using Services.Application.Features.Users.Commands.ResetPassword;
 using Services.Application.Features.Users.Commands.Update;
+using Services.Application.Features.Users.Commands.UpdatePassword;
 using Services.Application.Features.Users.Queries.GetById;
 using Services.Application.Features.Users.Queries.GetPermissions;
 using Services.Application.Features.Users.Queries.GetRoles;
@@ -105,6 +106,16 @@ namespace Services.Api.Implementation.Users
                     CancellationToken cancellationToken
                 ) => Results.Ok(await _sender.Send(command, cancellationToken))
             );
+            group
+                .MapPut(
+                    "/UpdatePasswordAsync",
+                    async (
+                        UpdatePasswordCommand command,
+                        ISender _sender,
+                        CancellationToken cancellationToken
+                    ) => Results.Ok(await _sender.Send(command, cancellationToken))
+                )
+                .RequireAuthorization();
             group
                 .MapPost(
                     "/AddPermissionToRoleAsync",

@@ -15,6 +15,6 @@
         double Distance,
         Guid LocationId,
         double Latitude,
-        double Longitude
+        double Langitude
     );
 }
