@@ -6,21 +6,11 @@ using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Workers.Commands.UpdateWorkerOnServiceAvailabilty
 {
-    public sealed class UpdateWorkerOnServiceAvailabiltyHandler
-        : IRequestHandler<UpdateWorkerOnServiceAvailabiltyCommand, Response>
+    public sealed class UpdateWorkerOnServiceAvailabiltyHandler(
+        IWorkerServiceRepository _workerServiceRepository,
+        IUnitOfWork _unitOfWork
+    ) : IRequestHandler<UpdateWorkerOnServiceAvailabiltyCommand, Response>
     {
-        private readonly IWorkerServiceRepository _workerServiceRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UpdateWorkerOnServiceAvailabiltyHandler(
-            IWorkerServiceRepository workerServiceRepository,
-            IUnitOfWork unitOfWork
-        )
-        {
-            _workerServiceRepository = workerServiceRepository;
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<Response> Handle(
             UpdateWorkerOnServiceAvailabiltyCommand request,
             CancellationToken cancellationToken

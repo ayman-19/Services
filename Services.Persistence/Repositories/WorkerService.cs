@@ -46,6 +46,7 @@ namespace Services.Persistence.Repositories
         ) =>
             await _context
                 .Set<WorkerService>()
+                .Where(worker => worker.WorkerId == WorkerId)
                 .ExecuteUpdateAsync(w => w.SetProperty(av => av.Availabilty, available));
 
         public async Task RateWorkersAsync(Guid workerId, Guid serviceId)

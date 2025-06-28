@@ -1,36 +1,38 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Services.Api.Abstraction;
-using Services.Application.Features.Discounts.Commands.Create;
-using Services.Application.Features.Discounts.Commands.Delete;
-using Services.Application.Features.Discounts.Commands.Update;
-using Services.Application.Features.Discounts.Queries.GetById;
-using Services.Application.Features.Discounts.Queries.Paginate;
+using Services.Application.Features.Services.Commands.Create;
+using Services.Application.Features.Services.Commands.Delete;
+using Services.Application.Features.Services.Commands.Update;
+using Services.Application.Features.Services.Queries.GetAll;
+using Services.Application.Features.Services.Queries.GetById;
+using Services.Application.Features.Services.Queries.Paginate;
 using Services.Shared.Enums;
 
-namespace Services.Api.Implementation.Discounts
+namespace Services.Api.Implementation.Services
 {
-    public sealed class DiscountEndpoints : IEndpoint
+    public class ServiceEndpoint : IEndpoint
     {
         public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
         {
-            RouteGroupBuilder group = endpoints.MapGroup("/Discounts").WithTags("Discounts");
-
+            RouteGroupBuilder group = endpoints.MapGroup("/Services").WithTags("Services");
             group
                 .MapPost(
                     "CreateAsync/",
                     async (
-                        CreateDiscountCommand Command,
+                        CreateServiceCommand Command,
                         ISender sender,
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
+                .DisableAntiforgery()
                 .RequireAuthorization();
 
             group
                 .MapPut(
                     "UpdateAsync/",
                     async (
-                        UpdateDiscountCommand Command,
+                        [FromBody] UpdateServiceCommand Command,
                         ISender sender,
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
@@ -42,7 +44,7 @@ namespace Services.Api.Implementation.Discounts
                     "DeleteAsync/{id}",
                     async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                         Results.Ok(
-                            await sender.Send(new DeleteDiscountCommand(id), cancellationToken)
+                            await sender.Send(new DeleteServiceCommand(id), cancellationToken)
                         )
                 )
                 .RequireAuthorization();
@@ -51,9 +53,7 @@ namespace Services.Api.Implementation.Discounts
                 .MapGet(
                     "GetByIdAsync/{id}",
                     async (Guid id, ISender sender, CancellationToken cancellationToken) =>
-                        Results.Ok(
-                            await sender.Send(new GetDiscountByIdQuery(id), cancellationToken)
-                        )
+                        Results.Ok(await sender.Send(new GetServiceQuery(id), cancellationToken))
                 )
                 .RequireAuthorization();
 
@@ -61,12 +61,25 @@ namespace Services.Api.Implementation.Discounts
                 .MapPost(
                     "PaginateAsync",
                     async (
-                        PaginateDiscountsQuery query,
+                        PaginateServiceQuery query,
                         ISender sender,
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
                 .RequireAuthorization();
+            group
+                .MapGet(
+                    "GetAllAsync/{categoryId}",
+                    async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
+                        Results.Ok(
+                            await sender.Send(
+                                new GetAllServicesQuery(categoryId),
+                                cancellationToken
+                            )
+                        )
+                )
+                .RequireAuthorization();
+            //.RequireAuthorization(nameof(Permissions.GetAllServices));
         }
     }
 }
