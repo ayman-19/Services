@@ -26,7 +26,7 @@ namespace Services.Api.Implementation.Services
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
                 .DisableAntiforgery()
-                .RequireAuthorization(nameof(Permissions.CreateService));
+                .RequireAuthorization();
 
             group
                 .MapPut(
@@ -37,7 +37,7 @@ namespace Services.Api.Implementation.Services
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.UpdateService));
+                .RequireAuthorization();
 
             group
                 .MapDelete(
@@ -47,7 +47,7 @@ namespace Services.Api.Implementation.Services
                             await sender.Send(new DeleteServiceCommand(id), cancellationToken)
                         )
                 )
-                .RequireAuthorization(nameof(Permissions.DeleteService));
+                .RequireAuthorization();
 
             group
                 .MapGet(
@@ -55,7 +55,7 @@ namespace Services.Api.Implementation.Services
                     async (Guid id, ISender sender, CancellationToken cancellationToken) =>
                         Results.Ok(await sender.Send(new GetServiceQuery(id), cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.GetService));
+                .RequireAuthorization();
 
             group
                 .MapPost(
@@ -66,14 +66,19 @@ namespace Services.Api.Implementation.Services
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.PaginateService));
-            group.MapGet(
-                "GetAllAsync/{categoryId}",
-                async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
-                    Results.Ok(
-                        await sender.Send(new GetAllServicesQuery(categoryId), cancellationToken)
-                    )
-            );
+                .RequireAuthorization();
+            group
+                .MapGet(
+                    "GetAllAsync/{categoryId}",
+                    async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
+                        Results.Ok(
+                            await sender.Send(
+                                new GetAllServicesQuery(categoryId),
+                                cancellationToken
+                            )
+                        )
+                )
+                .RequireAuthorization();
             //.RequireAuthorization(nameof(Permissions.GetAllServices));
         }
     }

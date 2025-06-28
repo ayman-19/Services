@@ -30,20 +30,23 @@ public sealed class GetWorkersOnServiceHandler(IWorkerServiceRepository workerSe
                     ws.Price,
                     GetDistance(
                         request.Latitude,
-                        request.Longitude,
+                        request.Langitude,
                         ws.Worker.User.Branch.Latitude,
                         ws.Worker.User.Branch.Langitude
                     ),
                     ws.Worker.User.Branch.Id,
                     ws.Worker.User.Branch.Latitude,
-                    ws.Worker.User.Branch.Langitude
+                    ws.Worker.User.Branch.Langitude,
+                    ws.Worker.User.Phone
                 ),
                 ws =>
                     ws.ServiceId == request.ServiceId
                     && ws.Availabilty == true
-                    && request.Status == null
-                        ? ws.Worker.Status == Status.Active
-                        : ws.Worker.Status == request.Status,
+                    && (
+                        request.Status == null
+                            ? ws.Worker.Status == Status.Active
+                            : ws.Worker.Status == request.Status
+                    ),
                 include =>
                     include
                         .Include(ws => ws.Worker)

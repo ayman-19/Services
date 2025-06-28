@@ -13,7 +13,6 @@ namespace Services.Application.Features.Users.Commands.Login;
 public sealed class LoginUserHandler(
     IJWTManager _jwtManager,
     IUserRepository _userRepository,
-    IUnitOfWork _unitOfWork,
     IPasswordHasher<User> _passwordHasher,
     IJobs _jobs
 ) : IRequestHandler<LoginUserCommand, ResponseOf<LoginUserResult>>
@@ -23,13 +22,14 @@ public sealed class LoginUserHandler(
         CancellationToken cancellationToken
     )
     {
-        await using var transaction = await _unitOfWork.BeginTransactionAsync();
-
         try
         {
             var user =
                 await _userRepository.GetByEmailAsync(request.email)
                 ?? throw new InvalidException(ValidationMessages.Users.NotFound);
+
+            if (!VerifyPassword(user, request.password))
+                throw new InvalidException(ValidationMessages.Users.IncorrectPassword);
 
             if (!user.ConfirmAccount)
             {
@@ -37,13 +37,9 @@ public sealed class LoginUserHandler(
                 throw new NotConfirmEmail(ValidationMessages.Users.EmailNotConfirmed);
             }
 
-            if (!VerifyPassword(user, request.password))
-                throw new InvalidException(ValidationMessages.Users.IncorrectPassword);
-
             //await _userRepository.UpdateBranchAsync(user.Id, request.Latitude, request.Longitude);
 
             var result = await _jwtManager.LoginAsync(user);
-            await transaction.CommitAsync(cancellationToken);
 
             return new ResponseOf<LoginUserResult>
             {
@@ -55,7 +51,6 @@ public sealed class LoginUserHandler(
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync(cancellationToken);
             throw new DatabaseTransactionException(ex.Message);
         }
     }
@@ -63,7 +58,8 @@ public sealed class LoginUserHandler(
     private async Task HandleUnconfirmedAccount(User user, CancellationToken cancellationToken)
     {
         var code = await _jwtManager.GenerateCodeAsync();
-        await _userRepository.UpdateCodeAsync(user.Id, code);
+        user.HashedCode(_passwordHasher, code);
+        await _userRepository.UpdateCodeAsync(user.Id, user.Code!);
         await _jobs.SendEmailByJobAsync(user.Email, $"To Confirm Email Code: <h3>{code}</h3>");
     }
 

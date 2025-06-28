@@ -52,12 +52,12 @@ namespace Services.Domain.Models
 
         public void SetUpdateOn() => UpdateOn = DateTime.UtcNow;
 
-        public void Update(string name, string email, string phone)
+        public void Update(string name, string email, string phone, bool confirmAccount)
         {
             this.Name = name;
             this.Email = email;
             this.Phone = phone;
-            this.ConfirmAccount = false;
+            this.ConfirmAccount = confirmAccount;
         }
     }
 }

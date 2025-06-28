@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Domain.Repositories;
+using Services.Shared.Extentions;
 using Services.Shared.ValidationMessages;
 
 namespace Services.Application.Features.Users.Commands.Update
@@ -39,6 +40,10 @@ namespace Services.Application.Features.Users.Commands.Update
                 .WithMessage(ValidationMessages.Users.EmailIsRequired)
                 .NotNull()
                 .WithMessage(ValidationMessages.Users.EmailIsRequired);
+
+            RuleFor(x => x)
+                .Must((e, cancellationToken) => e.phone.ValidatePhoneNumber())
+                .WithMessage(ValidationMessages.Users.PhoneNumberNotValid);
         }
     }
 }

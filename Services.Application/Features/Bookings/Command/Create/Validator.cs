@@ -33,7 +33,7 @@ public sealed class CreateBookingValidator : AbstractValidator<CreateBookingComm
     private void ApplyValidationRules()
     {
         RuleFor(x => x.LocationType)
-            .NotEmpty()
+            .IsInEnum()
             .WithMessage(ValidationMessages.Bookings.LocationIsRequired);
 
         RuleFor(x => x.CustomerId)

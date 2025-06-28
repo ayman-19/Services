@@ -28,7 +28,11 @@ namespace Services.Persistence.Repositories
         }
 
         public async Task<User> GetByIdAsync(Guid id) =>
-            await _context.Set<User>().AsNoTracking().FirstAsync(user => user.Id == id);
+            await _context
+                .Set<User>()
+                .AsNoTracking()
+                .Include(userRole => userRole.UserRoles)
+                .FirstAsync(user => user.Id == id);
 
         public async Task<User> GetByEmailAsync(string email) =>
             await _context

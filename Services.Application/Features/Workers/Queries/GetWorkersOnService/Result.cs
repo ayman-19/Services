@@ -15,6 +15,7 @@
         double Distance,
         Guid LocationId,
         double Latitude,
-        double Langitude
+        double Langitude,
+        string Phone
     );
 }

@@ -10,7 +10,7 @@ namespace Services.Application.Features.Workers.Queries.GetWorkersOnService
         Guid ServiceId,
         string? searchName,
         double Latitude,
-        double Longitude,
+        double Langitude,
         Status? Status
     ) : IRequest<ResponseOf<GetWorkersOnServiceResult>>;
 }

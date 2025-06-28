@@ -23,7 +23,7 @@ namespace Services.Api.Implementation.Categories
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.PaginateCategories));
+                .RequireAuthorization();
 
             group.MapGet(
                 "GetAllCategoriesAsync/{searchName}",
@@ -42,7 +42,7 @@ namespace Services.Api.Implementation.Categories
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.CreateCategory));
+                .RequireAuthorization();
 
             group
                 .MapPut(
@@ -53,7 +53,7 @@ namespace Services.Api.Implementation.Categories
                         CancellationToken cancellationToken
                     ) => Results.Ok(await sender.Send(Command, cancellationToken))
                 )
-                .RequireAuthorization(nameof(Permissions.UpdateCategory));
+                .RequireAuthorization();
 
             group
                 .MapDelete(
@@ -63,7 +63,7 @@ namespace Services.Api.Implementation.Categories
                             await sender.Send(new DeleteCategoryCommand(id), cancellationToken)
                         )
                 )
-                .RequireAuthorization(nameof(Permissions.DeleteCategory));
+                .RequireAuthorization();
         }
     }
 }

@@ -15,6 +15,7 @@ public sealed class TokenValidation(ITokenRepository tokenRepository) : IMiddlew
             && !path.EndsWith("forgetpasswordasync")
             && !path.EndsWith("resetpasswordasync")
             && !path.EndsWith("registerasync")
+            && !path.EndsWith("confirmasync")
             && context.User.Identity?.IsAuthenticated == true
         )
         {

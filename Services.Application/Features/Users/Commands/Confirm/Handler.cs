@@ -37,10 +37,7 @@ namespace Services.Application.Features.Users.Commands.Confirm
                 try
                 {
                     User user = await _userRepository.GetByEmailAsync(request.email);
-                    if (
-                        _passwordHasher.VerifyHashedPassword(user, user.Code, request.code)
-                        != PasswordVerificationResult.Success
-                    )
+                    if (!VerifyCode(user, request.code))
                         throw new InvalidException(ValidationMessages.Users.VerifyCode);
 
                     user.ConfirmAccount = true;
@@ -59,6 +56,15 @@ namespace Services.Application.Features.Users.Commands.Confirm
                     throw new DatabaseTransactionException(ex.Message);
                 }
             }
+        }
+
+        private bool VerifyCode(User user, string code)
+        {
+            if (string.IsNullOrWhiteSpace(user.Code))
+                return false;
+
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Code, code);
+            return result == PasswordVerificationResult.Success;
         }
     }
 }

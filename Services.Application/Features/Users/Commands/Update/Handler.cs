@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Services.Domain.Abstraction;
 using Services.Domain.Models;
 using Services.Domain.Repositories;
-using Services.Shared.Exceptions;
 using Services.Shared.Responses;
 using Services.Shared.ValidationMessages;
 
@@ -43,48 +42,62 @@ namespace Services.Application.Features.Users.Commands.Update
             CancellationToken cancellationToken
         )
         {
-            using (var transaction = await _unitOfWork.BeginTransactionAsync())
+            await using var transaction = await _unitOfWork.BeginTransactionAsync(
+                cancellationToken
+            );
+
+            try
             {
-                try
+                var user = await _userRepository.GetByIdAsync(request.id);
+
+                var emailChanged = !string.Equals(
+                    user.Email,
+                    request.email,
+                    StringComparison.OrdinalIgnoreCase
+                );
+
+                user.Update(request.name, request.email, request.phone, !emailChanged);
+
+                await _tokenRepository.DeleteByUserIdAsync(user.Id);
+                var verificationCode = await _jwtManager.GenerateCodeAsync();
+                var newToken = await _jwtManager.GenerateTokenAsync(user, cancellationToken);
+                user.HashedCode(_passwordHasher, verificationCode);
+                user.Token = newToken;
+
+                await _userRepository.UpdateAsync(user, cancellationToken);
+                var saved = await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                if (saved > 0)
                 {
-                    User user = await _userRepository.GetByIdAsync(request.id);
-                    user.Update(request.name, request.email, request.phone);
-                    await _tokenRepository.DeleteByUserIdAsync(user.Id);
-                    string code = await _jwtManager.GenerateCodeAsync();
-                    user.HashedCode(_passwordHasher, code);
-
-                    await _userRepository.UpdateAsync(user);
-                    int success = await _unitOfWork.SaveChangesAsync();
-                    await transaction.CommitAsync();
-
-                    if (success > 0)
+                    if (emailChanged)
                     {
                         await _emailSender.SendEmailAsync(
                             user.Email,
                             ValidationMessages.Users.ConfirmEmail,
-                            $"To Confirm Email Code: <h3>'{code}'</h3>"
+                            $"To confirm your email, use this code: <h3>'{verificationCode}'</h3>"
                         );
-
-                        return new ResponseOf<UpdateUserResult>
-                        {
-                            Message = ValidationMessages.Success,
-                            Success = true,
-                            StatusCode = (int)HttpStatusCode.OK,
-                            Result = user,
-                        };
                     }
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync(cancellationToken);
-                    throw new DatabaseTransactionException(ex.Message);
+
+                    return new ResponseOf<UpdateUserResult>
+                    {
+                        Message = ValidationMessages.Success,
+                        Success = true,
+                        StatusCode = (int)HttpStatusCode.OK,
+                        Result = user,
+                    };
                 }
                 return new ResponseOf<UpdateUserResult>
                 {
                     Message = ValidationMessages.Failure,
+                    Success = false,
                     StatusCode = (int)HttpStatusCode.ExpectationFailed,
-                    Result = null!,
                 };
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw new Exception($"UpdateUser failed: {ex.Message}", ex);
             }
         }
     }
