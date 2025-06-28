@@ -108,7 +108,12 @@ namespace Services.Api
             WebApplication app = builder.Build();
             app.UseMiddleware<ExceptionHandler>();
             app.UseSwagger();
-            app.UseSwaggerUI();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Service. v1");
+                options.RoutePrefix = string.Empty;
+            });
             app.UseRouting();
             app.UseAuthentication();
             app.UseMiddleware<TokenValidation>();
