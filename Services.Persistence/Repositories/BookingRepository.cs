@@ -51,5 +51,24 @@ namespace Services.Persistence.Repositories
                 .ThenInclude(p => p.Point)
                 .AsTracking()
                 .FirstAsync(id => id.Id == Id, cancellationToken);
+
+        public async Task<double> GetTotalPriceAsync(
+            Guid id,
+            BookingStatus status,
+            CancellationToken cancellationToken
+        )
+        {
+            return await Task.Run(
+                () =>
+                {
+                    return _context
+                        .Set<Booking>()
+                        .Where(w => w.WorkerId == id && w.IsPaid && w.Status == status)
+                        .AsEnumerable()
+                        .Sum(b => b.UpdatedTotal == 0 ? b.OldTotal : b.UpdatedTotal);
+                },
+                cancellationToken
+            );
+        }
     }
 }

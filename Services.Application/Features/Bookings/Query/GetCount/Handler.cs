@@ -23,7 +23,7 @@ namespace Services.Application.Features.Bookings.Query.GetCount
             try
             {
                 var userType = userContext.UserType.Value;
-
+                double total = 0;
                 Expression<Func<Booking, bool>> predicate = userType switch
                 {
                     var t when t == UserType.Customer.ToString() => b =>
@@ -36,13 +36,23 @@ namespace Services.Application.Features.Bookings.Query.GetCount
                 };
 
                 var result = await bookingRepository.CountAsync(predicate, cancellationToken);
+                if (userType == UserType.Worker.ToString())
+                    total = await bookingRepository.GetTotalPriceAsync(
+                        request.UserId,
+                        request.Status.GetValueOrDefault(),
+                        cancellationToken
+                    );
 
                 return new()
                 {
                     Message = ValidationMessages.Success,
                     Success = true,
                     StatusCode = (int)HttpStatusCode.OK,
-                    Result = new(result, request.Status.GetValueOrDefault()),
+                    Result = new(
+                        result,
+                        (total - (total * .14)),
+                        request.Status.GetValueOrDefault()
+                    ),
                 };
             }
             catch (Exception ex)

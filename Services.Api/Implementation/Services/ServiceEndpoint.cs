@@ -67,18 +67,13 @@ namespace Services.Api.Implementation.Services
                     ) => Results.Ok(await sender.Send(query, cancellationToken))
                 )
                 .RequireAuthorization();
-            group
-                .MapGet(
-                    "GetAllAsync/{categoryId}",
-                    async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
-                        Results.Ok(
-                            await sender.Send(
-                                new GetAllServicesQuery(categoryId),
-                                cancellationToken
-                            )
-                        )
-                )
-                .RequireAuthorization();
+            group.MapGet(
+                "GetAllAsync/{categoryId}",
+                async (Guid categoryId, ISender sender, CancellationToken cancellationToken) =>
+                    Results.Ok(
+                        await sender.Send(new GetAllServicesQuery(categoryId), cancellationToken)
+                    )
+            );
             //.RequireAuthorization(nameof(Permissions.GetAllServices));
         }
     }
